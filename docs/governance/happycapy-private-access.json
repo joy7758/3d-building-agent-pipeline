@@ -40,6 +40,19 @@
     "Read-only status, catalog and schema access does not authorize preflight execution.",
     "TITMAS evidence checks do not replace architectural visual review."
   ],
-  "status": "PRIVATE_REPOSITORY_CREATED_CREDENTIAL_BLOCKED_PENDING_EXTERNAL_ISSUANCE_AUTHORIZATION",
-  "updated_at": "2026-09-23T00:00:00+08:00"
+  "credential_issuance": {
+    "authorization": "ONE_TIME_EXTERNAL_TRIAL_ISSUANCE=APPROVED",
+    "status": "ISSUED_STORED_IN_LOCAL_KEYCHAIN_NOT_DELIVERED_TO_HAPPYCAPY",
+    "expires_at": "2026-09-25T18:20:47Z",
+    "requests_per_minute": 5,
+    "verification": {
+      "authenticated_status_http": 200,
+      "authenticated_catalog_http": 200,
+      "unauthenticated_status_http": 401,
+      "preflight_http": 403,
+      "preflight_reason": "TITMAS-SANDBOX-SCOPE-REQUIRED"
+    }
+  },
+  "status": "PRIVATE_REPOSITORY_CREATED_READONLY_CREDENTIAL_ISSUED_DELIVERY_PENDING",
+  "updated_at": "2026-09-22T18:20:47Z"
 }
