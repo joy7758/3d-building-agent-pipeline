@@ -2,6 +2,8 @@
 
 本对话负责总指挥，主工作区为 `/Volumes/ORICO_DATA/Projects/3d盖楼`。用户指定建筑后，总指挥建立任务、派发工位、核对证据、组织返工并交付本地视频；用户负责发布。当前施工底座是鹳雀楼，其他建筑必须建立独立模型。
 
+新任务已加入资料缺口门禁：每个 job 生成 `discovery-plan.json` 和 `discovery/index.json`；attempt 绑定任务、计划和来源版本，模型计划及视频清单绑定当前 attempt。`node pipeline/cli.mjs discovery <id>` 离线重算状态。该合同校验记录完整性与失效绑定，不联网、不裁定事实真伪。详见 [发现合同](DISCOVERY.md)。
+
 施工技能固定为 [Hailey / threejs-architecture-effects](../vendor/architecture-skill/SKILL.md)，上游 `lhlGitHub/threejs-architecture-effects@693ca2ec1193e7355054f14d7deb1427439a24d0`，MIT。用户已经确认“ihi”指此 skill。不将它解释为另一个服务。
 
 **2026-09-22 倒查纠正**：鹳雀楼为 `NEEDS_REVISION`、`visual=FAIL`。此前“艺术预览 PASS”不足以证明照片保真与演示匹配；本任务有外观返工及 TITMAS 未接入两个独立问题。见[完整报告](../artifacts/reverse-audit-20260922-r1/report.md)与[拟定返工合同](../artifacts/reverse-audit-20260922-r1/acceptance-checklist.md)。该日草案与倒查保持历史。2026-09-23 已接入逐项记录门禁，见[当前合同](../jobs/guanque-pilot/review-contract.json)和[审查协议](REVIEW.md)；它校验覆盖与证据绑定，不自动判断照片相似或视频效果。当前新一轮内容审查 `NOT_RUN`，旧视频 `visual=FAIL`。
@@ -61,6 +63,6 @@
 
 ## 当前能力与接入
 
-跨项目复用先查 DBA 的[本地模块目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/REUSABLE-MODULE-CATALOG.zh-CN.md>)与[机器目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json>)。建筑资料发现的复用边界见[评估记录](../docs/discovery-reuse-assessment.md)：已有发现资产可参考/适配，建筑缺口补证接口尚未实现；旧 Scout 的版本、许可和过期状态必须先核实。
+跨项目复用先查 DBA 的[本地模块目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/REUSABLE-MODULE-CATALOG.zh-CN.md>)与[机器目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json>)。建筑资料发现的复用边界见[评估记录](../docs/discovery-reuse-assessment.md)：已实现本地缺口合同与哈希门禁；检索仍由智能体实际执行，旧 Scout 的版本、许可和过期状态必须先核实。
 
 以 [集成说明](integrations.json)、[治理记录](../docs/governance/pipeline-intake.json)、CLI 输出与具体运行记录为准。尚未绑定的发现层或 TITMAS 适配器保持 `NOT_CONNECTED`。不得把本地检查脚本改名成 TITMAS，也不得把收到一个标有 PASS 的 JSON 当作可信回执。

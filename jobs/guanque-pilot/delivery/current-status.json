@@ -32,5 +32,14 @@
     "semantic_review": "NOT_RUN",
     "required_local_criteria": 18,
     "completed_local_criteria": 0
-  }
+  },
+  "pipeline_gate_revision": "DISCOVERY_GATE_V1",
+  "pipeline_gates": {
+    "discovery": "NOT_CONFIGURED",
+    "model_plan": "STALE_DISCOVERY_BINDING",
+    "video": "STALE_DISCOVERY_BINDING",
+    "visual": "FAIL",
+    "titmas": "NOT_CONNECTED"
+  },
+  "pipeline_gate_note": "New general-pipeline requirements invalidate the old model/video bindings for current acceptance. Original files and historical technical PASS remain preserved as historical evidence."
 }

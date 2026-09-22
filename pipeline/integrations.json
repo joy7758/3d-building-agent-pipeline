@@ -6,7 +6,7 @@
   "discovery": {
     "executor": "CODEX_RESEARCH_ADAPTER",
     "state": "AVAILABLE_AS_AGENT_ROLE",
-    "contract": "sources.json",
+    "contract": "pipeline/schemas/discovery.schema.json",
     "upstream_scout": {
       "canonical_project_id": "titmac-scout",
       "conversation_alias": "tiamas-scout",
@@ -28,7 +28,11 @@
       "local_path": "/Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json",
       "availability_scope": "LOCAL_COCKPIT_CATALOG_NOT_PUBLICATION_OR_ACTIVATION"
     },
-    "architectural_gap_adapter": "NOT_IMPLEMENTED"
+    "architectural_gap_adapter": "LOCAL_HASH_BOUND_EVIDENCE_GAP_CONTRACT_AND_EVALUATOR_NO_SEARCH_ENGINE",
+    "evaluator": "pipeline/discovery.mjs",
+    "runtime_status": "LOCAL_DISCOVERY_RECORD_VALIDATION_IMPLEMENTED_SEARCH_REMAINS_AGENT_EXECUTED",
+    "attempt_history": "IMMUTABLE_ATTEMPT_FILES_INDEXED_BY_CURRENT_POINTER",
+    "downstream_binding": "model-plan.json binds current attempt id and digest; video manifest repeats both"
   },
   "construction": {
     "executor": "CODEX_WITH_THREEJS_ARCHITECTURE_EFFECTS",

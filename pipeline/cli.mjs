@@ -3,6 +3,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { evaluateJob, handoffJob, initJob } from './lib.mjs';
+import { evaluateDiscovery } from './discovery.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const HELP = `建筑 3D 拆解流水线（本地控制台，无网络调用）
@@ -10,6 +11,7 @@ const HELP = `建筑 3D 拆解流水线（本地控制台，无网络调用）
 node pipeline/cli.mjs init --id <slug> --building <name> [--location <place>] [--era <period>]
 node pipeline/cli.mjs status <id>    输出当前阶段、各门禁、阻塞和文件哈希（JSON）
 node pipeline/cli.mjs review <id>    输出逐项审查状态、覆盖率和阻塞（JSON）
+node pipeline/cli.mjs discovery <id> 输出资料缺口、当前发现尝试、失效状态和阻塞（JSON）
 node pipeline/cli.mjs handoff <id>   输出按工位排序的操作提示（Markdown）
 node pipeline/cli.mjs verify <id>    重新验证；仅 READY_FOR_USER_REVIEW 返回 0
 node pipeline/cli.mjs help
@@ -35,11 +37,11 @@ try {
   const [command = 'help', ...args] = process.argv.slice(2);
   if (['help', '--help', '-h'].includes(command)) process.stdout.write(HELP);
   else if (command === 'init') process.stdout.write(`${JSON.stringify(initJob(root, options(args)), null, 2)}\n`);
-  else if (['status', 'verify', 'handoff', 'review'].includes(command)) {
+  else if (['status', 'verify', 'handoff', 'review', 'discovery'].includes(command)) {
     if (args.length !== 1) throw new Error(`${command} requires exactly one job id.`);
     if (command === 'handoff') process.stdout.write(handoffJob(root, args[0]));
     else {
-      const result = evaluateJob(root, args[0]);
+      const result = command === 'discovery' ? evaluateDiscovery(root, args[0]) : evaluateJob(root, args[0]);
       process.stdout.write(`${JSON.stringify(command === 'review' ? result.review : result, null, 2)}\n`);
       if (command === 'verify' && !result.ready_for_user_review) process.exitCode = 1;
     }

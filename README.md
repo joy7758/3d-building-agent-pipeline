@@ -6,6 +6,7 @@
 
 - 工作方式与工位：[流水线手册](pipeline/README.md)
 - 机读任务操作：[CLI 合同](pipeline/CLI.md)，运行 `node pipeline/cli.mjs help`
+- 资料缺口发现：[发现合同](pipeline/DISCOVERY.md)，运行 `node pipeline/cli.mjs discovery <任务ID>`
 - 首个任务：[鹳雀楼 pilot](jobs/guanque-pilot/request.json)，运行 `node pipeline/cli.mjs status guanque-pilot`
 - 接入事实：[integrations.json](pipeline/integrations.json)。DBA 当前登记的 TITMAS 公共服务不可用；[服务核查](docs/governance/titmas-service-discovery.json)。接通前保持预览状态。
 

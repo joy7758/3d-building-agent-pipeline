@@ -338,13 +338,21 @@
           "type": "object",
           "required": [
             "request_sha256",
-            "sources_sha256"
+            "sources_sha256",
+            "discovery_attempt_id",
+            "discovery_sha256"
           ],
           "properties": {
             "sources_sha256": {
               "$ref": "#/$defs/nullableHash"
             },
             "request_sha256": {
+              "$ref": "#/$defs/nullableHash"
+            },
+            "discovery_attempt_id": {
+              "type": ["string", "null"]
+            },
+            "discovery_sha256": {
               "$ref": "#/$defs/nullableHash"
             }
           }
@@ -666,13 +674,22 @@
           "required": [
             "request_sha256",
             "sources_sha256",
-            "model_plan_sha256"
+            "model_plan_sha256",
+            "discovery_attempt_id",
+            "discovery_sha256"
           ],
           "properties": {
             "sources_sha256": {
               "$ref": "#/$defs/sha256"
             },
             "model_plan_sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "discovery_attempt_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "discovery_sha256": {
               "$ref": "#/$defs/sha256"
             },
             "request_sha256": {
@@ -684,6 +701,9 @@
     }
   },
   "oneOf": [
+    {
+      "$ref": "urn:3d-building-pipeline:discovery:1"
+    },
     {
       "$ref": "#/$defs/request"
     },

@@ -64,12 +64,13 @@
       "tests": "npm run pipeline:check",
       "snapshot": "node pipeline/snapshot-app.mjs",
       "render": "node pipeline/render-video.mjs --app-root <snapshot-app> --config pipeline/video/guanque-pilot-wide.json --url <localhost-preview>",
-      "review": "node pipeline/cli.mjs review <id>"
+      "review": "node pipeline/cli.mjs review <id>",
+      "discovery": "node pipeline/cli.mjs discovery <id>"
     },
     "titmas": "BLOCKED_CURRENT_SERVICE_UNAVAILABLE",
     "publication": "USER_ONLY",
     "video_export_scope": "LOCAL_DETERMINISTIC_PREVIEW_WITH_VERSIONED_SOURCE",
-    "status": "LOCAL_REVIEW_RECORD_GATE_IMPLEMENTED_VISUAL_REWORK_PENDING",
+    "status": "LOCAL_DISCOVERY_RECORD_GATE_IMPLEMENTED_VISUAL_REWORK_PENDING",
     "pilot_delivery": "jobs/guanque-pilot/delivery/delivery-manifest.json",
     "pilot_status": "jobs/guanque-pilot/qa/final-status.json",
     "pilot_current_delivery_status": "jobs/guanque-pilot/delivery/current-status.json",
@@ -83,7 +84,10 @@
       "repository_relative_path": "digital-biosphere-architecture/cockpit/reusable-module-catalog.json",
       "local_path": "/Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json",
       "availability_scope": "LOCAL_COCKPIT_CATALOG_NOT_PUBLICATION_OR_ACTIVATION"
-    }
+    },
+    "discovery_contract": "pipeline/schemas/discovery.schema.json",
+    "discovery_protocol": "pipeline/DISCOVERY.md",
+    "discovery_execution": "LOCAL_CONTRACT_EVALUATION_ONLY_SEARCH_REMAINS_AGENT_EXECUTED"
   },
   "reference_audit": "docs/photo-comparison-r3.md",
   "visual_acceptance": "VISUAL_REVIEW_REQUIRED",
