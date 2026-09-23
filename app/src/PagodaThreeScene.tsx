@@ -15,9 +15,9 @@ export const DETAIL_VIEWS = [
   {id:'roof',label:'飞檐细赏'},
 ] as const;
 export type DetailView = typeof DETAIL_VIEWS[number]['id'];
-type Props={progress:number;view?:DetailView;cameraRequest?:number;inspection?:boolean;onReady?:()=>void};
+type Props={progress:number;view?:DetailView;cameraRequest?:number;inspection?:boolean;diagram?:boolean;onReady?:()=>void};
 
-export default function PagodaThreeScene({progress,view="overview",cameraRequest=0,inspection=false,onReady}:Props){
+export default function PagodaThreeScene({progress,view="overview",cameraRequest=0,inspection=false,diagram=false,onReady}:Props){
   const requestRef=useRef(cameraRequest);
   useEffect(()=>{requestRef.current=cameraRequest;},[cameraRequest]);
   const mountRef=useRef<HTMLDivElement>(null);
@@ -28,7 +28,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
   useEffect(()=>{
     const mount=mountRef.current;if(!mount)return;
     const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(34,1,.1,180);
+    const camera=new THREE.PerspectiveCamera(34,1,.1,220);
     camera.position.set(48,35,81);
     const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:"high-performance",preserveDrawingBuffer:EXPORT_MODE});
     renderer.setPixelRatio(EXPORT_MODE?1:Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
@@ -57,7 +57,8 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     controls.minPolarAngle=.35;controls.maxPolarAngle=Math.PI*.51;
     const materialKit=createHeritageMaterials(renderer),builder=new HeritageBuilder(materialKit.materials);
     courtyard(builder);buildArchitecture(builder);builder.finish(scene);
-    const plaques=addPlaques(scene);
+    builder.explode.value=diagram?1:0;
+    const plaques=diagram?null:addPlaques(scene);
     const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const presets:Record<DetailView,{position:THREE.Vector3;target:THREE.Vector3}>={
       overview:inspection?{position:new THREE.Vector3(-29,27.5,128),target:new THREE.Vector3(7.5,12.6,2)}:{position:new THREE.Vector3(-38,29,92),target:new THREE.Vector3(0,13.5,3.2)},
@@ -66,6 +67,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
       entrance:{position:new THREE.Vector3(7,11.5,29),target:new THREE.Vector3(0,9.7,7.5)},
     };
     if(inspection){camera.position.copy(presets.overview.position);controls.target.copy(presets.overview.target);}
+    if(diagram){camera.position.set(-56,46,118);controls.target.set(0,22,2);controls.maxDistance=180;}
     let lastRequest=-1;
     let lastView:DetailView="overview",transition=false,raf=0,lastNow=performance.now(),frames=0,elapsed=0;
     let needsFrame=true,lastProgress=-2,lastShadowProgress=-2,lastShadowTime=-Infinity;
@@ -75,18 +77,18 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     const resize=()=>{
       const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);
       renderer.setSize(w,h,false);camera.aspect=w/h;
-      camera.fov=inspection?24:EXPORT_MODE?48:window.innerWidth<650?48:camera.aspect<.7?48:34;camera.updateProjectionMatrix();
+      camera.fov=diagram?35:inspection?24:EXPORT_MODE?48:window.innerWidth<650?48:camera.aspect<.7?48:34;camera.updateProjectionMatrix();
       needsFrame=true;
       renderExport?.();
     };
     const ro=new ResizeObserver(resize);ro.observe(mount);resize();
-    builder.progress.value=progressRef.current;plaques.update(progressRef.current);
+    builder.progress.value=progressRef.current;plaques?.update(progressRef.current);
     renderer.compile(scene,camera);
     const render=(now:number)=>{
       const frameSeconds=(now-lastNow)/1000;
       const dt=Math.min(frameSeconds,.1);lastNow=now;
-      builder.progress.value=progressRef.current;plaques.update(progressRef.current);
-      if(lastView!==viewRef.current || lastRequest!==requestRef.current){lastView=viewRef.current;lastRequest=requestRef.current;transition=true;}
+      builder.progress.value=progressRef.current;plaques?.update(progressRef.current);
+      if(!diagram && (lastView!==viewRef.current || lastRequest!==requestRef.current)){lastView=viewRef.current;lastRequest=requestRef.current;transition=true;}
       if(transition){
         const preset=presets[lastView],amount=reducedMotion?1:1-Math.exp(-dt*5);
         camera.position.lerp(preset.position,amount);controls.target.lerp(preset.target,amount);
@@ -118,7 +120,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
       // Export owns time and camera completely: no rAF, damping, autoplay or
       // shadow throttling. Re-seeking the same input redraws the same scene.
       renderExport=()=>{
-        builder.progress.value=progressRef.current;plaques.update(progressRef.current);
+        builder.progress.value=progressRef.current;plaques?.update(progressRef.current);
         camera.lookAt(controls.target);camera.updateMatrixWorld(true);
         renderer.shadowMap.needsUpdate=true;
         renderer.render(scene,camera);
@@ -137,10 +139,10 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     return()=>{
       if(exportApi){exportApi.ready=false;if(window.__ARCHITECTURE_EXPORT__===exportApi)delete window.__ARCHITECTURE_EXPORT__;}
       cancelAnimationFrame(raf);ro.disconnect();controls.removeEventListener("start",interrupt);controls.dispose();
-      plaques.dispose();builder.dispose();materialKit.dispose();environment.dispose();
+      plaques?.dispose();builder.dispose();materialKit.dispose();environment.dispose();
       key.shadow.map?.dispose();renderer.dispose();renderer.domElement.remove();
     };
   },[]);
   const viewLabel=DETAIL_VIEWS.find(item=>item.id===view)!.label;
-  return <div ref={mountRef} className="three-scene" aria-label={`可旋转的三维鹳雀楼搭建动画：${viewLabel}`} />;
+  return <div ref={mountRef} className="three-scene" aria-label={diagram?'可旋转的鹳雀楼分层拆解模型':`可旋转的三维鹳雀楼搭建动画：${viewLabel}`} />;
 }

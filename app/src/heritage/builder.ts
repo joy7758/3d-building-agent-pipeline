@@ -3,7 +3,7 @@ import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js
 import type { SurfaceName } from "./materials";
 
 export type Point = [number, number, number];
-type Transform = { p?: Point; r?: Point; s?: Point; shade?: number; tint?: Point; duration?: number; lift?: number };
+type Transform = { p?: Point; r?: Point; s?: Point; shade?: number; tint?: Point; duration?: number; lift?: number; explodeBand?: number };
 
 /** Batch by material, with construction timing baked into each vertex.
  * Each real brick/beam/tile moves on the GPU; shadows use the same motion.
@@ -14,6 +14,8 @@ export class HeritageBuilder {
   private cache = new Map<string, THREE.BufferGeometry>();
   private transform = new THREE.Object3D();
   readonly progress = {value:0};
+  /** Diagram-only separation of the existing geometry into four construction bands. */
+  readonly explode = {value:0};
   readonly meshes: THREE.Mesh[] = [];
   private depths: THREE.MeshDepthMaterial[] = [];
   pieces = 0;
@@ -27,7 +29,7 @@ export class HeritageBuilder {
     const g=geometry.index?geometry.toNonIndexed():geometry.clone();
     g.applyMatrix4(this.transform.matrix);
     const n=g.getAttribute("position").count;
-    const schedule=new Float32Array(n*3),color=new Float32Array(n*3);
+    const schedule=new Float32Array(n*3),color=new Float32Array(n*3),bands=new Float32Array(n);
     const shade=options.shade??1,tint=options.tint??[1,1,1];
     // Per-piece atlas offsets remove identical grain on repeated masonry/wood.
     const uv=g.getAttribute("uv");
@@ -37,15 +39,17 @@ export class HeritageBuilder {
     }
     for(let i=0;i<n;i++){
       schedule.set([start,options.duration??.013,options.lift??.45],i*3);
+      bands[i]=options.explodeBand??(start<.14?0:start<.38?1:start<.65?2:3);
       const normal=g.getAttribute("normal");
       const underside=normal?THREE.MathUtils.lerp(.76,1,THREE.MathUtils.smoothstep(normal.getY(i),-.8,.2)):1;
       color.set(tint.map(v=>v*shade*underside),i*3);
     }
     g.setAttribute("aBuild",new THREE.BufferAttribute(schedule,3));
+    g.setAttribute("aExplodeBand",new THREE.BufferAttribute(bands,1));
     g.setAttribute("color",new THREE.BufferAttribute(color,3));
     if(!g.getAttribute("uv"))g.setAttribute("uv",new THREE.BufferAttribute(new Float32Array(n*2),2));
     if(!g.getAttribute("normal"))g.computeVertexNormals();
-    for(const name of Object.keys(g.attributes))if(!["position","normal","uv","aBuild","color"].includes(name))g.deleteAttribute(name);
+    for(const name of Object.keys(g.attributes))if(!["position","normal","uv","aBuild","aExplodeBand","color"].includes(name))g.deleteAttribute(name);
     if(!this.batches.has(material))this.batches.set(material,[]);
     this.batches.get(material)!.push(g); this.pieces++;
   }
@@ -79,14 +83,16 @@ export class HeritageBuilder {
     const inject=(m:THREE.Material)=>{
       m.onBeforeCompile=shader=>{
         shader.uniforms.uBuildProgress=this.progress;
-        shader.vertexShader="attribute vec3 aBuild; uniform float uBuildProgress; varying float vConstruction;\n"+shader.vertexShader.replace("#include <begin_vertex>",`#include <begin_vertex>
+        shader.uniforms.uExplode=this.explode;
+        shader.vertexShader="attribute vec3 aBuild; attribute float aExplodeBand; uniform float uBuildProgress; uniform float uExplode; varying float vConstruction;\n"+shader.vertexShader.replace("#include <begin_vertex>",`#include <begin_vertex>
           float buildT=clamp((uBuildProgress-aBuild.x)/max(.0001,aBuild.y),0.0,1.0);
           vConstruction=buildT;
           float settle=sin(buildT*6.2831853)*pow(1.0-buildT,2.0)*0.035;
-          transformed.y+=aBuild.z*(pow(1.0-buildT,3.0)-settle);`);
+          transformed.y+=aBuild.z*(pow(1.0-buildT,3.0)-settle);
+          transformed.y+=uExplode*aExplodeBand*4.8;`);
         shader.fragmentShader="varying float vConstruction;\n"+shader.fragmentShader.replace("void main() {","void main() { if(vConstruction<=0.0) discard;");
       };
-      m.customProgramCacheKey=()=>"heritage-solid-assembly-v2";
+      m.customProgramCacheKey=()=>"heritage-solid-assembly-v3-exploded";
     };
     for(const [name,geometries]of this.batches){
       const combined=mergeGeometries(geometries,false)!;

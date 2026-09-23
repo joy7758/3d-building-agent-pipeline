@@ -209,7 +209,10 @@ export function buildArchitecture(b:HeritageBuilder) {
       ringRoof(b,{outerX:level.roofRadius,outerZ:level.roofDepth,innerX,innerZ,
         eaveY:level.roofY,innerY:level.roofY+level.roofHeight,start:level.start+.18});
       const baseY=level.roofY+level.roofHeight,friezeTop=next.floor-.30;
-      b.box([2*innerX,friezeTop-baseY,2*innerZ],[0,(baseY+friezeTop)/2,0],'recess',level.start+.17,{shade:.78});
+      // This connector is timed with the lower roof but belongs to the next
+      // floor when the diagram separates layers; otherwise a hidden dark core
+      // becomes an artificial floating slab.
+      b.box([2*innerX,friezeTop-baseY,2*innerZ],[0,(baseY+friezeTop)/2,0],'recess',level.start+.17,{shade:.78,explodeBand:index+2});
     }else hipRoof(b,level.roofY,level.roofRadius,level.roofDepth,level.roofHeight,level.start+.18,[0,0,0],0,true,
       [0,1,2,3].map(side=>({side:side as 0|1|2|3,halfWidth:3.65,outset:.4,rise:1.18,joinDepth:2.2})));
     if(index>0){
