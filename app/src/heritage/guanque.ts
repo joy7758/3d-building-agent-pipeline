@@ -62,8 +62,12 @@ function gongArm(b:HeritageBuilder,width:number,p:Point,angle:number,start:numbe
 function brackets(b:HeritageBuilder,y:number,rx:number,start:number,rz:number) {
   for(let s=0;s<4;s++){
     const a=s*Math.PI/2,r=s%2?rz:rx,depth=s%2?rx:rz;
-    for(let i=-6;i<=6;i++){
-      const x=i*r/6.1;
+    // The photographs show a dense continuous bracket register. Derive the
+    // rhythm from the actual eave span, so shorter sides do not inherit the
+    // sparse fixed 13-arm count of the first artistic model.
+    const halfCount=Math.ceil(r/.70);
+    for(let i=-halfCount;i<=halfCount;i++){
+      const x=i*r/(halfCount+.12);
       for(let k=0;k<3;k++){
         gongArm(b,.56+k*.24,turn(x,y+k*.18+.05,depth+k*.15,a),a,start+k*.005);
         b.box([.16,.16,.62+k*.18],turn(x,y+k*.18+.07,depth+k*.15,a),'wood',start+k*.005,{r:[0,a,0]});
@@ -124,7 +128,7 @@ function lowerCorridor(b:HeritageBuilder){
     for(let j=0;j<bays;j++){
       const x=-r+j*2*r/bays;
       b.cylinder(.21,.26,.24,turn(x,floor+.12,d,a),'stone',.202);
-      b.cylinder(.12,.17,height,turn(x,floor+height/2,d,a),'wood',.222+j*.001,{lift:1.8});
+      b.cylinder(.16,.21,height,turn(x,floor+height/2,d,a),'wood',.222+j*.001,{lift:1.8});
     }
     b.box([2*r+.25,.24,.3],turn(0,floor+height,d,a),'jade',.248,{r:[0,a,0]});
     for(let j=0;j<bays;j++){

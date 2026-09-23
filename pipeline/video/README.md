@@ -15,11 +15,13 @@ node pipeline/render-video.mjs --config pipeline/video/guanque-pilot.json --url 
 node pipeline/render-video.mjs --config pipeline/video/guanque-pilot.json --url http://127.0.0.1:4188/ --width 720 --height 1280
 # 并行施工的隔离快照：将 <id> 替换为已完成检查和构建的快照 ID。
 node pipeline/render-video.mjs --app-root 'artifacts/pipeline/source-snapshots/<id>/app' --url http://127.0.0.1:4189/
+# 鹳雀楼竖屏拆解候选 r2：配置带有可复现的分层分离量。
+node pipeline/render-video.mjs --app-root 'artifacts/pipeline/source-snapshots/<id>/app' --config pipeline/video/guanque-breakdown-portrait-r2.json --url http://127.0.0.1:4189/
 ```
 
-默认规格由镜头配置决定。原始 `guanque-pilot.json` 为 1080 × 1920、30 FPS、24 秒、静音；`guanque-forward-preview-r1.json` 保持竖屏并改为从基台至屋顶正向营造；`guanque-forward-wide-r1.json` 为 1920 × 1080 横屏正向营造。`--smoke` 仅把像素和帧率改为 360 × 640、4 FPS，**不保持配置宽高比**，因此横屏配置试镜请显式给出 `--width 640 --height 360 --fps 4`。720p 渲染只能标为预览规格。需要已安装的 Chrome、Playwright、ffmpeg（libx264）和 ffprobe。支持 `ARCHITECTURE_CHROME_PATH`、`ARCHITECTURE_PLAYWRIGHT_PATH` 覆盖本地运行时位置，不会自动安装依赖。
+默认规格由镜头配置决定。原始 `guanque-pilot.json` 为 1080 × 1920、30 FPS、24 秒、静音；`guanque-forward-preview-r1.json` 保持竖屏并改为从基台至屋顶正向营造；`guanque-forward-wide-r1.json` 为 1920 × 1080 横屏正向营造；`guanque-breakdown-portrait-r2.json` 使用原竖屏规格，从正向营造进入四带空间分离与回装。`--smoke` 仅把像素和帧率改为 360 × 640、4 FPS，**不保持配置宽高比**，因此横屏配置试镜请显式给出 `--width 640 --height 360 --fps 4`。720p 渲染只能标为预览规格。需要已安装的 Chrome、Playwright、ffmpeg（libx264）和 ffprobe。支持 `ARCHITECTURE_CHROME_PATH`、`ARCHITECTURE_PLAYWRIGHT_PATH` 覆盖本地运行时位置，不会自动安装依赖。
 
-镜头配置声明连续时间区间、进度端点、camera position/target 与片中文字。原始配置开头展示成品，接着逆放逐构件装配、正放重建；新增正向配置从基台开始逐阶段营造，最后展示成品。可选 `coverAtSeconds` 从该秒附近实际帧选封面；未指定则取首帧，`run.json` 记录 `coverFrameIndex`。横屏导出专用布局保留左侧文字区、右侧场景，摄像机使用 34° 垂直视角；竖屏导出仍用 48°。正向营造和逆放装配均不具备真正的语义分层爆炸图、构件说明、真实施工工法或结构受力含义。
+镜头配置声明连续时间区间、进度端点、可选的 `explode`（0–1 分带距离）、camera position/target 与片中文字。原始配置开头展示成品，接着逆放逐构件装配、正放重建；r2 从基台正向营造，13–21 秒分离现有四个构件带并回装。可选 `coverAtSeconds` 从该秒附近实际帧选封面；未指定则取首帧，`run.json` 记录 `coverFrameIndex`。横屏导出专用布局保留左侧文字区、右侧场景，摄像机使用 34° 垂直视角；竖屏导出仍用 48°。该分层只用于观察构件关系，没有经测绘确认的拆卸顺序、真实施工工法或结构受力含义。
 
 仅在 `?export=1` 下，页面暴露：
 
@@ -28,7 +30,7 @@ window.__ARCHITECTURE_EXPORT__ = {
   version: 'architecture-export.v1',
   adapterId: 'guanque',
   ready: true,
-  setFrame({ progress: 0.5, position: [48, 34, 82], target: [0, 12.5, 3] })
+  setFrame({ progress: 0.5, explode: 0.8, position: [48, 34, 82], target: [0, 12.5, 3] })
 }
 ```
 

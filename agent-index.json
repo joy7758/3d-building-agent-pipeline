@@ -67,7 +67,7 @@
       "review": "node pipeline/cli.mjs review <id>",
       "discovery": "node pipeline/cli.mjs discovery <id>"
     },
-    "titmas": "REMOTE_BLOCKED_LOCAL_OUTCOME_REVIEW_FAIL",
+    "titmas": "SANDBOX_SCHEMA_PREFLIGHT_R2_PASS_D29_OUTCOME_NOT_DEPLOYED_LOCAL_REVIEW_FAIL",
     "publication": "USER_ONLY",
     "video_export_scope": "LOCAL_DETERMINISTIC_PREVIEW_WITH_VERSIONED_SOURCE",
     "status": "LOCAL_DISCOVERY_RECORD_GATE_IMPLEMENTED_VISUAL_REWORK_PENDING",
@@ -88,8 +88,10 @@
     "discovery_contract": "pipeline/schemas/discovery.schema.json",
     "discovery_protocol": "pipeline/DISCOVERY.md",
     "discovery_execution": "LOCAL_CONTRACT_EVALUATION_ONLY_SEARCH_REMAINS_AGENT_EXECUTED",
-    "latest_candidate": "jobs/guanque-pilot/delivery/candidate-r1/manifest.json",
-    "titmas_live_probe": "docs/governance/titmas-live-check-20260923.json"
+    "latest_candidate": "jobs/guanque-pilot/delivery/candidate-r2/manifest.json",
+    "titmas_live_probe": "docs/governance/titmas-live-call-20260923-r2.json",
+    "titmas_sandbox_connector": "pipeline/titmas-sandbox-preflight.py",
+    "commercial_d29_outcome": "NOT_DEPLOYED_NOT_RUN"
   },
   "reference_audit": "docs/photo-comparison-r3.md",
   "visual_acceptance": "VISUAL_REVIEW_REQUIRED",

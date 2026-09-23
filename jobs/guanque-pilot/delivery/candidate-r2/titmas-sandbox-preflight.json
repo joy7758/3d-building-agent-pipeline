@@ -1,0 +1,65 @@
+{
+  "schema_version": "architecture-titmas-sandbox-call.v1",
+  "observed_at": "2026-09-23T10:03:42.994842Z",
+  "service": "titmas-sandbox-gateway",
+  "service_version": "0.1",
+  "service_maturity": "internal-operator-preview",
+  "route": "POST /sandbox/v0.1/preflight",
+  "transport": "LOCAL_LOOPBACK_TUNNEL",
+  "credential_source": "MACOS_KEYCHAIN_PROCESS_ONLY",
+  "run_id": "2026-09-23T10-01-07-117Z-film-2691599b",
+  "run_manifest_sha256": "371426a7a18ae696ee7c4821c28fb45d601b3e678c509e18784fb3ef18f47efc",
+  "video_sha256": "90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+  "cover_sha256": "3e38ee01e031a69e4bed48181fb54a5358c54039c542dda1539ae52e87b6d4f6",
+  "request": {
+    "object_id": "guanque-video-90e55e828a438ed3",
+    "object_type": "EVIDENCE_REFERENCE",
+    "version": "v0.1",
+    "source": {
+      "namespace": "external:3d-building-agent-pipeline",
+      "source_id": "architecture-video-pipeline",
+      "version": "r2",
+      "status": "DECLARED"
+    },
+    "status": "DECLARED",
+    "created_at": "2026-09-23T10:03:42.994842Z",
+    "updated_at": "2026-09-23T10:03:42.994842Z",
+    "limitations": [
+      "Reference metadata only; no media uploaded",
+      "Schema preflight does not inspect video content or create a signed outcome receipt"
+    ],
+    "evidence_id": "guanque-video-90e55e828a438ed3",
+    "execution_reference": {
+      "reference_id": "2026-09-23T10-01-07-117Z-film-2691599b",
+      "reference_type": "EXECUTION",
+      "namespace": "external:3d-building-agent-pipeline",
+      "version": "1",
+      "source": "architecture-video-pipeline",
+      "status": "DECLARED"
+    },
+    "source_reference": {
+      "reference_id": "sha256:90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+      "reference_type": "EVIDENCE",
+      "namespace": "external:3d-building-agent-pipeline",
+      "version": "1",
+      "source": "architecture-video-pipeline",
+      "status": "DECLARED"
+    },
+    "integrity_status": "PENDING"
+  },
+  "request_sha256": "93e0029bf1128af8df003e8b6f08f78f528b7fcd43ab38d21b1c20eb3c4507a9",
+  "http_status": 200,
+  "response": {
+    "result": "SCHEMA_PREFLIGHT_PASS",
+    "reason_codes": [],
+    "schema_name": "evidence-reference-object",
+    "object_type": "EVIDENCE_REFERENCE",
+    "formal_conformance": false,
+    "certification": false,
+    "standard_adoption": false,
+    "production_authority": false
+  },
+  "result_scope": "SCHEMA_ONLY_NO_MEDIA_UPLOADED_NO_SIGNED_OUTCOME_RECEIPT",
+  "commercial_d29_outcome_review": "NOT_RUN",
+  "architectural_visual_review": "NOT_RUN_BY_THIS_CALL"
+}

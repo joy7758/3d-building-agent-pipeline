@@ -6,7 +6,7 @@
 
 施工技能固定为 [Hailey / threejs-architecture-effects](../vendor/architecture-skill/SKILL.md)，上游 `lhlGitHub/threejs-architecture-effects@693ca2ec1193e7355054f14d7deb1427439a24d0`，MIT。用户已经确认“ihi”指此 skill。不将它解释为另一个服务。
 
-**2026-09-22 倒查纠正**：鹳雀楼为 `NEEDS_REVISION`、`visual=FAIL`。此前“艺术预览 PASS”不足以证明照片保真与演示匹配；本任务有外观返工及 TITMAS 未接入两个独立问题。见[完整报告](../artifacts/reverse-audit-20260922-r1/report.md)与[拟定返工合同](../artifacts/reverse-audit-20260922-r1/acceptance-checklist.md)。该日草案与倒查保持历史。2026-09-23 已接入逐项记录门禁，见[当前合同](../jobs/guanque-pilot/review-contract.json)和[审查协议](REVIEW.md)；它校验覆盖与证据绑定，不自动判断照片相似或视频效果。当前新一轮内容审查 `NOT_RUN`，旧视频 `visual=FAIL`。
+**2026-09-22 倒查纠正**：鹳雀楼为 `NEEDS_REVISION`、`visual=FAIL`。此前“艺术预览 PASS”不足以证明照片保真与演示匹配；本任务有外观返工及 TITMAS 未接入两个独立问题。见[完整报告](../artifacts/reverse-audit-20260922-r1/report.md)与[拟定返工合同](../artifacts/reverse-audit-20260922-r1/acceptance-checklist.md)。该日草案与倒查保持历史。2026-09-23 已接入逐项记录门禁，见[当前合同](../jobs/guanque-pilot/review-contract.json)和[审查协议](REVIEW.md)；它校验覆盖与证据绑定，不自动判断照片相似或视频效果。候选 r2 的同任务内容审查为 `FAIL`，独立视觉审查 `NOT_RUN`；旧视频的历史 `visual=FAIL` 保留。
 
 ## 一句话下单
 
@@ -43,9 +43,9 @@
 
 ## TITMAS outcome review 的当前接入边界
 
-2026-09-23 检查到 TITMAS `outcome-review.v1` 离线 operator 已安装。它可在指定 workspace 内对原始目标、判据、视频、封面、参考图和观察记录做文件字节绑定，并汇总 `PASS / FAIL / UNKNOWN`；本机用法见 `/Users/zhangbin/.codex/skills/titmas-outcome-review/SKILL.md`，源码版本为 `joy7758/titmas-sandbox-gateway@f8de578`。鹳雀楼候选 r1 已实际运行一次，结果见 `jobs/guanque-pilot/delivery/candidate-r1/manifest.json`，完整本地 packet 留在 `artifacts/titmas-outcome-r1/`。该 operator 不执行自动视觉判断，不认证审查者，也不产生远端签署回执。本任务的检查为施工者同任务自审，技术项不能升级为独立 PASS。
+2026-09-23 检查到 TITMAS `outcome-review.v1` 离线 operator 已安装。它可在指定 workspace 内对原始目标、判据、视频、封面、参考图和观察记录做文件字节绑定，并汇总 `PASS / FAIL / UNKNOWN`；本机用法见 `/Users/zhangbin/.codex/skills/titmas-outcome-review/SKILL.md`，源码版本为 `joy7758/titmas-sandbox-gateway@f8de578`。鹳雀楼候选 r1、r2 各执行了一次；当前结果见 `jobs/guanque-pilot/delivery/candidate-r2/manifest.json`，完整本地 packet 留在 `artifacts/titmas-outcome-r2/`。该 operator 不执行自动视觉判断，不认证审查者，也不产生远端签署回执。本任务的检查为施工者同任务自审，技术项不能升级为独立 PASS。
 
-公共机器入口与授权服务器的只读复核见 `docs/governance/titmas-live-check-20260923.json`：未取得当前可调用的远端能力合同。远端 TITMAS 仍为 `NOT_CONNECTED`，实际服务调用、原始回执及独立回执验证保持 `NOT_RUN`。本地结果只是补充证据，不关闭既有 `TM-001 / TM-002` 门禁，也不把候选片升级为商业交付。
+先前公共入口和 8092 的只读探测见 `docs/governance/titmas-live-check-20260923.json`。随后核实授权服务器上实际运行的 `titmas-private-api.service` 在回环 8091；通过 SSH 回环通道、钥匙串凭据和 `pipeline/titmas-sandbox-preflight.py`，对候选 r2 的 `EVIDENCE_REFERENCE` 元数据发起真实 POST，HTTP 200 / `SCHEMA_PREFLIGHT_PASS`，记录见 `docs/governance/titmas-live-call-20260923-r2.json`。没有传输媒体内容。此 Sandbox v0.1 不提供商业 D29 的 outcome-review 或签名回执；D29 仍是源码参考实现、尚未部署。因此 `TM-001 / TM-002` 的商业结果门禁仍开放，候选片不升级为商业交付。
 
 ## 固定快照出片
 

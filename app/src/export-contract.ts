@@ -2,6 +2,8 @@
 export type ExportVector = [number, number, number];
 export type ExportFrame = {
   progress: number;
+  /** 0 = joined building, 1 = separated construction bands. Export only. */
+  explode?: number;
   position: ExportVector;
   target: ExportVector;
 };
@@ -27,6 +29,9 @@ export const EXPORT_MODE = new URLSearchParams(window.location.search).get("expo
 export function validateExportFrame(frame: ExportFrame): void {
   if (!frame || !Number.isFinite(frame.progress) || frame.progress < 0 || frame.progress > 1) {
     throw new Error("Export progress must be finite and within [0, 1].");
+  }
+  if (frame.explode !== undefined && (!Number.isFinite(frame.explode) || frame.explode < 0 || frame.explode > 1)) {
+    throw new Error("Export separation must be finite and within [0, 1].");
   }
   for (const vector of [frame.position, frame.target]) {
     if (!Array.isArray(vector) || vector.length !== 3 || !vector.every(Number.isFinite)) {

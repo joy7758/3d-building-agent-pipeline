@@ -67,6 +67,7 @@ const frames = config.durationSeconds * fps;
 if (!Number.isInteger(frames) || frames < 1 || frames > 36000) throw new Error('Invalid or excessive frame count.');
 function validatePose(pose) {
   if (!pose || !Number.isFinite(pose.progress) || pose.progress < 0 || pose.progress > 1) throw new Error('Invalid progress.');
+  if (pose.explode !== undefined && (!Number.isFinite(pose.explode) || pose.explode < 0 || pose.explode > 1)) throw new Error('Invalid exploded-band separation.');
   if (![pose.position, pose.target].every((v) => Array.isArray(v) && v.length === 3 && v.every(Number.isFinite))) throw new Error('Invalid camera vectors.');
   if (pose.position.every((v, i) => v === pose.target[i])) throw new Error('Camera cannot equal target.');
 }
@@ -91,6 +92,7 @@ function frameAt(index) {
     index, seconds, shotId: shot.id, label: shot.label,
     pose: {
       progress: lerp(shot.from.progress, shot.to.progress, t),
+      explode: lerp(shot.from.explode ?? 0, shot.to.explode ?? 0, t),
       position: shot.from.position.map((v, i) => lerp(v, shot.to.position[i], cameraT)),
       target: shot.from.target.map((v, i) => lerp(v, shot.to.target[i], cameraT)),
     },

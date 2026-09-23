@@ -1,7 +1,7 @@
 {
   "schema_version": "delivery-current-status.v1",
   "job_id": "guanque-pilot",
-  "updated_at": "2026-09-23T08:47:36.678Z",
+  "updated_at": "2026-09-23T10:12:01.262449Z",
   "stage": "NEEDS_REVISION",
   "video_classification": "PREVIEW_ONLY_REQUIRES_VISUAL_REWORK",
   "assessment": {
@@ -18,9 +18,9 @@
   },
   "historical_manifest_is_current_acceptance": false,
   "video_bytes_unchanged": true,
-  "technical_status": "PASS_FOR_ORIGINAL_VIDEO_ONLY",
+  "technical_status": "PASS_FOR_CANDIDATE_R2_ONLY",
   "visual_status": "FAIL",
-  "titmas_status": "NOT_CONNECTED",
+  "titmas_status": "SANDBOX_PREFLIGHT_PASS_D29_NOT_DEPLOYED",
   "publication": "USER_ONLY_NOT_RUN",
   "review_gate": {
     "implementation": "LOCAL_RECORD_GATE_VERIFIED",
@@ -39,9 +39,9 @@
     "model_plan": "BLOCKED_BY_DISCOVERY",
     "video": "CANDIDATE_TECHNICAL_PASS_CONTENT_FAIL",
     "visual": "FAIL",
-    "titmas": "NOT_CONNECTED"
+    "titmas": "SANDBOX_PREFLIGHT_PASS_D29_NOT_RUN"
   },
-  "pipeline_gate_note": "Discovery r2 still has required PARTIAL and UNKNOWN gaps. New non-overwriting 720p landscape candidate is technically encoded and locally reviewed, but visual and motion criteria FAIL; same-task technical self-review is UNKNOWN for independence. Remote TITMAS remains NOT_CONNECTED with no signed receipt. Old history remains preserved.",
+  "pipeline_gate_note": "Candidate r2 matches the requested portrait format, fully decodes and shows actual four-band separation/rejoin. Photo fidelity and demo-equivalent motion still FAIL in same-task outcome review; independent technical and visual review remain unperformed. Active TITMAS Sandbox v0.1 accepted metadata-only preflight for r2, while commercial D29 outcome review is not deployed and no signed receipt exists. Discovery gaps remain open.",
   "discovery": {
     "status": "NEEDS_REVISION",
     "current_attempt_id": "guanque-discovery-r2",
@@ -114,6 +114,22 @@
     ]
   },
   "latest_candidate": {
+    "path": "jobs/guanque-pilot/delivery/candidate-r2/manifest.json",
+    "sha256": "562da662479d7908d87200d5a662a25a1c360688ce63cc5fa2088392f10e7f2e",
+    "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+    "format": "1080x1920_30FPS_24S_SILENT",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY",
+    "visual": "FAIL_SAME_TASK_SELF_REVIEW",
+    "motion": "FAIL_DEMO_EQUIVALENCE_NOT_ESTABLISHED",
+    "local_titmas_outcome": "FAIL",
+    "local_titmas_result_sha256": "fa5602e750c6abf7e84867183db31dbd46d099c242f4221a0a2b1ac6fe9bb185",
+    "independent_visual_review": "NOT_RUN",
+    "remote_titmas": "SANDBOX_SCHEMA_PREFLIGHT_PASS_ONLY",
+    "remote_call_record": "jobs/guanque-pilot/delivery/candidate-r2/titmas-sandbox-preflight.json",
+    "remote_receipt": "NOT_AVAILABLE_D29_NOT_DEPLOYED",
+    "customer_acceptance": "NOT_OBTAINED"
+  },
+  "historical_candidate_r1": {
     "path": "jobs/guanque-pilot/delivery/candidate-r1/manifest.json",
     "sha256": "6faa9203380bec0f859b180f89599b26e7f20b2ecc51d1625e98c9f52b3af26f",
     "classification": "PREVIEW_ONLY_NEEDS_REVISION",
@@ -127,5 +143,6 @@
     "remote_titmas": "NOT_CONNECTED",
     "remote_receipt": "NOT_AVAILABLE",
     "customer_acceptance": "NOT_OBTAINED"
-  }
+  },
+  "titmas_live_call": "docs/governance/titmas-live-call-20260923-r2.json"
 }

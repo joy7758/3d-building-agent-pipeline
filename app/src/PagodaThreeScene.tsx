@@ -34,7 +34,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     renderer.setPixelRatio(EXPORT_MODE?1:Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
     renderer.setClearColor(0xf4f1e9,0);
     renderer.outputColorSpace=THREE.SRGBColorSpace;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.13;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.02;
     renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
     // Camera movement does not change a directional light's shadow map.
     renderer.shadowMap.autoUpdate=false;
@@ -42,8 +42,8 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     const room=new RoomEnvironment(),pmrem=new THREE.PMREMGenerator(renderer);
     const environment=pmrem.fromScene(room,.025);scene.environment=environment.texture;scene.environmentIntensity=.32;
     room.dispose();pmrem.dispose();
-    scene.add(new THREE.HemisphereLight(0xfaf7ef,0x706a5c,.72));
-    const key=new THREE.DirectionalLight(0xfff2e2,2.4);key.position.set(-22,38,30);key.castShadow=true;
+    scene.add(new THREE.HemisphereLight(0xfaf7ef,0x706a5c,.66));
+    const key=new THREE.DirectionalLight(0xfff2e2,2.15);key.position.set(-22,38,30);key.castShadow=true;
     key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-28;key.shadow.camera.right=28;
     key.shadow.camera.top=25;key.shadow.camera.bottom=-20;key.shadow.camera.near=.5;key.shadow.camera.far=100;
     key.target.position.set(0,12,0);key.shadow.normalBias=.025;key.shadow.bias=-.00015;key.shadow.radius=3;
@@ -129,6 +129,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
       exportApi={version:"architecture-export.v1",adapterId:"guanque",ready:false,setFrame(frame){
         validateExportFrame(frame);
         progressRef.current=frame.progress;
+        builder.explode.value=frame.explode??0;
         camera.position.set(...frame.position);controls.target.set(...frame.target);
         renderExport!();
         return {progress:frame.progress,width:renderer.domElement.width,height:renderer.domElement.height,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles};

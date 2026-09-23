@@ -7,3 +7,5 @@
 任务仍为 **NEEDS_REVISION**；建设、视频、视觉和 TITMAS 门禁未通过，旧片只保留历史预览身份。当前机读入口：[current-status.json](current-status.json)。[资料补证报告](../discovery/RESEARCH-R2.md)列出直接来源和剩余缺口；[倒查报告](../../../artifacts/reverse-audit-20260922-r1/report.md)保留原视频问题。
 
 2026-09-23 新增[正向营造横屏候选片](candidate-r1/README.md)：1280×720、30 FPS、24 秒静音，固定快照渲染及整段解码通过，但它与原 1080×1920 规格不同。实际画面对照片的檐下和彩画细节仍不够，营造运动尚不是构件组空间爆炸图。本地 TITMAS outcome-review 对 7 个实际文件做绑定、5 项判据聚合，结果 **FAIL**；其中技术自审因为和施工为同一任务，被降为 **UNKNOWN**。公共入口未取回可用远端合同，TITMAS 服务调用、签名回执和独立验证均未运行。此片仅供返工评审，不属于完整商业交付。
+
+同日新增[竖屏拆解候选 r2](candidate-r2/README.md)：1080×1920、30 FPS、24 秒静音，720 帧与全片解码通过；13–21 秒增加真实的四带空间分离、环视和归位。该版本的新视频摘要通过正在运行的 TITMAS Sandbox v0.1 **真实认证 POST**，返回 `SCHEMA_PREFLIGHT_PASS`。这只证明元数据结构预检，未上传视频或生成签名结果。商业 D29 outcome-review 端点仍未部署。对用户照片和上游演示的同任务复核及本地 TITMAS outcome-review 仍为 **FAIL**，技术自审为 **UNKNOWN**，独立视觉审查尚未运行。当前任务保持 `NEEDS_REVISION / PREVIEW_ONLY`；r1 及更早历史不被改写。
