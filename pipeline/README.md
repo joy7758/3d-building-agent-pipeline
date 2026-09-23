@@ -41,6 +41,12 @@
 
 这是一条由当前对话驱动的本地工作流。CLI 提供任务和证据门禁，施工与研究由智能体完成。没有后台定时任务、无人值守常驻服务或外部模型服务的隐式接入。
 
+## TITMAS outcome review 的当前接入边界
+
+2026-09-23 检查到 TITMAS `outcome-review.v1` 离线 operator 已安装。它可在指定 workspace 内对原始目标、判据、视频、封面、参考图和观察记录做文件字节绑定，并汇总 `PASS / FAIL / UNKNOWN`；本机用法见 `/Users/zhangbin/.codex/skills/titmas-outcome-review/SKILL.md`，源码版本为 `joy7758/titmas-sandbox-gateway@f8de578`。鹳雀楼候选 r1 已实际运行一次，结果见 `jobs/guanque-pilot/delivery/candidate-r1/manifest.json`，完整本地 packet 留在 `artifacts/titmas-outcome-r1/`。该 operator 不执行自动视觉判断，不认证审查者，也不产生远端签署回执。本任务的检查为施工者同任务自审，技术项不能升级为独立 PASS。
+
+公共机器入口与授权服务器的只读复核见 `docs/governance/titmas-live-check-20260923.json`：未取得当前可调用的远端能力合同。远端 TITMAS 仍为 `NOT_CONNECTED`，实际服务调用、原始回执及独立回执验证保持 `NOT_RUN`。本地结果只是补充证据，不关闭既有 `TM-001 / TM-002` 门禁，也不把候选片升级为商业交付。
+
 ## 固定快照出片
 
 运行 `node pipeline/snapshot-app.mjs`，获得经输入哈希复核的新 app 快照路径。在该路径执行 `npm run check`、`npm run build`，然后用独立端口启动 preview。通过 `node pipeline/render-video.mjs --app-root <快照app> --config pipeline/video/guanque-pilot-wide.json --url http://127.0.0.1:<端口>/` 出片。详见 [视频工位](video/README.md)。快照保留源码与锁文件，本机已安装依赖通过符号链接复用；不声称完整环境隔离或跨GPU像素一致。

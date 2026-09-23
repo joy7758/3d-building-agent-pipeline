@@ -1,0 +1,69 @@
+{
+  "schema_version": "guanque-candidate-delivery.v1",
+  "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+  "job_id": "guanque-pilot",
+  "render_run_id": "2026-09-23T08-39-26-391Z-film-836fc4a6",
+  "render_run_path": "artifacts/pipeline/guanque-pilot/2026-09-23T08-39-26-391Z-film-836fc4a6/run.json",
+  "render_run_sha256": "782fe86f9b55a178777660a784263f1e14752d00bbfba5c75ece94d3b0fc250f",
+  "video": {
+    "path": "guanque-forward-wide-preview.mp4",
+    "sha256": "eba03ccb5f56ae97ae1ef1d3d8352407715392ff0a71244f8c8ccddfcd285015",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "duration_seconds": 24,
+    "audio": "silent",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY"
+  },
+  "cover": {
+    "path": "cover.png",
+    "sha256": "a6cd1685b0e95c91d1da3c9fc14d6f695c5823a1201b39020ee2bbfbef9a60d9",
+    "source_frame_index": 717
+  },
+  "local_titmas_outcome_review": {
+    "operator_source_commit": "f8de57831707c4d83503e82d75cb662a7968237c",
+    "packet_path": "artifacts/titmas-outcome-r1/review-packet.json",
+    "packet_sha256": "41fd37f1ba942d6c86a3cea4d34526f7bdf357528704e0ecef659d2e6ca4c5b6",
+    "result_path": "artifacts/titmas-outcome-r1/local-result.json",
+    "result_sha256": "784aa18091c34c4898fe46f8469d652628f91599ff04c5a46e22f7259ea79ba7",
+    "outcome": "FAIL",
+    "coverage": {
+      "failed": [
+        "architecture",
+        "motion",
+        "integration",
+        "customer-goal"
+      ],
+      "missing": [],
+      "passed": 0,
+      "required": 5,
+      "reviewed": 5,
+      "unknown": [
+        "technical"
+      ]
+    },
+    "project_completed": false,
+    "scope": "OFFLINE_LOCAL_FILE_BINDING_AND_DECLARED_OBSERVATIONS_ONLY",
+    "shareable_result_path": "local-outcome-result.json",
+    "shareable_result_sha256": "784aa18091c34c4898fe46f8469d652628f91599ff04c5a46e22f7259ea79ba7"
+  },
+  "remote_titmas": {
+    "status": "NOT_CONNECTED",
+    "call": "NOT_RUN",
+    "signed_receipt": "NOT_AVAILABLE",
+    "independent_verification": "NOT_RUN",
+    "service_probe": "docs/governance/titmas-live-check-20260923.json"
+  },
+  "architectural_visual_review": "FAIL",
+  "video_motion_review": "FAIL",
+  "discovery": "NEEDS_REVISION",
+  "customer_acceptance": "NOT_OBTAINED",
+  "publication": "USER_ONLY_NOT_RUN",
+  "blocking_issues": [
+    "visual-fidelity-p1",
+    "motion-semantics-p1",
+    "remote-titmas-p1"
+  ],
+  "caption_draft": "caption-draft.md",
+  "qa_summary": "qa-summary.md"
+}

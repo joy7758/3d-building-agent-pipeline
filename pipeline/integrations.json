@@ -56,12 +56,12 @@
     "performance_comparison": "NOT_RUN"
   },
   "titmas": {
-    "state": "BLOCKED_CURRENT_SERVICE_UNAVAILABLE",
+    "state": "BLOCKED_CURRENT_REMOTE_SERVICE_UNAVAILABLE",
     "user_choice": "SPECIFIED_TITMAS_SERVICE_LOCATE_FROM_DBA",
     "missing": [
       "Reachable current canonical TITMAS service and project-compatible review contract"
     ],
-    "execution": "NOT_RUN",
+    "execution": "REMOTE_NOT_RUN_LOCAL_OUTCOME_REVIEW_EXECUTED",
     "receipt_verification": "NOT_RUN",
     "known_interface_candidates": [
       "titmas_capabilities",
@@ -102,7 +102,17 @@
     "upstream_schema_observation": "Source inspection only; no live API contract obtained",
     "requested_scope": "Record/validate bounded execution and review evidence; independent agent performs building/video review",
     "implementation_handoff": "pipeline/titmas-handoff.json",
-    "status_scope": "Previous service discovery; no new live probe in review-gate implementation"
+    "status_scope": "Fresh read-only remote entry probe 2026-09-23; local outcome-review operator was executed on guanque candidate r1 and returned FAIL. No remote service execution or signed receipt.",
+    "latest_live_probe": "docs/governance/titmas-live-check-20260923.json",
+    "local_outcome_review": {
+      "state": "EXECUTED_FAIL",
+      "operator": "/Users/zhangbin/.local/bin/titmas-outcome-review",
+      "source_commit": "f8de57831707c4d83503e82d75cb662a7968237c",
+      "packet": "artifacts/titmas-outcome-r1/review-packet.json",
+      "result": "artifacts/titmas-outcome-r1/local-result.json",
+      "shareable_summary": "jobs/guanque-pilot/delivery/candidate-r1/manifest.json",
+      "scope": "OFFLINE_LOCAL_FILE_BINDING_NOT_REMOTE_SERVICE_NOT_SIGNED_RECEIPT"
+    }
   },
   "video": {
     "executor": "pipeline/render-video.mjs",

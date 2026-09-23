@@ -6,7 +6,7 @@
   "service_id": "titmas-agent-native-infrastructure",
   "api_version": "v1",
   "source_discovery": "docs/governance/titmas-service-discovery.json",
-  "live_observation": "docs/governance/titmas-live-get-20260922.json",
+  "live_observation": "docs/governance/titmas-live-check-20260923.json",
   "requested_capability": [
     "Catalog/schema read",
     "Preflight on approved execution/review/evidence-reference objects",
@@ -36,5 +36,11 @@
     "No TITMAS receipt",
     "No release or publication"
   ],
-  "implementation_effect": "NONE_DRAFT_HANDOFF_ONLY"
+  "implementation_effect": "NONE_DRAFT_HANDOFF_ONLY",
+  "local_outcome_review": {
+    "status": "EXECUTED_FAIL",
+    "packet": "artifacts/titmas-outcome-r1/review-packet.json",
+    "result": "artifacts/titmas-outcome-r1/local-result.json",
+    "does_not_satisfy_remote_receipt": true
+  }
 }

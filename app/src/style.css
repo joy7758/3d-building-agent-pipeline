@@ -13,6 +13,16 @@
 .film-caption{position:absolute;inset:auto 0 5.5%;text-align:center;z-index:1;pointer-events:none}
 .film-caption p{font-size:3.1vw;letter-spacing:.7vw;color:#656d5c;margin:0 0 2.5vw}
 .film-caption>span{font-size:1.9vw;letter-spacing:.3vw;color:#929584}
+@media(min-aspect-ratio:1/1){
+  .film .three-scene{inset:3% 0 3% 23%}
+  .film-title{inset:10% auto auto 4.5%;width:27%;text-align:left}
+  .film-title>span{font-size:1vw;letter-spacing:.25vw}
+  .film-title h1{font-size:5vw;letter-spacing:.6vw;margin:1.4vw 0 1vw;padding:0}
+  .film-title>p{font-size:.86vw;letter-spacing:.28vw}
+  .film-caption{inset:auto auto 8% 4.5%;width:27%;text-align:left}
+  .film-caption p{font-size:1.55vw;letter-spacing:.22vw;margin:0 0 1.2vw}
+  .film-caption>span{font-size:.85vw;letter-spacing:.14vw}
+}
 
 /* Separate, local photo-inspection canvas: the supplied photograph is never
    mapped onto the model, and is not included in the production asset bundle. */

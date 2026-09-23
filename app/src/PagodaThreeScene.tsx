@@ -77,7 +77,7 @@ export default function PagodaThreeScene({progress,view="overview",cameraRequest
     const resize=()=>{
       const w=Math.max(1,mount.clientWidth),h=Math.max(1,mount.clientHeight);
       renderer.setSize(w,h,false);camera.aspect=w/h;
-      camera.fov=diagram?35:inspection?24:EXPORT_MODE?48:window.innerWidth<650?48:camera.aspect<.7?48:34;camera.updateProjectionMatrix();
+      camera.fov=diagram?35:inspection?24:EXPORT_MODE?(window.innerWidth>window.innerHeight?34:48):window.innerWidth<650?48:camera.aspect<.7?48:34;camera.updateProjectionMatrix();
       needsFrame=true;
       renderExport?.();
     };

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "architecture-film.v1",
+  "adapterId": "guanque",
+  "title": "鹳雀楼 · 正向营造横屏预览 r1",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "durationSeconds": 24,
+  "coverAtSeconds": 23.9,
+  "audio": "silent",
+  "assemblySemantics": "Forward playback of the existing artistic component schedule. Camera follows visible construction stages; this is not structural simulation or measured reconstruction.",
+  "shots": [
+    {
+      "id": "podium",
+      "label": "筑台 · 登阶",
+      "start": 0,
+      "end": 5,
+      "from": { "progress": 0, "position": [32, 27, 67], "target": [0, 8, 7] },
+      "to": { "progress": 0.25, "position": [32, 27, 67], "target": [0, 8, 7] }
+    },
+    {
+      "id": "lower-gallery",
+      "label": "立柱 · 起廊",
+      "start": 5,
+      "end": 10,
+      "from": { "progress": 0.25, "position": [32, 27, 67], "target": [0, 8, 7] },
+      "to": { "progress": 0.51, "position": [26, 28, 62], "target": [0, 13, 4] }
+    },
+    {
+      "id": "upper-floors",
+      "label": "登阁 · 铺瓦",
+      "start": 10,
+      "end": 15,
+      "from": { "progress": 0.51, "position": [26, 28, 62], "target": [0, 13, 4] },
+      "to": { "progress": 0.80, "position": [18, 34, 49], "target": [0, 21, 0] }
+    },
+    {
+      "id": "roof-crown",
+      "label": "重檐 · 合顶",
+      "start": 15,
+      "end": 19,
+      "from": { "progress": 0.80, "position": [18, 34, 49], "target": [0, 21, 0] },
+      "to": { "progress": 1, "position": [18, 36, 48], "target": [0, 23, 0] }
+    },
+    {
+      "id": "finished",
+      "label": "更上一层楼",
+      "start": 19,
+      "end": 24,
+      "from": { "progress": 1, "position": [18, 36, 48], "target": [0, 23, 0] },
+      "to": { "progress": 1, "position": [44, 36, 101], "target": [0, 13, 4] }
+    }
+  ],
+  "review_scope": "PREVIEW_ONLY until architectural visual review and authenticated TITMAS evidence service checks both pass."
+}

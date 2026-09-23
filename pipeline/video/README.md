@@ -17,9 +17,9 @@ node pipeline/render-video.mjs --config pipeline/video/guanque-pilot.json --url 
 node pipeline/render-video.mjs --app-root 'artifacts/pipeline/source-snapshots/<id>/app' --url http://127.0.0.1:4189/
 ```
 
-默认 1080 × 1920、30 FPS、24 秒、静音；`--smoke` 为 360 × 640、4 FPS、相同时间线。需要已安装的 Chrome、Playwright、ffmpeg（libx264）和 ffprobe。支持 `ARCHITECTURE_CHROME_PATH`、`ARCHITECTURE_PLAYWRIGHT_PATH` 覆盖本地运行时位置，不会自动安装依赖。
+默认规格由镜头配置决定。原始 `guanque-pilot.json` 为 1080 × 1920、30 FPS、24 秒、静音；`guanque-forward-preview-r1.json` 保持竖屏并改为从基台至屋顶正向营造；`guanque-forward-wide-r1.json` 为 1920 × 1080 横屏正向营造。`--smoke` 仅把像素和帧率改为 360 × 640、4 FPS，**不保持配置宽高比**，因此横屏配置试镜请显式给出 `--width 640 --height 360 --fps 4`。720p 渲染只能标为预览规格。需要已安装的 Chrome、Playwright、ffmpeg（libx264）和 ffprobe。支持 `ARCHITECTURE_CHROME_PATH`、`ARCHITECTURE_PLAYWRIGHT_PATH` 覆盖本地运行时位置，不会自动安装依赖。
 
-镜头配置声明连续时间区间、进度端点、camera position/target 与片中文字。开头展示成品，接着逆放逐构件装配、正放重建、最后展示成品。逆放装配尚不具备语义分层的爆炸图、构件说明、真实施工工法或结构受力含义。
+镜头配置声明连续时间区间、进度端点、camera position/target 与片中文字。原始配置开头展示成品，接着逆放逐构件装配、正放重建；新增正向配置从基台开始逐阶段营造，最后展示成品。可选 `coverAtSeconds` 从该秒附近实际帧选封面；未指定则取首帧，`run.json` 记录 `coverFrameIndex`。横屏导出专用布局保留左侧文字区、右侧场景，摄像机使用 34° 垂直视角；竖屏导出仍用 48°。正向营造和逆放装配均不具备真正的语义分层爆炸图、构件说明、真实施工工法或结构受力含义。
 
 仅在 `?export=1` 下，页面暴露：
 
@@ -32,7 +32,7 @@ window.__ARCHITECTURE_EXPORT__ = {
 }
 ```
 
-`setFrame` 同步更新构件与文字牌、camera、lookAt target、阴影与颜色帧，并等待 WebGL 命令完成。导出模式固定 DPR=1、48°垂直视角，不运行自主 rAF、自动播放、交互控件、camera 缓动或阴影限频。正常页面保持原交互方式。
+`setFrame` 同步更新构件与文字牌、camera、lookAt target、阴影与颜色帧，并等待 WebGL 命令完成。导出模式固定 DPR=1，竖屏 48°、横屏 34° 垂直视角；不运行自主 rAF、自动播放、交互控件、camera 缓动或阴影限频。正常页面保持原交互方式。
 
 输出位于 `artifacts/pipeline/guanque-pilot/<时间戳-唯一ID>/`，新目录不覆盖历史结果。包含 MP4、全部 PNG 帧、封面、首中末预览、逐帧参数与哈希、三组跨进度重访同帧哈希、源码和生产 bundle 前后哈希、ffmpeg 日志、ffprobe 元数据和浏览器错误。只允许给定 localhost origin 的网络访问。
 

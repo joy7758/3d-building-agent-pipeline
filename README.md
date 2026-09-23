@@ -4,6 +4,8 @@
 
 **当前鹳雀楼交付需要返工（NEEDS_REVISION）**：照片保真与原演示表现复核未通过，旧艺术预览 PASS 已被取代。原视频与历史记录保留，技术 PASS 不代表外观合格。查看[倒查报告](artifacts/reverse-audit-20260922-r1/report.md)、[可视对照页](artifacts/reverse-audit-20260922-r1/index.html)和[当前交付状态](jobs/guanque-pilot/delivery/current-status.json)。
 
+2026-09-23 [正向营造横屏候选片](jobs/guanque-pilot/delivery/candidate-r1/README.md)完成技术出片和一次 TITMAS 本地 outcome review。候选结果 `FAIL / PREVIEW_ONLY`：建筑外观、运动语义及远端服务回执仍阻断完整商业交付；本地工具不等于远端 TITMAS 服务。
+
 - 工作方式与工位：[流水线手册](pipeline/README.md)
 - 机读任务操作：[CLI 合同](pipeline/CLI.md)，运行 `node pipeline/cli.mjs help`
 - 资料缺口发现：[发现合同](pipeline/DISCOVERY.md)，运行 `node pipeline/cli.mjs discovery <任务ID>`

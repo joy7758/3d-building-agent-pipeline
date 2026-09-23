@@ -1,7 +1,7 @@
 {
   "schema_version": "delivery-current-status.v1",
   "job_id": "guanque-pilot",
-  "updated_at": "2026-09-23T08:07:21.114Z",
+  "updated_at": "2026-09-23T08:47:36.678Z",
   "stage": "NEEDS_REVISION",
   "video_classification": "PREVIEW_ONLY_REQUIRES_VISUAL_REWORK",
   "assessment": {
@@ -37,11 +37,11 @@
   "pipeline_gates": {
     "discovery": "NEEDS_REVISION",
     "model_plan": "BLOCKED_BY_DISCOVERY",
-    "video": "STALE_OR_NOT_READY",
+    "video": "CANDIDATE_TECHNICAL_PASS_CONTENT_FAIL",
     "visual": "FAIL",
     "titmas": "NOT_CONNECTED"
   },
-  "pipeline_gate_note": "Discovery r2 corroborates key public dimensions and adds two licensed front-view references, but exact platform height/lower bay grid, side/rear elevations, detailed joints and frame-shear-wall layout remain unresolved. Current construction/render/review/TITMAS gates remain closed. Historical video and prior technical evidence remain preserved.",
+  "pipeline_gate_note": "Discovery r2 still has required PARTIAL and UNKNOWN gaps. New non-overwriting 720p landscape candidate is technically encoded and locally reviewed, but visual and motion criteria FAIL; same-task technical self-review is UNKNOWN for independence. Remote TITMAS remains NOT_CONNECTED with no signed receipt. Old history remains preserved.",
   "discovery": {
     "status": "NEEDS_REVISION",
     "current_attempt_id": "guanque-discovery-r2",
@@ -112,5 +112,20 @@
         "detail": "unseen-facades-and-interior remains UNKNOWN and must be carried into the model limitations."
       }
     ]
+  },
+  "latest_candidate": {
+    "path": "jobs/guanque-pilot/delivery/candidate-r1/manifest.json",
+    "sha256": "6faa9203380bec0f859b180f89599b26e7f20b2ecc51d1625e98c9f52b3af26f",
+    "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+    "format": "1280x720_30FPS_24S_SILENT",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY",
+    "visual": "FAIL",
+    "motion": "FAIL",
+    "local_titmas_outcome": "FAIL",
+    "local_titmas_result_sha256": "784aa18091c34c4898fe46f8469d652628f91599ff04c5a46e22f7259ea79ba7",
+    "independent_visual_review": "NOT_RUN",
+    "remote_titmas": "NOT_CONNECTED",
+    "remote_receipt": "NOT_AVAILABLE",
+    "customer_acceptance": "NOT_OBTAINED"
   }
 }

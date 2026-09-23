@@ -1,0 +1,50 @@
+{
+  "schema_version": "titmas-live-check.v1",
+  "observed_at_utc": "2026-09-23T08:40:23Z",
+  "scope": "Read-only service entry and local operator check for guanque-pilot; no credential, media upload, POST, service start or deployment",
+  "public_probes": [
+    {
+      "url": "https://dcell.net/.well-known/titmas.json",
+      "method": "GET",
+      "result": "HTTP_403_TEXT_HTML",
+      "contract_json_obtained": false
+    },
+    {
+      "url": "https://dcell.net/api/v1/capabilities",
+      "method": "GET",
+      "result": "HTTP_403_TEXT_HTML",
+      "contract_json_obtained": false
+    },
+    {
+      "url": "https://redcrag.cn/.well-known/titmas.json",
+      "method": "GET",
+      "result": "TLS_SSL_ERROR_SYSCALL",
+      "contract_json_obtained": false
+    },
+    {
+      "url": "https://redcrag.cn/api/v1/capabilities",
+      "method": "GET",
+      "result": "TLS_SSL_ERROR_SYSCALL",
+      "contract_json_obtained": false
+    }
+  ],
+  "authorized_server_readonly_probe": {
+    "host_alias": "hongyan-4cj",
+    "services": {
+      "titmas-commercial-api.service": "inactive",
+      "titmas-sandbox-preview.service": "inactive"
+    },
+    "local_8092_health": "CONNECTION_REFUSED"
+  },
+  "local_operator": {
+    "source_repository": "joy7758/titmas-sandbox-gateway",
+    "source_commit": "f8de57831707c4d83503e82d75cb662a7968237c",
+    "entry": "/Users/zhangbin/.local/bin/titmas-outcome-review",
+    "contract_read": "PASS",
+    "scope": "OFFLINE_OUTCOME_REVIEW_WITH_LOCAL_FILE_BINDING_ONLY"
+  },
+  "remote_service_call": "NOT_RUN",
+  "remote_raw_receipt": "NOT_AVAILABLE",
+  "remote_independent_receipt_verification": "NOT_RUN",
+  "conclusion": "REMOTE_TITMAS_NOT_CONNECTED_LOCAL_OUTCOME_REVIEW_CAN_RUN_WITHOUT_SUBSTITUTING_FOR_SERVICE"
+}
