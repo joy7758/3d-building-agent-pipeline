@@ -1,7 +1,7 @@
 {
   "schema_version": "discovery-plan.v1",
   "job_id": "guanque-pilot",
-  "revision": "guanque-discovery-r1",
+  "revision": "guanque-discovery-r2",
   "kind": "PROJECT_EVIDENCE_GAP_COMPLETION",
   "status": "READY",
   "bindings": {
@@ -12,7 +12,7 @@
       "gap_id": "reported-dimensions-source",
       "priority": "P1",
       "blocked_station": "construction",
-      "question": "Can original or authoritative pages substantiate the user-reported 73.9 m total height, 16.5 m platform, 57.4 m body, 9 interior levels and the 7x5 / 5x3 bay grids?",
+      "question": "Which user-reported values have an attributable source: 73.9 m total, 57.4 m main tower, 83 x 72 m platform footprint, platform/body floor-count convention, 16.5 m platform vertical height, and 7 x 5 / 5 x 3 bay grids? Do not interpret platform 3 levels plus body 6 levels as nine interior levels.",
       "evidence_types": [
         "original document page or official publication with locator"
       ],
@@ -41,7 +41,8 @@
       "allowed_sources": [
         "official-owner-or-government",
         "primary-publication",
-        "user-provided-reference"
+        "user-provided-reference",
+        "open-licensed-photographic-records"
       ],
       "search_budget": {
         "max_queries": 8,
@@ -64,7 +65,8 @@
         "official-owner-or-government",
         "primary-publication",
         "user-provided-reference",
-        "local-photo-audit-and-project-records"
+        "local-photo-audit-and-project-records",
+        "open-licensed-photographic-records"
       ],
       "search_budget": {
         "max_queries": 8,
@@ -126,7 +128,8 @@
         "view coverage inventory"
       ],
       "allowed_sources": [
-        "current-source-package"
+        "current-source-package",
+        "open-licensed-photographic-records"
       ],
       "search_budget": {
         "max_queries": 2,

@@ -1,7 +1,7 @@
 {
   "schema_version": "delivery-current-status.v1",
   "job_id": "guanque-pilot",
-  "updated_at": "2026-09-23T00:55:25.110Z",
+  "updated_at": "2026-09-23T08:07:21.114Z",
   "stage": "NEEDS_REVISION",
   "video_classification": "PREVIEW_ONLY_REQUIRES_VISUAL_REWORK",
   "assessment": {
@@ -41,13 +41,13 @@
     "visual": "FAIL",
     "titmas": "NOT_CONNECTED"
   },
-  "pipeline_gate_note": "Discovery attempt guanque-discovery-r1 is hash-bound but leaves five required gaps PARTIAL and one P3 gap UNKNOWN. Construction and dependent review/render gates remain blocked. Historical video and prior technical evidence are preserved; no new acceptance or publication is claimed.",
+  "pipeline_gate_note": "Discovery r2 corroborates key public dimensions and adds two licensed front-view references, but exact platform height/lower bay grid, side/rear elevations, detailed joints and frame-shear-wall layout remain unresolved. Current construction/render/review/TITMAS gates remain closed. Historical video and prior technical evidence remain preserved.",
   "discovery": {
     "status": "NEEDS_REVISION",
-    "current_attempt_id": "guanque-discovery-r1",
-    "attempt_sha256": "587a73cb58984dbd96a828cb04a4f6c45de7493b8e6e237639ee940e9c98e4cc",
-    "plan_sha256": "2686249001d4c2585cc0a4c59086c4ce0bda607f6a8c714f428beca817b5ec22",
-    "sources_sha256": "6c67b1dd55634dd81fbc9d64bc43300049c7f3e84894d78a087739489105e54a",
+    "current_attempt_id": "guanque-discovery-r2",
+    "attempt_sha256": "5da4dd9728f6d4f2574e84fe44089ed8398a86937a5de8162984eda2b34c6285",
+    "plan_sha256": "d5ef8a5d03d8174517c9ae549a893cbe6838f1d6fcedb894d1b4591decd2a708",
+    "sources_sha256": "380fb937846a081dcf7022ae2a955d4b0c9853b85d9c285066994220f10ab10f",
     "gaps": [
       {
         "gap_id": "reported-dimensions-source",
