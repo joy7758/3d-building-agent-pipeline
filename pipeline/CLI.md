@@ -10,12 +10,15 @@
 node pipeline/cli.mjs init --id <slug> --building <建筑名称> --location <所在地> --era <建筑时代或版本>
 node pipeline/cli.mjs status <slug>
 node pipeline/cli.mjs review <slug>
+node pipeline/cli.mjs discovery <slug>
 node pipeline/cli.mjs handoff <slug>
 node pipeline/cli.mjs verify <slug>
 node --test pipeline/test/*.test.mjs
 ```
 
-`init` 创建 `jobs/<slug>/request.json`、`sources.json`、`model-plan.json`、`checks.json`，已有目录一律拒绝覆盖。`status` 输出 JSON，新增 `review` 字段；`review` 命令仅输出该字段，成功输出仍不等于通过。`handoff` 只将有序 Markdown 工位提示输出到 stdout；调用者可以保存该内容或用于派发。`verify` 重新读取所有当前文件并计算哈希；只有 `READY_FOR_USER_REVIEW` 返回退出码 `0`，门禁未通过返回 `1`，参数或根任务读取错误返回 `2`。目前可信 TITMAS 适配器未实现，`verify` 必然不能返回通过。`status` 成功读取任务返回 `0`，不表示门禁通过。
+`init` 创建 request、sources、discovery plan/index、model plan 与 checks，已有目录一律拒绝覆盖。`discovery` 离线重算缺口、attempt、来源与版本绑定，不联网或判断事实真伪。`status` 输出各门禁和发现状态；`review` 只输出逐项视觉/技术记录。`verify` 当前因真实 TITMAS 未接通而不能通过。
+
+新任务的 `discovery-plan.json` 初始为空且为 `DRAFT`，因此不能据此施工。资料整理后，发现执行者必须把真实缺口（至少一个）写入计划，再记录实际查询、来源定位和结果；不得为了通过门禁虚构缺口、查询或证据。已经没有待补事实时，记录仍然存在的真实限制为 `P3`，例如未见背面或未核实施工过程，并将结果保留为 `UNKNOWN`。
 
 任务 ID 是 1–64 位小写 ASCII 字母、数字及内部连字符，禁止路径字符。名称、位置与时代各最多 500 字符；未知位置或时代明确记 `UNKNOWN`。用户名称是数据，不能据此执行命令。
 
@@ -23,7 +26,7 @@ node --test pipeline/test/*.test.mjs
 
 每个证据引用均为 `{"path":"jobs/<id>/evidence/filename.png","sha256":"64位小写十六进制"}`。路径从**仓库根目录**起算，仅允许当前 `jobs/<id>/` 或项目 `artifacts/` 内的文件；拒绝绝对路径、反斜杠、`.`、`..`、空路径段和越界符号链接。文件必须实际存在，哈希对不上即为过期或被改动。任务身份、资料、方案或视频清单改动后，必须重新检查并重新绑定哈希，不能直接把旧检查结果改成新哈希。
 
-来源包（存在 entries 时）、READY 方案、视频清单及 PASS 检查必须分别使用 `bindings.request_sha256` 绑定当前 `request.json` 的完整字节。更改建筑名称、地点、时代等任务字段，会使旧证据链全部失效并进入 `NEEDS_REVISION`，不能把另一栋建筑的旧视频改名后继续验收。
+来源包（存在 entries 时）、发现计划、READY 方案、视频清单及 PASS 检查必须分别使用 `bindings.request_sha256` 绑定当前 `request.json` 的完整字节。更改建筑名称、地点、时代等任务字段，会使旧证据链全部失效并进入 `NEEDS_REVISION`，不能把另一栋建筑的旧视频改名后继续验收。
 
 SHA-256 绑定是完整性检查，并不证明来源真实性、检查者身份或建筑准确性。图片校验支持 PNG/JPEG/WebP 文件头；视频校验支持 MP4/WebM 容器头。真正的解码、画面及播放检查仍由工具和独立检查者执行并保留证据。
 
@@ -59,9 +62,11 @@ SHA-256 绑定是完整性检查，并不证明来源真实性、检查者身份
 }
 ```
 
-至少需要两个不同视角、不同 SHA-256 的真实本地图片；角度标签不能为 `UNKNOWN`。每幅图需要能追溯到来源条目。所有来源记录标题、ISO 访问时间和许可。`source_type: "WEB"`（省略时默认值）必须记录真实 HTTP(S) URL；`source_type: "USER_PROVIDED"` 使用 `provenance: {"task_id":"原任务ID", "note":"原附件和接收背景说明"}`，不要求虚构网络 URL。用户提供图片仍须有真实本地引用及哈希，且不意味着用户拥有图片发布权。
+至少需要两个不同视角、不同 SHA-256 的真实本地图片；角度标签不能为 `UNKNOWN`。施工前还需完成 discovery plan 与 attempt；P1/P2 缺口未解决会阻断施工，P3 未解决项须保留在模型限制。详见 [DISCOVERY.md](DISCOVERY.md)。每幅图需要能追溯到来源条目。所有来源记录标题、ISO 访问时间和许可。`source_type: "WEB"`（省略时默认值）必须记录真实 HTTP(S) URL；`source_type: "USER_PROVIDED"` 使用 `provenance: {"task_id":"原任务ID", "note":"原附件和接收背景说明"}`，不要求虚构网络 URL。用户提供图片仍须有真实本地引用及哈希，且不意味着用户拥有图片发布权。
 
 照片默认 `RESEARCH_ONLY`（仅研究），`publish_permission` 为 `UNKNOWN`、`ALLOWED` 或 `DENIED`；研究门禁不授予图片再发布许可。模型可使用程序化材质，参考照片不要进入公开视频或网页素材，除非另行核清许可。`request.building.location` 或 `era` 为 `UNKNOWN` 时，发现层也未完成，不能进入 `READY_TO_BUILD`。
+
+来源 `source_type` 支持 `WEB`、`USER_PROVIDED` 和 `PROJECT_ARTIFACT`。项目工件使用 `artifact: {"path":"vendor/threejs-architecture-effects/assets/preview.mp4","sha256":"实际文件SHA256"}`；允许根目录限于当前 job、`artifacts/`、`docs/`、冻结的两个 vendor 目录及 `pipeline/video/`，运行时会拒绝越界路径、符号链接逃逸和哈希变化。可用它绑定锁定版 Skill、上游演示、相机计划和实际旧视频，避免只靠文字结论比较。
 
 ## model-plan.json
 
@@ -72,7 +77,7 @@ SHA-256 绑定是完整性检查，并不证明来源真实性、检查者身份
   "status": "READY",
   "builder_id": "实际施工者身份",
   "skill": "lhlGitHub/threejs-architecture-effects",
-  "bindings": {"request_sha256": "当前request.json实际SHA256", "sources_sha256": "当前sources.json实际SHA256"},
+  "bindings": {"request_sha256": "当前request.json实际SHA256", "sources_sha256": "当前sources.json实际SHA256", "discovery_attempt_id": "当前attempt ID", "discovery_sha256": "当前attempt实际SHA256"},
   "recognizable_features": ["参考图能支持的标志特征"],
   "components": ["构件及程序参数/源码入口"],
   "assembly": ["可重复的施工先后顺序和时间"],
@@ -114,7 +119,7 @@ TITMAS 当前必须保持 `NOT_CONNECTED`。手工填入 `PASS`、伪造 connect
   "video": {"path": "jobs/building-demo/output/preview.mp4", "sha256": "实际视频SHA256"},
   "poster": {"path": "jobs/building-demo/output/poster.png", "sha256": "实际图片SHA256"},
   "spec": {"duration_seconds": 24, "fps": 30, "width": 1920, "height": 1080},
-  "bindings": {"request_sha256": "当前request.json实际SHA256", "sources_sha256": "当前sources.json实际SHA256", "model_plan_sha256": "当前model-plan.json实际SHA256"}
+  "bindings": {"request_sha256": "当前request.json实际SHA256", "sources_sha256": "当前sources.json实际SHA256", "model_plan_sha256": "当前model-plan.json实际SHA256", "discovery_attempt_id": "当前attempt ID", "discovery_sha256": "当前attempt实际SHA256"}
 }
 ```
 

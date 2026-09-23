@@ -23,17 +23,17 @@
   },
   "predevelopment_recommendation": "CONDITIONALLY_RECOMMENDED_FOR_LOCAL_ARTISTIC_VIDEO_PIPELINE",
   "recommendation_reviewer": "/root/pipeline_recommendation",
-  "implementation_status": "LOCAL_REVIEW_RECORD_GATE_IMPLEMENTED_VISUAL_REWORK_PENDING",
+  "implementation_status": "DISCOVERY_RECORD_GATE_IMPLEMENTED_LOCAL_ONLY_VISUAL_REWORK_PENDING",
   "upstream_scout_execution": "NOT_RUN",
   "titmas_remote_execution": "NOT_RUN",
-  "external_model_calls": "NOT_RUN",
-  "provider": "CURRENT_OFFICIAL_CODEX_PROVIDER",
-  "bai": "NOT_USED_PROJECT_AUTHORIZATION_AND_RESPONSES_PROBE_NOT_ESTABLISHED",
+  "external_model_calls": "BAI_KEYCHAIN_UPDATED_VIA_SECURE_PROMPT; REAL_RESPONSES_PROBE_FAILED_INSUFFICIENT_USER_QUOTA_NO_MODEL_RESPONSE",
+  "provider": "CURRENT_OFFICIAL_CODEX_PROVIDER_RETAINED",
+  "bai": "KEYCHAIN_ENTRY_SAVED_AND_VERIFIED; RESPONSES_PROBE_FAILED_INSUFFICIENT_USER_QUOTA; NO_MODEL_RESPONSE; NO_RETRY",
   "portfolio_admission": "LOCAL_RECORD_ONLY_NOT_ADMITTED",
   "commercial_state": "EXPLORATION",
   "publication": "USER_OPERATED_NOT_RUN",
   "deployment": "NOT_RUN",
-  "observed_at": "2026-09-22T16:25:47.616387+00:00",
+  "observed_at": "2026-09-23T00:10:07.000000+00:00",
   "reference_source": "pipeline/README.md",
   "proposal_answers": {
     "benefit": "Agent-readable task, evidence and rejection contracts for local architectural video production",
@@ -77,5 +77,12 @@
     },
     "independent_review": "artifacts/review-gate-20260923-r1/independent-review.json"
   },
-  "review_gate_validation": "artifacts/review-gate-20260923-r1/validation.json"
+  "review_gate_validation": "artifacts/review-gate-20260923-r1/validation.json",
+  "discovery_runtime": "LOCAL_HASH_BOUND_RECORD_EVALUATOR_IMPLEMENTED_SEARCH_AGENT_EXECUTED_NOT_AUTOMATED",
+  "discovery_contract": "pipeline/schemas/discovery.schema.json",
+  "discovery_protocol": "pipeline/DISCOVERY.md",
+  "bai_probe_at": "2026-09-23T00:10:05Z",
+  "bai_probe_model": "gpt-6-astra",
+  "bai_keychain_update": "SAVED_AND_VERIFIED_VIA_SECURE_LOCAL_PROMPT",
+  "bai_probe_result": "FAILED_INSUFFICIENT_USER_QUOTA_NO_MODEL_RESPONSE"
 }

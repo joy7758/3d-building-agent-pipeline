@@ -3,6 +3,7 @@ import PagodaThreeScene, { DETAIL_VIEWS, type DetailView } from './PagodaThreeSc
 import { DURATION, STAGES, clampProgress, stageAt } from './timeline';
 import { EXPORT_MODE } from './export-contract';
 const INSPECTION_MODE=new URLSearchParams(window.location.search).get('inspection')==='1';
+const DIAGRAM_MODE=new URLSearchParams(window.location.search).get('diagram')==='1';
 
 class SceneBoundary extends Component<{children:ReactNode},{failed:boolean}> {
   state={failed:false};
@@ -10,10 +11,10 @@ class SceneBoundary extends Component<{children:ReactNode},{failed:boolean}> {
   render(){return this.state.failed?<div className="scene-loading" role="alert">三维场景未能加载<br/><small>请使用支持 WebGL2 的浏览器，并开启硬件加速。</small></div>:this.props.children;}
 }
 export default function App(){
-  const [progress,setProgress]=useState(INSPECTION_MODE?1:0),[playing,setPlaying]=useState(()=>!INSPECTION_MODE&&!EXPORT_MODE&&!matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [progress,setProgress]=useState(INSPECTION_MODE||DIAGRAM_MODE?1:0),[playing,setPlaying]=useState(()=>!INSPECTION_MODE&&!DIAGRAM_MODE&&!EXPORT_MODE&&!matchMedia('(prefers-reduced-motion: reduce)').matches);
   const [ready,setReady]=useState(false),[view,setView]=useState<DetailView>('overview');
   const [speed,setSpeed]=useState(1),[cameraRequest,setCameraRequest]=useState(0);
-  const progressRef=useRef(INSPECTION_MODE?1:0);
+  const progressRef=useRef(INSPECTION_MODE||DIAGRAM_MODE?1:0);
   const onReady=useCallback(()=>setReady(true),[]);
   const seek=useCallback((p:number)=>{const next=clampProgress(p);progressRef.current=next;setProgress(next);},[]);
   useEffect(()=>{
@@ -29,6 +30,17 @@ export default function App(){
   const replay=()=>{setView('overview');setCameraRequest(n=>n+1);seek(0);setPlaying(true);};
   const toggle=()=>{if(progress===1){seek(0);setPlaying(true);}else setPlaying(p=>!p);};
   const detail=(v:DetailView)=>{setView(v);setCameraRequest(n=>n+1);seek(1);setPlaying(false);};
+  if(DIAGRAM_MODE)return <main className="exploded-diagram" data-ready={ready}>
+    <SceneBoundary><PagodaThreeScene progress={1} diagram onReady={onReady}/></SceneBoundary>
+    <div className="diagram-heading"><div className="diagram-kicker">山河营造 / 建筑构件拆解测试 001</div><h1>鹳雀楼</h1><p>GUANQUE TOWER · EXPLODED VIEW</p><div className="diagram-rule"/><span>以现有程序化三维模型分层展示<br/>各层竖向间距仅供观察构件关系</span></div>
+    <div className="diagram-key" aria-label="分层说明">
+      <div><b>04</b><span><strong>顶层阁与屋脊</strong><small>上层柱廊 · 歇山屋顶示意</small></span></div>
+      <div><b>03</b><span><strong>中层阁与重檐</strong><small>回廊 · 柱架 · 屋面</small></span></div>
+      <div><b>02</b><span><strong>底层阁与环廊</strong><small>副阶周匝 · 出抱厦方向</small></span></div>
+      <div><b>01</b><span><strong>台基与登楼路径</strong><small>高台 · 前阶 · 栏杆</small></span></div>
+    </div>
+    <div className="diagram-footer"><span>资料依据：运城市政府景区介绍、人民日报报道、现场外观照片</span><span>程序化艺术示意 · 非测绘图 / 非结构施工图 · PREVIEW ONLY</span></div>
+  </main>;
   if(INSPECTION_MODE)return <main className="photo-inspection" data-progress={progress.toFixed(4)} data-view={view}>
     <SceneBoundary><PagodaThreeScene progress={progress} view={view} cameraRequest={cameraRequest} onReady={onReady} inspection/></SceneBoundary>
     <div className="inspection-views" role="group" aria-label="对照视角">{DETAIL_VIEWS.map(({id,label})=><button key={id} disabled={!ready} aria-pressed={view===id} onClick={()=>detail(id)}>{id==='overview'?'参考角度':label}</button>)}</div>

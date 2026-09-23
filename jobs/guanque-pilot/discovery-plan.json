@@ -1,0 +1,144 @@
+{
+  "schema_version": "discovery-plan.v1",
+  "job_id": "guanque-pilot",
+  "revision": "guanque-discovery-r2",
+  "kind": "PROJECT_EVIDENCE_GAP_COMPLETION",
+  "status": "READY",
+  "bindings": {
+    "request_sha256": "a0ef38da1a439a6bd821bc0e459a1a2c4afffff41bb0ea77ba229dc87606cf7b"
+  },
+  "gaps": [
+    {
+      "gap_id": "reported-dimensions-source",
+      "priority": "P1",
+      "blocked_station": "construction",
+      "question": "Which user-reported values have an attributable source: 73.9 m total, 57.4 m main tower, 83 x 72 m platform footprint, platform/body floor-count convention, 16.5 m platform vertical height, and 7 x 5 / 5 x 3 bay grids? Do not interpret platform 3 levels plus body 6 levels as nine interior levels.",
+      "evidence_types": [
+        "original document page or official publication with locator"
+      ],
+      "allowed_sources": [
+        "user-original-attachment",
+        "official-owner-or-government",
+        "primary-publication"
+      ],
+      "search_budget": {
+        "max_queries": 6,
+        "max_minutes": 30
+      },
+      "stop_conditions": [
+        "Record exact page/figure and source identity.",
+        "If originals cannot be accessed within budget, retain all dimensions as user-reported and unresolved."
+      ]
+    },
+    {
+      "gap_id": "exterior-coverage-and-version",
+      "priority": "P1",
+      "blocked_station": "visual_review",
+      "question": "Do available authoritative photographs establish the current rebuilt Guanque Tower identity and provide enough distinct elevations to support the visible model beyond the two front-oblique user images?",
+      "evidence_types": [
+        "dated exterior photograph with view direction and building-version attribution"
+      ],
+      "allowed_sources": [
+        "official-owner-or-government",
+        "primary-publication",
+        "user-provided-reference",
+        "open-licensed-photographic-records"
+      ],
+      "search_budget": {
+        "max_queries": 8,
+        "max_minutes": 35
+      },
+      "stop_conditions": [
+        "Record each inspected view and its locator.",
+        "Never infer unseen elevations from a front view; unresolved views remain UNKNOWN."
+      ]
+    },
+    {
+      "gap_id": "roof-bracket-and-facade-evidence",
+      "priority": "P1",
+      "blocked_station": "construction",
+      "question": "Which visible roof intersections, eave slopes, bracket/support bands, facade openings and parapet details are directly supported by references, and which remain interpretations in the R3 photo audit?",
+      "evidence_types": [
+        "detail photograph or elevation drawing tied to a known view"
+      ],
+      "allowed_sources": [
+        "official-owner-or-government",
+        "primary-publication",
+        "user-provided-reference",
+        "local-photo-audit-and-project-records",
+        "open-licensed-photographic-records"
+      ],
+      "search_budget": {
+        "max_queries": 8,
+        "max_minutes": 35
+      },
+      "stop_conditions": [
+        "Map each claim to a page, figure, view or timestamp.",
+        "Do not promote pixel-ratio estimates to surveyed dimensions."
+      ]
+    },
+    {
+      "gap_id": "reference-demo-motion-contract",
+      "priority": "P1",
+      "blocked_station": "construction",
+      "question": "What exact component granularity, assembly motion, order, pacing, camera and material cues appear in the pinned upstream GitHub demo, and which are missing from the Guanque video?",
+      "evidence_types": [
+        "observed timestamped demo frames and corresponding delivered-video frames"
+      ],
+      "allowed_sources": [
+        "pinned-skill-and-upstream-demo",
+        "current-pilot-video"
+      ],
+      "search_budget": {
+        "max_queries": 4,
+        "max_minutes": 25
+      },
+      "stop_conditions": [
+        "Record timestamps and frame locators for both videos.",
+        "Separate building-specific geometry from transferable presentation behavior."
+      ]
+    },
+    {
+      "gap_id": "structural-system-source",
+      "priority": "P2",
+      "blocked_station": "construction",
+      "question": "Is the reported reinforced-concrete frame/shear-wall system supported by an attributable source, and how should the visual assembly avoid implying that timber-colored surface parts are the real load-bearing system?",
+      "evidence_types": [
+        "attributable structural description or source page"
+      ],
+      "allowed_sources": [
+        "user-original-attachment",
+        "official-owner-or-government",
+        "primary-publication"
+      ],
+      "search_budget": {
+        "max_queries": 5,
+        "max_minutes": 25
+      },
+      "stop_conditions": [
+        "If no attributable source is found, keep the system as user-reported and retain the non-structural-artistic-model limitation."
+      ]
+    },
+    {
+      "gap_id": "unseen-facades-and-interior",
+      "priority": "P3",
+      "blocked_station": "visual_review",
+      "question": "Which rear/side elevations, interior levels and concealed structure remain outside the available evidence package?",
+      "evidence_types": [
+        "view coverage inventory"
+      ],
+      "allowed_sources": [
+        "current-source-package",
+        "open-licensed-photographic-records"
+      ],
+      "search_budget": {
+        "max_queries": 2,
+        "max_minutes": 10
+      },
+      "stop_conditions": [
+        "Inventory only what is actually present.",
+        "Carry unresolved unknowns into model-plan limitations using this gap_id."
+      ]
+    }
+  ]
+}

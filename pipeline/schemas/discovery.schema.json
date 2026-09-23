@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:3d-building-pipeline:discovery:1",
+  "title": "建筑资料缺口发现合同",
+  "description": "Defines discovery plans and immutable attempts. A structurally valid record does not prove that a source was actually reviewed.",
+  "oneOf": [
+    { "$ref": "#/$defs/plan" },
+    { "$ref": "#/$defs/attempt" },
+    { "$ref": "#/$defs/index" }
+  ],
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "nonemptyTexts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": { "path": { "$ref": "#/$defs/text" }, "sha256": { "$ref": "#/$defs/sha256" } }
+    },
+    "gap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gap_id", "priority", "blocked_station", "question", "evidence_types", "allowed_sources", "search_budget", "stop_conditions"],
+      "properties": {
+        "gap_id": { "$ref": "#/$defs/text" },
+        "priority": { "enum": ["P1", "P2", "P3"] },
+        "blocked_station": { "enum": ["identity", "planning", "construction", "visual_review", "video"] },
+        "question": { "$ref": "#/$defs/text" },
+        "evidence_types": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+        "allowed_sources": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+        "search_budget": {
+          "type": "object", "additionalProperties": false, "required": ["max_queries", "max_minutes"],
+          "properties": { "max_queries": { "type": "integer", "minimum": 1 }, "max_minutes": { "type": "number", "exclusiveMinimum": 0 } }
+        },
+        "stop_conditions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } }
+      }
+    },
+    "plan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "job_id", "revision", "kind", "status", "bindings", "gaps"],
+      "properties": {
+        "schema_version": { "const": "discovery-plan.v1" },
+        "job_id": { "$ref": "#/$defs/text" },
+        "revision": { "$ref": "#/$defs/text" },
+        "kind": { "const": "PROJECT_EVIDENCE_GAP_COMPLETION" },
+        "status": { "enum": ["DRAFT", "READY"] },
+        "bindings": { "type": "object", "additionalProperties": false, "required": ["request_sha256"], "properties": { "request_sha256": { "$ref": "#/$defs/sha256" } } },
+        "gaps": { "type": "array", "items": { "$ref": "#/$defs/gap" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "READY" } }, "required": ["status"] },
+          "then": { "properties": { "gaps": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gap_id", "status", "summary", "source_ids", "limitations"],
+      "properties": {
+        "gap_id": { "$ref": "#/$defs/text" },
+        "status": { "enum": ["RESOLVED", "PARTIAL", "CONFLICTED", "UNKNOWN", "BUDGET_EXHAUSTED"] },
+        "summary": { "$ref": "#/$defs/text" },
+        "source_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+        "claim_ids": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+        "limitations": { "type": "array", "items": { "$ref": "#/$defs/text" } }
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claim_id", "gap_id", "claim_kind", "statement", "source_id", "locator"],
+      "properties": {
+        "claim_id": { "$ref": "#/$defs/text" }, "gap_id": { "$ref": "#/$defs/text" },
+        "claim_kind": { "enum": ["OBSERVED", "SOURCE_REPORTED", "CONTRADICTS", "UNKNOWN"] },
+        "statement": { "$ref": "#/$defs/text" },
+        "source_id": { "type": ["string", "null"] }, "locator": { "$ref": "#/$defs/text" }
+      }
+    },
+    "attempt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "job_id", "attempt_id", "module", "started_at", "completed_at", "bindings", "queries", "observations", "outcomes", "source_coverage", "stop_reason"],
+      "properties": {
+        "schema_version": { "const": "discovery-attempt.v1" },
+        "job_id": { "$ref": "#/$defs/text" },
+        "attempt_id": { "type": "string", "pattern": "^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$" },
+        "module": {
+          "type": "object", "additionalProperties": false,
+          "required": ["module_id", "version", "owner", "capability", "input_contract", "output_contract", "evidence_contract", "allowed_actions", "forbidden_actions", "side_effects", "data_retention", "lifecycle", "limitations"],
+          "properties": {
+            "module_id": { "$ref": "#/$defs/text" }, "version": { "$ref": "#/$defs/text" }, "owner": { "$ref": "#/$defs/text" },
+            "capability": { "$ref": "#/$defs/text" },
+            "input_contract": { "$ref": "#/$defs/nonemptyTexts" }, "output_contract": { "$ref": "#/$defs/nonemptyTexts" },
+            "evidence_contract": { "$ref": "#/$defs/nonemptyTexts" },
+            "allowed_actions": { "$ref": "#/$defs/nonemptyTexts" }, "forbidden_actions": { "$ref": "#/$defs/nonemptyTexts" },
+            "side_effects": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+            "data_retention": { "$ref": "#/$defs/text" },
+            "lifecycle": { "type": "object", "additionalProperties": false, "required": ["upgrade", "rollback", "replacement", "revocation"], "properties": { "upgrade": { "$ref": "#/$defs/text" }, "rollback": { "$ref": "#/$defs/text" }, "replacement": { "$ref": "#/$defs/text" }, "revocation": { "$ref": "#/$defs/text" } } },
+            "limitations": { "$ref": "#/$defs/nonemptyTexts" }
+          }
+        },
+        "started_at": { "type": "string", "format": "date-time" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "bindings": {
+          "type": "object", "additionalProperties": false,
+          "required": ["request_sha256", "plan_sha256", "sources_sha256"],
+          "properties": { "request_sha256": { "$ref": "#/$defs/sha256" }, "plan_sha256": { "$ref": "#/$defs/sha256" }, "sources_sha256": { "$ref": "#/$defs/sha256" } }
+        },
+        "queries": { "type": "array", "items": { "type": "object", "required": ["query", "source_scope", "gap_ids", "result"], "properties": { "query": { "$ref": "#/$defs/text" }, "source_scope": { "$ref": "#/$defs/text" }, "gap_ids": { "$ref": "#/$defs/nonemptyTexts" }, "result": { "$ref": "#/$defs/text" } } } },
+        "observations": { "type": "array", "items": { "$ref": "#/$defs/observation" } },
+        "outcomes": { "type": "array", "items": { "$ref": "#/$defs/outcome" } },
+        "source_coverage": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+        "stop_reason": { "$ref": "#/$defs/text" }
+      }
+    },
+    "index": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "job_id", "attempts", "current_attempt_id"],
+      "properties": {
+        "schema_version": { "const": "discovery-index.v1" },
+        "job_id": { "$ref": "#/$defs/text" },
+        "attempts": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["attempt_id", "reference"], "properties": { "attempt_id": { "$ref": "#/$defs/text" }, "reference": { "$ref": "#/$defs/reference" } } } },
+        "current_attempt_id": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -1,12 +1,12 @@
 {
   "schema_version": "1.0",
-  "status": "BLOCKED_SERVICE_ENTRY_UNAVAILABLE",
+  "status": "SANDBOX_PREFLIGHT_CONNECTED_D29_OUTCOME_NOT_DEPLOYED",
   "primary_application": "architecture-video-pipeline",
   "service_owner": "joy7758/titmas-sandbox-gateway",
   "service_id": "titmas-agent-native-infrastructure",
   "api_version": "v1",
   "source_discovery": "docs/governance/titmas-service-discovery.json",
-  "live_observation": "docs/governance/titmas-live-get-20260922.json",
+  "live_observation": "docs/governance/titmas-live-call-20260923-r2.json",
   "requested_capability": [
     "Catalog/schema read",
     "Preflight on approved execution/review/evidence-reference objects",
@@ -23,18 +23,27 @@
   "project_data_minimization": "Only project-scoped metadata and source/model/video/check report digests; raw reference photos and private governance snapshots excluded",
   "review_responsibility": "TITMAS checks execution/evidence contract; independent visual reviewer judges artistic building/video fit",
   "resume_conditions": [
-    "Owner publishes/reconfirms a reachable current canonical base_url and service version",
-    "Live capabilities/OpenAPI return compatible schema and no elevated truth/authorization claims",
-    "Owner provides project-scoped delegated credential via approved secret channel, never in repository or chat",
-    "Adapter performs real call and independent raw receipt verification",
-    "Negative tests reject stale building/request/model/video digests and invalid receipts"
+    "D29 owner deploys commercial outcome-review service with active workspace/agent and scoped credential",
+    "Read current D29 contract and bind fresh goal, video, cover, references, observations, and source digests",
+    "Execute real D29 outcome review and independently verify the original signed receipt",
+    "Close architectural visual and motion gaps through independent review before commercial release"
   ],
   "not_done": [
-    "No credential read or created",
-    "No deployment or service restart",
-    "No API POST",
-    "No TITMAS receipt",
-    "No release or publication"
+    "D29 commercial service deployment and authenticated outcome-review POST",
+    "D29 signed receipt and independent verification",
+    "Independent visual review, customer acceptance and publication"
   ],
-  "implementation_effect": "NONE_DRAFT_HANDOFF_ONLY"
+  "implementation_effect": "REAL_SANDBOX_SCHEMA_PREFLIGHT_ONLY_NO_D29_OUTCOME",
+  "local_outcome_review": {
+    "status": "EXECUTED_FAIL_R2",
+    "packet": "artifacts/titmas-outcome-r2/review-packet.json",
+    "result": "artifacts/titmas-outcome-r2/local-result.json",
+    "does_not_satisfy_remote_receipt": true
+  },
+  "sandbox_v0_1": {
+    "connector": "pipeline/titmas-sandbox-preflight.py",
+    "real_call": "EXECUTED_R2_SCHEMA_PREFLIGHT_PASS",
+    "call_record": "jobs/guanque-pilot/delivery/candidate-r2/titmas-sandbox-preflight.json",
+    "scope": "METADATA_SCHEMA_ONLY_NO_VIDEO_CONTENT_OR_SIGNED_RECEIPT"
+  }
 }

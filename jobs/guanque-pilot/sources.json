@@ -20,6 +20,174 @@
         "usage": "RESEARCH_ONLY",
         "publish_permission": "UNKNOWN"
       }
+    },
+    {
+      "id": "yuncheng-government-guanque-2020",
+      "source_type": "WEB",
+      "title": "鹳雀楼（国家AAAA级旅游景区）—运城市人民政府",
+      "url": "https://www.yuncheng.gov.cn/doc/2020/07/21/71073.shtml",
+      "accessed_at": "2026-09-23T00:47:06Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      },
+      "retrieval_note": "Search-result excerpt observed; direct page fetch timed out. Do not overstate excerpt as full-page inspection."
+    },
+    {
+      "id": "xinhua-2002-sina-republication",
+      "source_type": "WEB",
+      "title": "组图：山西古楼鹳雀楼重新开放—新华网报道（新浪转载页）",
+      "url": "https://news.sina.cn/sa/2002-09-26/detail-ikknscsi0248996.d.html?vt=4",
+      "accessed_at": "2026-09-23T00:47:06Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      },
+      "retrieval_note": "Page opened; page attributes the 2002 report and photograph to Xinhua."
+    },
+    {
+      "id": "pinned-architecture-skill",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "Pinned lhlGitHub/threejs-architecture-effects Skill",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "vendor/architecture-skill/SKILL.md",
+        "sha256": "deb2d1687f5b7a7b4845cbbbeb799087990a06ff451d25f546e0546cb0ad825a"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "upstream-demo-video",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "Pinned upstream architectural-effects preview video",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "vendor/threejs-architecture-effects/assets/preview.mp4",
+        "sha256": "6039c15e6f03df0801ca730ebd4fc1c8f897950c0bf6b17571fc168ac93fe712"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "prior-guanque-video",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "Existing Guanque pilot preview under review",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "jobs/guanque-pilot/delivery/guanque-pilot-preview.mp4",
+        "sha256": "37ce5076a7c7cb9342df309eb69a00bd5c35b5684c0606079aaa69ea6472eeb6"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "guanque-photo-audit-r3",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "Guanque third-round photo comparison notes",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "docs/photo-comparison-r3.md",
+        "sha256": "260375bdf56aa52fdcade201cf370e4bfdbdd342fbf024640234e8e78da3147c"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "guanque-user-reported-dimensions",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "User-reported Guanque facts and qualifications",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "docs/user-reference.md",
+        "sha256": "53d5fb6d6a73055e90225b3908eeb72ba25391af030c8e06c477d8da4eb3f78e"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "guanque-film-plan",
+      "source_type": "PROJECT_ARTIFACT",
+      "title": "Current Guanque camera and timeline plan",
+      "accessed_at": "2026-09-23T00:40:48Z",
+      "artifact": {
+        "path": "pipeline/video/guanque-pilot-wide.json",
+        "sha256": "7516ea85624189a161beb217e5ee3e869b7a2607c8930decdc08760c142e4a0c"
+      },
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      }
+    },
+    {
+      "id": "yuncheng-government-guanque-2025",
+      "source_type": "WEB",
+      "title": "鹳雀楼，更上层楼—运城市人民政府（来源：运城日报）",
+      "url": "https://www.yuncheng.gov.cn/doc/2025/04/10/517584.shtml",
+      "accessed_at": "2026-09-23T00:47:06Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      },
+      "retrieval_note": "Search-result excerpt includes the three-level platform/six-level body description; direct page fetch timed out."
+    },
+    {
+      "id": "yuncheng-government-guanque-2020-refresh-2026-09-23",
+      "source_type": "WEB",
+      "title": "鹳雀楼（国家AAAA级旅游景区）—运城市人民政府（本轮索引页核对）",
+      "url": "https://www.yuncheng.gov.cn/doc/2020/07/21/71073.shtml",
+      "accessed_at": "2026-09-23T08:00:00Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      },
+      "retrieval_note": "Search index returned the page body including dimensions, exterior form, bay count and reinforced-concrete skeleton; direct page open timed out. Treat as official indexed text, not a directly loaded page."
+    },
+    {
+      "id": "people-daily-guanque-rebuild-2025",
+      "source_type": "WEB",
+      "title": "鹳雀楼，更上层楼（城市味道·大河九曲）—人民网/人民日报",
+      "url": "https://cpc.people.com.cn/n1/2025/0409/c64387-40456030.html",
+      "accessed_at": "2026-09-23T08:00:00Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "UNKNOWN"
+      },
+      "retrieval_note": "Article opened directly. It reports the three-level platform, six-level tower body, total height 73.9 m, states no historical reconstruction documents were found, and attributes detailed reconstruction accounts to former project official Tong Yi. Article photo attribution is Chen Chunming; do not republish."
+    },
+    {
+      "id": "commons-guanque-front-2017",
+      "source_type": "WEB",
+      "title": "Stork Tower, 6 October 2017 — Wikimedia Commons front-view photograph",
+      "url": "https://commons.wikimedia.org/wiki/File:Stork_Tower,_6_October_2017.jpg",
+      "accessed_at": "2026-09-23T08:00:00Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "ALLOWED"
+      },
+      "retrieval_note": "File page identifies a front view dated 2017-10-06, original 1680x1260, author hwcmsb@126, source Lofter, CC BY 2.5. Attribution and license link are required for any reuse; screenshot reviewed in browser."
+    },
+    {
+      "id": "commons-guanque-front-2020",
+      "source_type": "WEB",
+      "title": "鹳雀楼.jpg — Wikimedia Commons front-view photograph",
+      "url": "https://commons.wikimedia.org/wiki/File:%E9%B9%B3%E9%9B%80%E6%A5%BC.jpg",
+      "accessed_at": "2026-09-23T08:00:00Z",
+      "license": {
+        "usage": "RESEARCH_ONLY",
+        "publish_permission": "ALLOWED"
+      },
+      "retrieval_note": "File page identifies own work by Yanxutong1215 dated 2020-09-17, original 4032x3024, camera location and image heading metadata; CC BY-SA 4.0. Attribution and share-alike conditions apply to reuse; screenshot reviewed in browser."
     }
   ],
   "views": [
@@ -48,7 +216,10 @@
     "本pilot复用已经施工的模型与用户参考，用于检验出片流程，不代表重新完成上游Scout发现。",
     "这两张均偏正面斜视，没有完整背面或内部资料；未观察部分保持艺术简化。",
     "docs/user-reference.md中的尺寸是用户转述，本轮未独立核实；模型不声称测绘精度。",
-    "官方网页本轮尝试刷新超时；不将历史官方介绍升级为本轮已核实事实。"
+    "官方网页本轮尝试刷新超时；不将历史官方介绍升级为本轮已核实事实。",
+    "2026-09-23 discovery intake: added current public/local source identities without changing the historical video. The Yuncheng government result was visible as a search excerpt; direct fetch timed out. Local pinned demo and delivered video are separate hash-bound PROJECT_ARTIFACT entries.",
+    "Source register updated 2026-09-23 after a fresh search and read attempt. Yuncheng government pages returned detailed search excerpts but timed out on direct open; Sina-hosted Xinhua 2002 report opened successfully. Local video frames were re-extracted from hash-bound source files for side-by-side motion observation.",
+    "2026-09-23 discovery r2: directly opened the People Daily report and visually inspected two openly licensed Wikimedia Commons front-view images. These are research references only; no remote media copied into app assets. The indexed Yuncheng government page supplied further detail but its direct page fetch still timed out."
   ],
   "bindings": {
     "request_sha256": "a0ef38da1a439a6bd821bc0e459a1a2c4afffff41bb0ea77ba229dc87606cf7b"

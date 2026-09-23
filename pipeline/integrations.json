@@ -6,7 +6,7 @@
   "discovery": {
     "executor": "CODEX_RESEARCH_ADAPTER",
     "state": "AVAILABLE_AS_AGENT_ROLE",
-    "contract": "sources.json",
+    "contract": "pipeline/schemas/discovery.schema.json",
     "upstream_scout": {
       "canonical_project_id": "titmac-scout",
       "conversation_alias": "tiamas-scout",
@@ -28,7 +28,11 @@
       "local_path": "/Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json",
       "availability_scope": "LOCAL_COCKPIT_CATALOG_NOT_PUBLICATION_OR_ACTIVATION"
     },
-    "architectural_gap_adapter": "NOT_IMPLEMENTED"
+    "architectural_gap_adapter": "LOCAL_HASH_BOUND_EVIDENCE_GAP_CONTRACT_AND_EVALUATOR_NO_SEARCH_ENGINE",
+    "evaluator": "pipeline/discovery.mjs",
+    "runtime_status": "LOCAL_DISCOVERY_RECORD_VALIDATION_IMPLEMENTED_SEARCH_REMAINS_AGENT_EXECUTED",
+    "attempt_history": "IMMUTABLE_ATTEMPT_FILES_INDEXED_BY_CURRENT_POINTER",
+    "downstream_binding": "model-plan.json binds current attempt id and digest; video manifest repeats both"
   },
   "construction": {
     "executor": "CODEX_WITH_THREEJS_ARCHITECTURE_EFFECTS",
@@ -52,13 +56,15 @@
     "performance_comparison": "NOT_RUN"
   },
   "titmas": {
-    "state": "BLOCKED_CURRENT_SERVICE_UNAVAILABLE",
+    "state": "SANDBOX_PREFLIGHT_CONNECTED_D29_OUTCOME_NOT_DEPLOYED",
     "user_choice": "SPECIFIED_TITMAS_SERVICE_LOCATE_FROM_DBA",
     "missing": [
-      "Reachable current canonical TITMAS service and project-compatible review contract"
+      "Deployed and authorized commercial D29 outcome-review endpoint",
+      "Signed outcome receipt for the current video and independent verification",
+      "Independent architectural visual review and closure of discovery gaps"
     ],
-    "execution": "NOT_RUN",
-    "receipt_verification": "NOT_RUN",
+    "execution": "REAL_REMOTE_SANDBOX_SCHEMA_PREFLIGHT_R2_PASS_LOCAL_OUTCOME_R2_FAIL",
+    "receipt_verification": "NOT_RUN_NO_D29_RECEIPT",
     "known_interface_candidates": [
       "titmas_capabilities",
       "titmas_preflight",
@@ -86,8 +92,8 @@
     "service_id": "titmas-agent-native-infrastructure",
     "api_version": "v1",
     "owner_repository": "joy7758/titmas-sandbox-gateway",
-    "health": "NOT_VERIFIED",
-    "service_call": "NOT_RUN",
+    "health": "SANDBOX_V0_1_ACTIVE_D29_NOT_DEPLOYED",
+    "service_call": "SANDBOX_POST_PREFLIGHT_R2_HTTP_200_SCHEMA_PREFLIGHT_PASS",
     "receipt": "NOT_AVAILABLE",
     "upstream_schema_candidates": [
       "project-manifest",
@@ -95,10 +101,37 @@
       "verification-object",
       "evidence-reference-object"
     ],
-    "upstream_schema_observation": "Source inspection only; no live API contract obtained",
+    "upstream_schema_observation": "Active authenticated Sandbox v0.1 schema read and preflight; this does not expose the commercial D29 outcome contract.",
     "requested_scope": "Record/validate bounded execution and review evidence; independent agent performs building/video review",
     "implementation_handoff": "pipeline/titmas-handoff.json",
-    "status_scope": "Previous service discovery; no new live probe in review-gate implementation"
+    "status_scope": "Active server-loopback Sandbox v0.1 accepted a metadata-only EVIDENCE_REFERENCE for the r2 video. D29 commercial outcome review is not deployed; no video content or signed outcome receipt was processed.",
+    "latest_live_probe": "docs/governance/titmas-live-call-20260923-r2.json",
+    "local_outcome_review": {
+      "state": "EXECUTED_FAIL_FOR_R2",
+      "operator": "/Users/zhangbin/.local/bin/titmas-outcome-review",
+      "source_commit": "f8de57831707c4d83503e82d75cb662a7968237c",
+      "packet": "artifacts/titmas-outcome-r2/review-packet.json",
+      "result": "artifacts/titmas-outcome-r2/local-result.json",
+      "shareable_summary": "jobs/guanque-pilot/delivery/candidate-r2/local-outcome-result.json",
+      "scope": "OFFLINE_LOCAL_FILE_BINDING_NOT_REMOTE_SERVICE_NOT_SIGNED_RECEIPT"
+    },
+    "sandbox_v0_1": {
+      "state": "ACTIVE_AUTHENTICATED_CALL_EXECUTED",
+      "endpoint": "server loopback 8091 via local SSH loopback tunnel",
+      "capability": "EVIDENCE_REFERENCE_SCHEMA_PREFLIGHT_ONLY",
+      "connector": "pipeline/titmas-sandbox-preflight.py",
+      "call_record": "jobs/guanque-pilot/delivery/candidate-r2/titmas-sandbox-preflight.json",
+      "video_sha256": "90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+      "result": "SCHEMA_PREFLIGHT_PASS",
+      "media_uploaded": false,
+      "signed_receipt": false
+    },
+    "commercial_d29": {
+      "status": "REFERENCE_IMPLEMENTED_NOT_DEPLOYED",
+      "outcome_review_call": "NOT_RUN",
+      "signed_receipt": "NOT_AVAILABLE",
+      "independent_verification": "NOT_RUN"
+    }
   },
   "video": {
     "executor": "pipeline/render-video.mjs",
@@ -113,7 +146,8 @@
     "local tests do not equal TITMAS execution",
     "receipt integrity does not equal architectural accuracy",
     "research references do not authorize republishing the source photos",
-    "preview is not final acceptance"
+    "preview is not final acceptance",
+    "Sandbox schema preflight does not equal D29 outcome review or visual acceptance"
   ],
   "integration_observation_sources": [
     "/Users/zhangbin/GitHub/tiamas-scout/src/discovery/README.md",

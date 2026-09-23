@@ -2,9 +2,11 @@
 
 本对话负责总指挥，主工作区为 `/Volumes/ORICO_DATA/Projects/3d盖楼`。用户指定建筑后，总指挥建立任务、派发工位、核对证据、组织返工并交付本地视频；用户负责发布。当前施工底座是鹳雀楼，其他建筑必须建立独立模型。
 
+新任务已加入资料缺口门禁：每个 job 生成 `discovery-plan.json` 和 `discovery/index.json`；READY 计划必须包含至少一个真实缺口或未知，未解决的 P3 缺口须以 `gap_id` 写入 model-plan 限制。attempt 绑定任务、计划和来源版本，模型计划及视频清单绑定当前 attempt。`sources.json` 还可用 `PROJECT_ARTIFACT` 和文件 SHA-256 引用冻结的本地 Skill、上游演示、模型与视频。`node pipeline/cli.mjs discovery <id>` 离线重算状态。该合同校验记录完整性与失效绑定，不联网、不裁定事实真伪。详见 [发现合同](DISCOVERY.md)。
+
 施工技能固定为 [Hailey / threejs-architecture-effects](../vendor/architecture-skill/SKILL.md)，上游 `lhlGitHub/threejs-architecture-effects@693ca2ec1193e7355054f14d7deb1427439a24d0`，MIT。用户已经确认“ihi”指此 skill。不将它解释为另一个服务。
 
-**2026-09-22 倒查纠正**：鹳雀楼为 `NEEDS_REVISION`、`visual=FAIL`。此前“艺术预览 PASS”不足以证明照片保真与演示匹配；本任务有外观返工及 TITMAS 未接入两个独立问题。见[完整报告](../artifacts/reverse-audit-20260922-r1/report.md)与[拟定返工合同](../artifacts/reverse-audit-20260922-r1/acceptance-checklist.md)。该日草案与倒查保持历史。2026-09-23 已接入逐项记录门禁，见[当前合同](../jobs/guanque-pilot/review-contract.json)和[审查协议](REVIEW.md)；它校验覆盖与证据绑定，不自动判断照片相似或视频效果。当前新一轮内容审查 `NOT_RUN`，旧视频 `visual=FAIL`。
+**2026-09-22 倒查纠正**：鹳雀楼为 `NEEDS_REVISION`、`visual=FAIL`。此前“艺术预览 PASS”不足以证明照片保真与演示匹配；本任务有外观返工及 TITMAS 未接入两个独立问题。见[完整报告](../artifacts/reverse-audit-20260922-r1/report.md)与[拟定返工合同](../artifacts/reverse-audit-20260922-r1/acceptance-checklist.md)。该日草案与倒查保持历史。2026-09-23 已接入逐项记录门禁，见[当前合同](../jobs/guanque-pilot/review-contract.json)和[审查协议](REVIEW.md)；它校验覆盖与证据绑定，不自动判断照片相似或视频效果。候选 r2 的同任务内容审查为 `FAIL`，独立视觉审查 `NOT_RUN`；旧视频的历史 `visual=FAIL` 保留。
 
 ## 一句话下单
 
@@ -39,6 +41,12 @@
 
 这是一条由当前对话驱动的本地工作流。CLI 提供任务和证据门禁，施工与研究由智能体完成。没有后台定时任务、无人值守常驻服务或外部模型服务的隐式接入。
 
+## TITMAS outcome review 的当前接入边界
+
+2026-09-23 检查到 TITMAS `outcome-review.v1` 离线 operator 已安装。它可在指定 workspace 内对原始目标、判据、视频、封面、参考图和观察记录做文件字节绑定，并汇总 `PASS / FAIL / UNKNOWN`；本机用法见 `/Users/zhangbin/.codex/skills/titmas-outcome-review/SKILL.md`，源码版本为 `joy7758/titmas-sandbox-gateway@f8de578`。鹳雀楼候选 r1、r2 各执行了一次；当前结果见 `jobs/guanque-pilot/delivery/candidate-r2/manifest.json`，完整本地 packet 留在 `artifacts/titmas-outcome-r2/`。该 operator 不执行自动视觉判断，不认证审查者，也不产生远端签署回执。本任务的检查为施工者同任务自审，技术项不能升级为独立 PASS。
+
+先前公共入口和 8092 的只读探测见 `docs/governance/titmas-live-check-20260923.json`。随后核实授权服务器上实际运行的 `titmas-private-api.service` 在回环 8091；通过 SSH 回环通道、钥匙串凭据和 `pipeline/titmas-sandbox-preflight.py`，对候选 r2 的 `EVIDENCE_REFERENCE` 元数据发起真实 POST，HTTP 200 / `SCHEMA_PREFLIGHT_PASS`，记录见 `docs/governance/titmas-live-call-20260923-r2.json`。没有传输媒体内容。此 Sandbox v0.1 不提供商业 D29 的 outcome-review 或签名回执；D29 仍是源码参考实现、尚未部署。因此 `TM-001 / TM-002` 的商业结果门禁仍开放，候选片不升级为商业交付。
+
 ## 固定快照出片
 
 运行 `node pipeline/snapshot-app.mjs`，获得经输入哈希复核的新 app 快照路径。在该路径执行 `npm run check`、`npm run build`，然后用独立端口启动 preview。通过 `node pipeline/render-video.mjs --app-root <快照app> --config pipeline/video/guanque-pilot-wide.json --url http://127.0.0.1:<端口>/` 出片。详见 [视频工位](video/README.md)。快照保留源码与锁文件，本机已安装依赖通过符号链接复用；不声称完整环境隔离或跨GPU像素一致。
@@ -61,6 +69,6 @@
 
 ## 当前能力与接入
 
-跨项目复用先查 DBA 的[本地模块目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/REUSABLE-MODULE-CATALOG.zh-CN.md>)与[机器目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json>)。建筑资料发现的复用边界见[评估记录](../docs/discovery-reuse-assessment.md)：已有发现资产可参考/适配，建筑缺口补证接口尚未实现；旧 Scout 的版本、许可和过期状态必须先核实。
+跨项目复用先查 DBA 的[本地模块目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/REUSABLE-MODULE-CATALOG.zh-CN.md>)与[机器目录](</Users/zhangbin/Documents/New project/digital-biosphere-architecture/cockpit/reusable-module-catalog.json>)。建筑资料发现的复用边界见[评估记录](../docs/discovery-reuse-assessment.md)：已实现本地缺口合同与哈希门禁；检索仍由智能体实际执行，旧 Scout 的版本、许可和过期状态必须先核实。
 
 以 [集成说明](integrations.json)、[治理记录](../docs/governance/pipeline-intake.json)、CLI 输出与具体运行记录为准。尚未绑定的发现层或 TITMAS 适配器保持 `NOT_CONNECTED`。不得把本地检查脚本改名成 TITMAS，也不得把收到一个标有 PASS 的 JSON 当作可信回执。

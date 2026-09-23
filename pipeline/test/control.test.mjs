@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { evaluateJob, handoffJob, initJob, resolveReference, sha256File } from '../lib.mjs';
+import { evaluateDiscovery } from '../discovery.mjs';
 
 const ID = 'test-building';
 const TIME = '2026-09-22T12:00:00Z';
@@ -18,16 +19,26 @@ function fixture(t) {
   const read = (name) => JSON.parse(readFileSync(file(name), 'utf8'));
   const write = (name, value) => writeFileSync(file(name), `${JSON.stringify(value, null, 2)}\n`);
   const ref = (name) => ({ path: `jobs/${ID}/${name}`, sha256: sha256File(file(name)) });
+  const fDiscovery = () => read('discovery/index.json').attempts[0];
   const status = () => evaluateJob(root, ID);
   const ready = (sourceType = 'WEB') => {
     writeFileSync(file('front.png'), PNG);
     writeFileSync(file('side.png'), Buffer.concat([PNG, Buffer.from('fixture-two')]));
+    writeFileSync(file('demo-reference.txt'), 'Synthetic frozen project artifact for protocol testing only.');
     const source = { id: 'reference', source_type: sourceType, title: 'Synthetic reference fixture', accessed_at: TIME, license: { usage: 'RESEARCH_ONLY', publish_permission: 'UNKNOWN' } };
     if (sourceType === 'USER_PROVIDED') source.provenance = { task_id: 'original-task', note: 'User supplied two original attachments.' };
     else source.url = 'https://example.org/building';
-    write('sources.json', { schema_version: '1.0', job_id: ID, bindings: { request_sha256: sha256File(file('request.json')) }, entries: [source], views: [{ id: 'front', source_id: 'reference', angle: 'front', image: ref('front.png') }, { id: 'side', source_id: 'reference', angle: 'side', image: ref('side.png') }] });
+    const localArtifact = { id: 'demo-reference', source_type: 'PROJECT_ARTIFACT', title: 'Synthetic local demo artifact', accessed_at: TIME, artifact: ref('demo-reference.txt'), license: { usage: 'RESEARCH_ONLY', publish_permission: 'UNKNOWN' } };
+    write('sources.json', { schema_version: '1.0', job_id: ID, bindings: { request_sha256: sha256File(file('request.json')) }, entries: [source, localArtifact], views: [{ id: 'front', source_id: 'reference', angle: 'front', image: ref('front.png') }, { id: 'side', source_id: 'reference', angle: 'side', image: ref('side.png') }] });
+    const discoveryPlan = { schema_version: 'discovery-plan.v1', job_id: ID, revision: 'fixture-r1', kind: 'PROJECT_EVIDENCE_GAP_COMPLETION', status: 'READY', bindings: { request_sha256: sha256File(file('request.json')) }, gaps: [{ gap_id: 'unseen-facade', priority: 'P3', blocked_station: 'visual_review', question: 'Are any unseen elevations supported by the supplied views?', evidence_types: ['elevation view'], allowed_sources: ['reference'], search_budget: { max_queries: 1, max_minutes: 2 }, stop_conditions: ['Stop when supplied viewpoints are checked.'] }] };
+    write('discovery-plan.json', discoveryPlan);
+    const attemptId = 'fixture-discovery-r1';
+    const attemptPath = `discovery/attempts/${attemptId}.json`;
+    const attempt = { schema_version: 'discovery-attempt.v1', job_id: ID, attempt_id: attemptId, module: { module_id: 'synthetic-protocol-fixture', version: '1', owner: 'test fixture', capability: 'Provide a source-coverage positive control.', input_contract: ['Current request, discovery plan and source package.'], output_contract: ['Bound attempt and coverage list.'], evidence_contract: ['Synthetic source ID links only.'], allowed_actions: ['Read synthetic fixture files.'], forbidden_actions: ['Make external requests or certify source truth.'], side_effects: [], data_retention: 'Local temporary fixture.', lifecycle: { upgrade: 'Use a new version and rerun.', rollback: 'Select an earlier attempt without deleting it.', replacement: 'Create a new module identity.', revocation: 'Stop selecting this module.' }, limitations: ['Synthetic protocol control only.'] }, started_at: TIME, completed_at: TIME, bindings: { request_sha256: sha256File(file('request.json')), plan_sha256: sha256File(file('discovery-plan.json')), sources_sha256: sha256File(file('sources.json')) }, queries: [{ query: 'Inspect supplied synthetic views for elevations.', source_scope: 'reference', gap_ids: ['unseen-facade'], result: 'Fixture has front and side only.' }], observations: [{ claim_id: 'facade-unknown', gap_id: 'unseen-facade', claim_kind: 'UNKNOWN', statement: 'No rear elevation is present in the fixture.', source_id: null, locator: 'sources.json views: front and side' }], outcomes: [{ gap_id: 'unseen-facade', status: 'UNKNOWN', summary: 'Rear elevation remains unknown.', source_ids: [], claim_ids: ['facade-unknown'], limitations: ['Synthetic test fixture only.'] }], source_coverage: ['reference'], stop_reason: 'Synthetic positive control only.' };
+    write(attemptPath, attempt);
+    write('discovery/index.json', { schema_version: 'discovery-index.v1', job_id: ID, attempts: [{ attempt_id: attemptId, reference: ref(attemptPath) }], current_attempt_id: attemptId });
     const plan = read('model-plan.json');
-    Object.assign(plan, { status: 'READY', builder_id: 'builder-agent', bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')) }, recognizable_features: ['Roof profile'], components: ['Base, columns, roof'], assembly: ['Base before columns before roof'], camera: ['Front to three-quarter'] });
+    Object.assign(plan, { status: 'READY', builder_id: 'builder-agent', bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')), discovery_attempt_id: attemptId, discovery_sha256: sha256File(file(attemptPath)) }, recognizable_features: ['Roof profile'], components: ['Base, columns, roof'], assembly: ['Base before columns before roof'], camera: ['Front to three-quarter'], limitations: ['unseen-facade: rear elevation is not shown in current references.'] });
     write('model-plan.json', plan);
   };
   const preview = () => {
@@ -35,7 +46,8 @@ function fixture(t) {
     mp4.writeUInt32BE(24, 0);
     mp4.write('ftyp', 4);
     writeFileSync(file('preview.mp4'), mp4);
-    write('video-manifest.json', { schema_version: '1.0', job_id: ID, status: 'RENDERED', video: ref('preview.mp4'), spec: { duration_seconds: 24, fps: 30, width: 1920, height: 1080 }, bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')), model_plan_sha256: sha256File(file('model-plan.json')) } });
+    const discovery = fDiscovery();
+    write('video-manifest.json', { schema_version: '1.0', job_id: ID, status: 'RENDERED', video: ref('preview.mp4'), spec: { duration_seconds: 24, fps: 30, width: 1920, height: 1080 }, bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')), model_plan_sha256: sha256File(file('model-plan.json')), discovery_attempt_id: discovery.attempt_id, discovery_sha256: discovery.reference.sha256 } });
     const checks = read('checks.json');
     checks.video = { status: 'RENDERED', manifest: ref('video-manifest.json') };
     write('checks.json', checks);
@@ -64,6 +76,50 @@ function fixture(t) {
   };
   return { root, file, read, write, ref, status, ready, preview, passLocalChecks };
 }
+
+test('a READY discovery plan cannot skip assessment with an empty gap list', (t) => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'architecture-discovery-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  initJob(root, { id: ID, building: '测试建筑', location: '测试地点', era: '现代艺术版本' });
+  const planPath = path.join(root, 'jobs', ID, 'discovery-plan.json');
+  const plan = JSON.parse(readFileSync(planPath, 'utf8'));
+  plan.status = 'READY';
+  writeFileSync(planPath, `${JSON.stringify(plan, null, 2)}\n`);
+  const result = evaluateDiscovery(root, ID);
+  assert.equal(result.ready, false);
+  assert.ok(result.issues.some((issue) => issue.code === 'DISCOVERY_PLAN_VACUOUS'));
+});
+
+test('the discovery command exposes planned gaps before an attempt has run', (t) => {
+  const f = fixture(t);
+  const plan = f.read('discovery-plan.json');
+  plan.gaps = [{ gap_id: 'missing-view', priority: 'P1', blocked_station: 'visual_review', question: 'Is another view available?', evidence_types: ['photo'], allowed_sources: ['official site'], search_budget: { max_queries: 3, max_minutes: 10 }, stop_conditions: ['Keep UNKNOWN if no source is found.'] }];
+  f.write('discovery-plan.json', plan);
+  const result = evaluateDiscovery(f.root, ID);
+  assert.equal(result.status, 'NOT_RUN');
+  assert.deepEqual(result.gaps.map(({ gap_id, status }) => ({ gap_id, status })), [{ gap_id: 'missing-view', status: 'NOT_RUN' }]);
+});
+
+test('unresolved optional discovery gaps must flow into the model limitations', (t) => {
+  const f = fixture(t);
+  f.ready();
+  const plan = f.read('model-plan.json');
+  plan.limitations = ['Artistic reconstruction only.'];
+  f.write('model-plan.json', plan);
+  const result = f.status();
+  assert.equal(result.gates.discovery, true);
+  assert.equal(result.gates.model_plan, false);
+  assert.ok(result.blockers.some((issue) => issue.code === 'OPTIONAL_DISCOVERY_LIMITATION_MISSING'));
+});
+
+test('local project artifacts are hash checked and path restricted', (t) => {
+  const f = fixture(t);
+  f.ready();
+  writeFileSync(f.file('demo-reference.txt'), 'changed after source registration');
+  const result = f.status();
+  assert.equal(result.gates.sources, false);
+  assert.ok(result.blockers.some((issue) => issue.code === 'INVALID_PROJECT_ARTIFACT'));
+});
 
 test('initialization is an unrun DRAFT and never overwrites existing files', (t) => {
   const f = fixture(t);
@@ -135,9 +191,9 @@ test('valid local checks and rendered video remain PREVIEW_ONLY without TITMAS',
   f.passLocalChecks();
   const result = f.status();
   assert.equal(result.stage, 'PREVIEW_ONLY');
-  assert.deepEqual(result.gates, { sources: true, model_plan: true, technical: true, visual: true, titmas: false, video: true });
+  assert.deepEqual(result.gates, { sources: true, discovery: true, model_plan: true, technical: true, visual: true, titmas: false, video: true });
   assert.equal(result.ready_for_user_review, false);
-  assert.deepEqual(result.blockers.map((issue) => issue.code), ['TITMAS_NOT_CONNECTED']);
+  assert.deepEqual(result.blockers.map((issue) => issue.code), ['OPTIONAL_DISCOVERY_GAP_OPEN', 'TITMAS_NOT_CONNECTED']);
 });
 
 test('handwritten TITMAS PASS and invented connector cannot open the release gate', (t) => {
@@ -222,7 +278,7 @@ test('renaming the request invalidates every downstream identity binding', (t) =
   f.write('request.json', request);
   const result = f.status();
   assert.equal(result.stage, 'NEEDS_REVISION');
-  assert.deepEqual(result.gates, { sources: false, model_plan: false, technical: false, visual: false, titmas: false, video: false });
+  assert.deepEqual(result.gates, { sources: false, discovery: false, model_plan: false, technical: false, visual: false, titmas: false, video: false });
   for (const station of ['discovery', 'construction', 'technical', 'visual', 'video']) assert.ok(result.blockers.some((issue) => issue.station === station && issue.code === 'STALE_HASH_BINDING' && issue.detail.includes('request identity')));
 });
 

@@ -4,10 +4,15 @@
 
 **当前鹳雀楼交付需要返工（NEEDS_REVISION）**：照片保真与原演示表现复核未通过，旧艺术预览 PASS 已被取代。原视频与历史记录保留，技术 PASS 不代表外观合格。查看[倒查报告](artifacts/reverse-audit-20260922-r1/report.md)、[可视对照页](artifacts/reverse-audit-20260922-r1/index.html)和[当前交付状态](jobs/guanque-pilot/delivery/current-status.json)。
 
+2026-09-23 [正向营造横屏候选片](jobs/guanque-pilot/delivery/candidate-r1/README.md)完成技术出片和一次 TITMAS 本地 outcome review。候选结果 `FAIL / PREVIEW_ONLY`：建筑外观、运动语义及远端服务回执仍阻断完整商业交付；本地工具不等于远端 TITMAS 服务。
+
+同日[竖屏拆解候选 r2](jobs/guanque-pilot/delivery/candidate-r2/README.md)已按 1080×1920 / 30 FPS 出片，补入四带分层、环视和回装。新视频摘要经真实 TITMAS Sandbox v0.1 POST 返回 `SCHEMA_PREFLIGHT_PASS`，仅限元数据结构；本地 outcome review 仍为 `FAIL`，商业 D29 视频结果接口尚未部署，无签名回执。任务保持 `NEEDS_REVISION / PREVIEW_ONLY`。
+
 - 工作方式与工位：[流水线手册](pipeline/README.md)
 - 机读任务操作：[CLI 合同](pipeline/CLI.md)，运行 `node pipeline/cli.mjs help`
+- 资料缺口发现：[发现合同](pipeline/DISCOVERY.md)，运行 `node pipeline/cli.mjs discovery <任务ID>`
 - 首个任务：[鹳雀楼 pilot](jobs/guanque-pilot/request.json)，运行 `node pipeline/cli.mjs status guanque-pilot`
-- 接入事实：[integrations.json](pipeline/integrations.json)。DBA 当前登记的 TITMAS 公共服务不可用；[服务核查](docs/governance/titmas-service-discovery.json)。接通前保持预览状态。
+- 接入事实：[integrations.json](pipeline/integrations.json)。公共服务入口仍不可用；已从驾驶舱定位到运行中的 Sandbox v0.1 并完成[真实预检调用](docs/governance/titmas-live-call-20260923-r2.json)。商业 D29 仍未部署，保持预览状态。
 
 以下是首个样本“鹳雀楼 · 更上一层楼”的交互演示说明。
 

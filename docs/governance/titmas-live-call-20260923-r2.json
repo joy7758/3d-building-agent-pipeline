@@ -1,0 +1,23 @@
+{
+  "schema_version": "titmas-live-call.v1",
+  "observation_scope": "fresh real authenticated service call bound to guanque candidate r2 video digest",
+  "service": "titmas-sandbox-gateway",
+  "service_version": "0.1",
+  "service_maturity": "internal-operator-preview",
+  "route": "POST /sandbox/v0.1/preflight",
+  "transport": "SSH_LOOPBACK_TUNNEL",
+  "credential_source": "MACOS_KEYCHAIN_PROCESS_ONLY",
+  "call_record": "jobs/guanque-pilot/delivery/candidate-r2/titmas-sandbox-preflight.json",
+  "video_sha256": "90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+  "http_status": 200,
+  "result": "SCHEMA_PREFLIGHT_PASS",
+  "media_uploaded": false,
+  "video_content_reviewed_by_service": false,
+  "signed_outcome_receipt": "NOT_AVAILABLE",
+  "independent_receipt_verification": "NOT_RUN",
+  "commercial_d29_outcome_review": "NOT_DEPLOYED_NOT_RUN",
+  "local_outcome_review": "EXECUTED_FAIL_SEPARATE_OFFLINE_OPERATOR",
+  "historical_probe": "docs/governance/titmas-live-check-20260923.json",
+  "correction": "The historical probe checked 8092 and inactive service names. The active titmas-private-api.service listens on server loopback 8091 and exposes only Sandbox v0.1 preflight, not D29 outcome review.",
+  "delivery_classification": "PREVIEW_ONLY_NEEDS_REVISION"
+}

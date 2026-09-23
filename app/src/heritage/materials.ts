@@ -8,9 +8,9 @@ export type SurfaceName = "brick" | "wood" | "door" | "paint" | "jade" | "stone"
 export function createHeritageMaterials(renderer: THREE.WebGLRenderer) {
   const textures: THREE.Texture[] = [];
   const palette: Record<SurfaceName, string> = {
-    brick: "#805547", wood: "#583a30", door: "#493029", paint: "#354a49",
-    jade: "#46514b", stone: "#aaa99d",
-    plaster: "#c9c6b9", tile: "#635e50", bronze: "#928061", recess: "#282623",
+    brick: "#805547", wood: "#654037", door: "#59362d", paint: "#315953",
+    jade: "#426258", stone: "#99968b",
+    plaster: "#c2bcb0", tile: "#5b594f", bronze: "#a08b67", recess: "#282623",
     cloth: "#555c53", paper: "#d9ab70", moss: "#45573a", glass: "#b6c8c3",
   };
   const output = {} as Record<SurfaceName, THREE.MeshStandardMaterial>;

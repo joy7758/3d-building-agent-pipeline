@@ -1,0 +1,416 @@
+{
+  "schema_version": "discovery-attempt.v1",
+  "job_id": "guanque-pilot",
+  "attempt_id": "guanque-discovery-r2",
+  "module": {
+    "module_id": "CODEX_RESEARCH_ADAPTER",
+    "version": "2026-09-23-discovery-r2",
+    "owner": "CURRENT_CODEX_TASK",
+    "capability": "Search attributable public building records, inspect licensed reference image pages, and record bounded evidence gaps.",
+    "input_contract": [
+      "Current request.json, revised discovery-plan.json, and sources.json.",
+      "Allow-listed public sources and hash-bound local project artifacts."
+    ],
+    "output_contract": [
+      "Append-only attempt JSON with source IDs, precise locators, per-gap outcomes and stop reason."
+    ],
+    "evidence_contract": [
+      "Non-unknown claims cite a registered source and page section, image-page metadata, or observed frame.",
+      "Retrieval failures, license constraints, scope conflicts and unknowns remain explicit."
+    ],
+    "allowed_actions": [
+      "Search public official, primary-reporting, and open-media records.",
+      "Open source pages and visually inspect indexed reference images in browser.",
+      "Update source register and append this attempt/index."
+    ],
+    "forbidden_actions": [
+      "Invent architectural or structural details.",
+      "Treat search-result indexing as direct page access.",
+      "Copy source photos into production assets or republish them without satisfying license/permission.",
+      "Modify or replace the delivered video.",
+      "Call external model providers or reveal credentials."
+    ],
+    "side_effects": [
+      "Updated this job source register, discovery plan, append-only attempt/index and machine-readable current status only."
+    ],
+    "data_retention": "Local research record. External media remains linked only; original source files are not copied into app assets.",
+    "lifecycle": {
+      "upgrade": "Create a new module version and a new attempt.",
+      "rollback": "Select an earlier indexed attempt without deleting this record.",
+      "replacement": "Register a replacement module identity and rerun against current bindings.",
+      "revocation": "Stop selecting this module and mark subsequent attempts NOT_RUN."
+    },
+    "limitations": [
+      "No original reconstruction drawings or dimensioned elevations were located.",
+      "Yuncheng government page direct retrieval timed out; its indexed page body is attributed as search-indexed text.",
+      "The two visually inspected Commons photographs show front views only; no rear or true side elevation was found.",
+      "No quantitative photographic measurement or measured architectural accuracy is claimed.",
+      "Exact-phrase follow-up returned unrelated construction documents; they were excluded rather than imported as Guanque evidence."
+    ]
+  },
+  "started_at": "2026-09-23T08:00:00Z",
+  "completed_at": "2026-09-23T08:07:21.114Z",
+  "bindings": {
+    "request_sha256": "a0ef38da1a439a6bd821bc0e459a1a2c4afffff41bb0ea77ba229dc87606cf7b",
+    "plan_sha256": "d5ef8a5d03d8174517c9ae549a893cbe6838f1d6fcedb894d1b4591decd2a708",
+    "sources_sha256": "380fb937846a081dcf7022ae2a955d4b0c9853b85d9c285066994220f10ab10f"
+  },
+  "queries": [
+    {
+      "query": "site:yuncheng.gov.cn/doc/2020/07/21/71073.shtml 鹳雀楼 57.4 73.9 83 72 五间 三间 钢筋水泥骨架",
+      "source_scope": "official-owner-or-government",
+      "gap_ids": [
+        "reported-dimensions-source",
+        "roof-bracket-and-facade-evidence",
+        "structural-system-source"
+      ],
+      "result": "Search index returned the indexed page body with dimensions, qualitative form and skeleton material. Direct page fetch timed out; recorded as indexed text, not direct access."
+    },
+    {
+      "query": "鹳雀楼 更上层楼 台基三层 楼身六层 设计图纸",
+      "source_scope": "primary-publication",
+      "gap_ids": [
+        "reported-dimensions-source",
+        "exterior-coverage-and-version",
+        "roof-bracket-and-facade-evidence"
+      ],
+      "result": "Opened People Daily article directly. It reports platform 3 levels/body 6 levels, total 73.9 m, current rebuild in 2002, and says historical reconstruction documents were not found although new design drawings were produced."
+    },
+    {
+      "query": "Wikimedia Commons Stork Tower Guanque Tower photographs",
+      "source_scope": "open-licensed-photographic-records",
+      "gap_ids": [
+        "exterior-coverage-and-version",
+        "roof-bracket-and-facade-evidence",
+        "unseen-facades-and-interior"
+      ],
+      "result": "Commons category lists five media files. Two current-building photographs were opened, license pages checked, and images visually inspected; both are front views, not additional side/rear coverage."
+    },
+    {
+      "query": "Inspect Commons File:Stork Tower, 6 October 2017.jpg",
+      "source_scope": "open-licensed-photographic-records",
+      "gap_ids": [
+        "exterior-coverage-and-version",
+        "roof-bracket-and-facade-evidence"
+      ],
+      "result": "File page identifies author/source, date, 1680x1260 dimensions and CC BY 2.5; displayed image is a distant centered front view."
+    },
+    {
+      "query": "Inspect Commons File:鹳雀楼.jpg and cropped derivative",
+      "source_scope": "open-licensed-photographic-records",
+      "gap_ids": [
+        "exterior-coverage-and-version",
+        "roof-bracket-and-facade-evidence"
+      ],
+      "result": "File page identifies author, capture date, location metadata and CC BY-SA 4.0; displayed image is a closer near-frontal view showing stair, podium and stacked exterior levels."
+    },
+    {
+      "query": "Search for public reconstruction elevations and dimensioned details",
+      "source_scope": "primary-publication",
+      "gap_ids": [
+        "reported-dimensions-source",
+        "roof-bracket-and-facade-evidence"
+      ],
+      "result": "No public dimensioned elevation or structural drawing located. People Daily describes the reconstruction design archives as extensive but does not publish them; 16.5 m platform height and lower 7x5 grid remain unverified."
+    },
+    {
+      "query": "Search for a published structural system description or wall layout",
+      "source_scope": "official-owner-or-government",
+      "gap_ids": [
+        "structural-system-source"
+      ],
+      "result": "Government indexed text supports a reinforced-concrete skeleton but no frame-shear-wall subtype or wall locations; no structural drawing located."
+    },
+    {
+      "query": "Inventory registered user reference coverage against the current-source package",
+      "source_scope": "current-source-package",
+      "gap_ids": [
+        "unseen-facades-and-interior"
+      ],
+      "result": "User references remain two front-oblique images; no rear/side views, interior plans or concealed-structure drawings are registered."
+    },
+    {
+      "query": "Compare pinned upstream and prior pilot assembly progression",
+      "source_scope": "pinned-skill-and-upstream-demo",
+      "gap_ids": [
+        "reference-demo-motion-contract"
+      ],
+      "result": "R1 media hashes remain unchanged; its sampled comparison is retained: demo grows from the base while pilot opens complete, disassembles, then rebuilds. No full cadence audit performed."
+    },
+    {
+      "query": "鹳雀楼 台基高16.5米 7间 5间 37.8 25.8 原文",
+      "source_scope": "primary-publication",
+      "gap_ids": [
+        "reported-dimensions-source"
+      ],
+      "result": "Targeted search returned no attributable Guanque source stating the 16.5 m platform vertical height or lower 7 x 5 bay grid. The only relevant government result repeated 57.4 m main and 73.9 m total; unrelated pages were excluded."
+    },
+    {
+      "query": "鹳雀楼 框架 剪力墙 施工组织设计 PDF",
+      "source_scope": "primary-publication",
+      "gap_ids": [
+        "structural-system-source"
+      ],
+      "result": "Search returned generic frame/shear-wall construction documents for other buildings, not the Guanque reconstruction. No Guanque-specific structural drawing or frame-shear-wall source located."
+    },
+    {
+      "query": "鹳雀楼 92根 柱 斗拱 2万 施工 图纸",
+      "source_scope": "primary-publication",
+      "gap_ids": [
+        "roof-bracket-and-facade-evidence"
+      ],
+      "result": "No source-backed Guanque drawing or attributable detail count located; unrelated architectural material was excluded."
+    }
+  ],
+  "observations": [
+    {
+      "claim_id": "gov-main-total-platform",
+      "gap_id": "reported-dimensions-source",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "Yuncheng Government indexed page body reports main-building height 57.4 m, total height 73.9 m, and rectangular platform footprint 83 x 72 m (310 m perimeter).",
+      "source_id": "yuncheng-government-guanque-2020-refresh-2026-09-23",
+      "locator": "Search-indexed page body, “主楼” section; direct open timed out."
+    },
+    {
+      "claim_id": "gov-bay-and-form-description",
+      "gap_id": "reported-dimensions-source",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "The same indexed page reports top floor as five bays wide by three bays deep, exterior appearance as three storeys/four eaves, with six interior levels.",
+      "source_id": "yuncheng-government-guanque-2020-refresh-2026-09-23",
+      "locator": "Search-indexed page body, “主楼” section and following interior-level description; direct open timed out."
+    },
+    {
+      "claim_id": "people-platform-body-count",
+      "gap_id": "reported-dimensions-source",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "People Daily reports three levels in the platform and six levels in the tower body, total height 73.9 m; this supports a 3+6 platform/body count, not nine interior floors.",
+      "source_id": "people-daily-guanque-rebuild-2025",
+      "locator": "2025-04-09 article, paragraphs beginning “登鹳雀楼看什么” and “现存鹳雀楼于2002年复建”."
+    },
+    {
+      "claim_id": "unverified-platform-height-lower-grid",
+      "gap_id": "reported-dimensions-source",
+      "claim_kind": "UNKNOWN",
+      "statement": "No directly inspected source found the user-reported 16.5 m platform vertical height or lower 7 x 5 bay grid. Do not derive platform height by subtracting 57.4 from 73.9 because datum definitions are not supplied.",
+      "source_id": null,
+      "locator": "Compared indexed government “主楼” section, directly opened People Daily article, and docs/user-reference.md."
+    },
+    {
+      "claim_id": "reconstruction-document-search",
+      "gap_id": "roof-bracket-and-facade-evidence",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "People Daily reports that no related reconstruction documents were found in historical materials and local gazetteers; the reconstruction team generated extensive design drawings, but the report does not publish the drawings.",
+      "source_id": "people-daily-guanque-rebuild-2025",
+      "locator": "2025-04-09 article, paragraph beginning “于元初毁于战火以后”; paragraph states design drawings filled multiple trucks."
+    },
+    {
+      "claim_id": "gov-qualitative-roof-details",
+      "gap_id": "roof-bracket-and-facade-evidence",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "Yuncheng Government indexed text describes four eaves, four projecting Xieshan-style baosha, surrounding corridors and round columns, partition doors, curved eaves, glazed ridge tiles, paired chiwen and a central finial; it does not give measured joint/bracket geometry.",
+      "source_id": "yuncheng-government-guanque-2020-refresh-2026-09-23",
+      "locator": "Search-indexed page body, “主楼” section; exact bracket details absent; direct page open timed out."
+    },
+    {
+      "claim_id": "commons-front-2017-visual",
+      "gap_id": "exterior-coverage-and-version",
+      "claim_kind": "OBSERVED",
+      "statement": "The Wikimedia Commons file is labeled as a front view dated 2017-10-06; the displayed image shows the current rebuilt tower and front plaza from a distant, nearly centered viewpoint.",
+      "source_id": "commons-guanque-front-2017",
+      "locator": "Commons file page Summary plus browser visual inspection of the image; file page lists 1680 x 1260 and CC BY 2.5."
+    },
+    {
+      "claim_id": "commons-front-2020-visual",
+      "gap_id": "exterior-coverage-and-version",
+      "claim_kind": "OBSERVED",
+      "statement": "The Wikimedia Commons 2020 image shows a near-frontal plaza view with the stair, podium face and stacked exterior levels; it is a cropped extraction from a larger photograph, not a side/rear view.",
+      "source_id": "commons-guanque-front-2020",
+      "locator": "Commons file page image and Summary/metadata; original captured 2020-09-17, CC BY-SA 4.0; browser visual inspection."
+    },
+    {
+      "claim_id": "people-current-rebuilt-identity",
+      "gap_id": "exterior-coverage-and-version",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "People Daily reports the extant Guanque Tower was rebuilt and opened in 2002; the current visitor building is not the surviving Tang-era original.",
+      "source_id": "people-daily-guanque-rebuild-2025",
+      "locator": "2025-04-09 article, paragraphs beginning “2002年” and “现存鹳雀楼于2002年复建”."
+    },
+    {
+      "claim_id": "facade-evidence-still-front-only",
+      "gap_id": "exterior-coverage-and-version",
+      "claim_kind": "UNKNOWN",
+      "statement": "The inspected public photographs add two front views but no verified rear or orthographic side elevation; the current package still lacks those views.",
+      "source_id": null,
+      "locator": "Two Commons file pages and visible images plus jobs/guanque-pilot/sources.json view inventory."
+    },
+    {
+      "claim_id": "detail-photo-limit",
+      "gap_id": "roof-bracket-and-facade-evidence",
+      "claim_kind": "UNKNOWN",
+      "statement": "Public text and front photographs support broad silhouette and named features, but exact bracket-set geometry, roof intersections, rear facade openings and dimensioned details remain unsupported.",
+      "source_id": null,
+      "locator": "Compared indexed government text, two Commons front images, People Daily reconstruction report, and docs/photo-comparison-r3.md."
+    },
+    {
+      "claim_id": "motion-record-retained",
+      "gap_id": "reference-demo-motion-contract",
+      "claim_kind": "OBSERVED",
+      "statement": "R1 sampled-video observation remains bound to the unchanged upstream demo and prior pilot hashes: the demo builds from the base, while the pilot opens complete, disassembles and rebuilds.",
+      "source_id": "upstream-demo-video",
+      "locator": "R1 attempt demo-growth-sequence and pilot-reverse-then-forward observations; r2 did not alter either video."
+    },
+    {
+      "claim_id": "structure-concrete-source",
+      "gap_id": "structural-system-source",
+      "claim_kind": "SOURCE_REPORTED",
+      "statement": "Yuncheng Government indexed page describes a steel-reinforced cement/concrete skeleton; it supports a concrete skeleton at high level but not the user-reported frame-shear-wall subtype or wall locations.",
+      "source_id": "yuncheng-government-guanque-2020-refresh-2026-09-23",
+      "locator": "Search-indexed page body, “主楼” final sentence; direct open timed out."
+    },
+    {
+      "claim_id": "structure-details-unpublished",
+      "gap_id": "structural-system-source",
+      "claim_kind": "UNKNOWN",
+      "statement": "No structural drawings, frame schedule or shear-wall layout was found in this bounded search; do not visualize hidden load paths as verified.",
+      "source_id": null,
+      "locator": "People Daily reconstruction-report search and open; Yuncheng indexed page; bounded query log."
+    },
+    {
+      "claim_id": "unseen-facade-inventory-r2",
+      "gap_id": "unseen-facades-and-interior",
+      "claim_kind": "UNKNOWN",
+      "statement": "Registered user references and newly inspected Commons images are all front-facing exteriors; no rear/side elevations, interior plans or concealed-structure drawings were observed.",
+      "source_id": null,
+      "locator": "sources.json views plus Commons 2017 and 2020 images."
+    }
+  ],
+  "outcomes": [
+    {
+      "gap_id": "reported-dimensions-source",
+      "status": "PARTIAL",
+      "summary": "Official indexed text and directly opened People Daily reporting now corroborate 73.9 m total height, 57.4 m main height, 83 x 72 m platform footprint, 3-level platform + 6-level body, and top 5 x 3 bay count. The phrase “nine interior levels” was corrected: evidence supports a 3+6 platform/body count, while the official indexed source separately describes six interior levels. No explicit source for 16.5 m platform vertical height or lower 7 x 5 grid was found.",
+      "source_ids": [
+        "yuncheng-government-guanque-2020-refresh-2026-09-23",
+        "people-daily-guanque-rebuild-2025",
+        "guanque-user-reported-dimensions"
+      ],
+      "claim_ids": [
+        "gov-main-total-platform",
+        "gov-bay-and-form-description",
+        "people-platform-body-count",
+        "unverified-platform-height-lower-grid"
+      ],
+      "limitations": [
+        "Government page direct fetch timed out; facts are attributed to its indexed page body.",
+        "Do not derive platform vertical height by subtraction.",
+        "Floor-counting terminology differs by source; preserve platform/body/interior labels."
+      ]
+    },
+    {
+      "gap_id": "exterior-coverage-and-version",
+      "status": "PARTIAL",
+      "summary": "Current 2002 rebuilt-building identity is supported by People Daily, and two openly licensed front-view photographs supplement the reference package. All observed photographs remain front views; side, rear and orthographic elevations are still missing.",
+      "source_ids": [
+        "people-daily-guanque-rebuild-2025",
+        "commons-guanque-front-2017",
+        "commons-guanque-front-2020",
+        "user-reference"
+      ],
+      "claim_ids": [
+        "people-current-rebuilt-identity",
+        "commons-front-2017-visual",
+        "commons-front-2020-visual",
+        "facade-evidence-still-front-only"
+      ],
+      "limitations": [
+        "Commons photos are research references; any reuse must satisfy CC BY 2.5 or CC BY-SA 4.0 attribution terms.",
+        "No rear/true-side view located."
+      ]
+    },
+    {
+      "gap_id": "roof-bracket-and-facade-evidence",
+      "status": "PARTIAL",
+      "summary": "Official indexed description and inspected front photographs support the broad four-eave, three-exterior-storey silhouette, projecting baosha, corridors, columns, partition facade and top 5 x 3 bays. Exact bracket sets, roof intersections and hidden facade details still lack dimensioned drawings or close detail evidence.",
+      "source_ids": [
+        "yuncheng-government-guanque-2020-refresh-2026-09-23",
+        "people-daily-guanque-rebuild-2025",
+        "commons-guanque-front-2017",
+        "commons-guanque-front-2020",
+        "guanque-photo-audit-r3"
+      ],
+      "claim_ids": [
+        "gov-qualitative-roof-details",
+        "reconstruction-document-search",
+        "detail-photo-limit"
+      ],
+      "limitations": [
+        "The cited government source was indexed but timed out on direct open.",
+        "The front images are not close bracket-detail photographs.",
+        "R3 pixel ratios remain visual notes, not surveyed geometry."
+      ]
+    },
+    {
+      "gap_id": "reference-demo-motion-contract",
+      "status": "PARTIAL",
+      "summary": "R1 source-hash-bound video comparison still confirms the central assembly narrative mismatch. Component-by-component travel, pacing, materials and lighting remain to be mapped against the complete demo.",
+      "source_ids": [
+        "upstream-demo-video",
+        "prior-guanque-video",
+        "guanque-film-plan"
+      ],
+      "claim_ids": [
+        "motion-record-retained"
+      ],
+      "limitations": [
+        "R2 did not re-sample the videos; this retains R1 observations only.",
+        "No similarity percentage claimed."
+      ]
+    },
+    {
+      "gap_id": "structural-system-source",
+      "status": "PARTIAL",
+      "summary": "The official indexed source supports a reinforced-concrete/cement skeleton at a high level. It does not identify a frame-shear-wall subtype or publish shear-wall placement; no structural drawings were located.",
+      "source_ids": [
+        "yuncheng-government-guanque-2020-refresh-2026-09-23",
+        "guanque-user-reported-dimensions"
+      ],
+      "claim_ids": [
+        "structure-concrete-source",
+        "structure-details-unpublished"
+      ],
+      "limitations": [
+        "Direct government page open timed out.",
+        "No structural simulation or load-path claim."
+      ]
+    },
+    {
+      "gap_id": "unseen-facades-and-interior",
+      "status": "UNKNOWN",
+      "summary": "The two new public images are frontal only, alongside two front-oblique user views. Rear and side facades, room plans and concealed structure remain unobserved.",
+      "source_ids": [
+        "user-reference",
+        "commons-guanque-front-2017",
+        "commons-guanque-front-2020"
+      ],
+      "claim_ids": [
+        "unseen-facade-inventory-r2"
+      ],
+      "limitations": [
+        "Do not mirror front details to invent unseen facades."
+      ]
+    }
+  ],
+  "source_coverage": [
+    "yuncheng-government-guanque-2020-refresh-2026-09-23",
+    "people-daily-guanque-rebuild-2025",
+    "commons-guanque-front-2017",
+    "commons-guanque-front-2020",
+    "user-reference",
+    "guanque-user-reported-dimensions",
+    "guanque-photo-audit-r3",
+    "upstream-demo-video",
+    "prior-guanque-video",
+    "guanque-film-plan"
+  ],
+  "stop_reason": "The r2 search budget included targeted exact-phrase follow-up for missing platform height, lower bay grid, bracket count and frame-shear-wall subtype. No attributable Guanque-specific original was located. The open gaps remain recorded without invented resolution, media republication or new acceptance."
+}

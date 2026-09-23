@@ -62,8 +62,12 @@ function gongArm(b:HeritageBuilder,width:number,p:Point,angle:number,start:numbe
 function brackets(b:HeritageBuilder,y:number,rx:number,start:number,rz:number) {
   for(let s=0;s<4;s++){
     const a=s*Math.PI/2,r=s%2?rz:rx,depth=s%2?rx:rz;
-    for(let i=-6;i<=6;i++){
-      const x=i*r/6.1;
+    // The photographs show a dense continuous bracket register. Derive the
+    // rhythm from the actual eave span, so shorter sides do not inherit the
+    // sparse fixed 13-arm count of the first artistic model.
+    const halfCount=Math.ceil(r/.70);
+    for(let i=-halfCount;i<=halfCount;i++){
+      const x=i*r/(halfCount+.12);
       for(let k=0;k<3;k++){
         gongArm(b,.56+k*.24,turn(x,y+k*.18+.05,depth+k*.15,a),a,start+k*.005);
         b.box([.16,.16,.62+k*.18],turn(x,y+k*.18+.07,depth+k*.15,a),'wood',start+k*.005,{r:[0,a,0]});
@@ -124,7 +128,7 @@ function lowerCorridor(b:HeritageBuilder){
     for(let j=0;j<bays;j++){
       const x=-r+j*2*r/bays;
       b.cylinder(.21,.26,.24,turn(x,floor+.12,d,a),'stone',.202);
-      b.cylinder(.12,.17,height,turn(x,floor+height/2,d,a),'wood',.222+j*.001,{lift:1.8});
+      b.cylinder(.16,.21,height,turn(x,floor+height/2,d,a),'wood',.222+j*.001,{lift:1.8});
     }
     b.box([2*r+.25,.24,.3],turn(0,floor+height,d,a),'jade',.248,{r:[0,a,0]});
     for(let j=0;j<bays;j++){
@@ -209,7 +213,10 @@ export function buildArchitecture(b:HeritageBuilder) {
       ringRoof(b,{outerX:level.roofRadius,outerZ:level.roofDepth,innerX,innerZ,
         eaveY:level.roofY,innerY:level.roofY+level.roofHeight,start:level.start+.18});
       const baseY=level.roofY+level.roofHeight,friezeTop=next.floor-.30;
-      b.box([2*innerX,friezeTop-baseY,2*innerZ],[0,(baseY+friezeTop)/2,0],'recess',level.start+.17,{shade:.78});
+      // This connector is timed with the lower roof but belongs to the next
+      // floor when the diagram separates layers; otherwise a hidden dark core
+      // becomes an artificial floating slab.
+      b.box([2*innerX,friezeTop-baseY,2*innerZ],[0,(baseY+friezeTop)/2,0],'recess',level.start+.17,{shade:.78,explodeBand:index+2});
     }else hipRoof(b,level.roofY,level.roofRadius,level.roofDepth,level.roofHeight,level.start+.18,[0,0,0],0,true,
       [0,1,2,3].map(side=>({side:side as 0|1|2|3,halfWidth:3.65,outset:.4,rise:1.18,joinDepth:2.2})));
     if(index>0){

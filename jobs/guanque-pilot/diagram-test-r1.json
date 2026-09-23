@@ -1,0 +1,49 @@
+{
+  "schema_version": "architecture-diagram-test.v1",
+  "job_id": "guanque-pilot",
+  "diagram_id": "guanque-exploded-test-r1",
+  "status": "PREVIEW_ONLY",
+  "purpose": "Test a true vertical exploded view of the existing Guanque procedural geometry without changing the historical video acceptance result.",
+  "entrypoint": "app/?diagram=1",
+  "implementation": {
+    "geometry": "app/src/heritage/guanque.ts",
+    "assembly_renderer": "app/src/heritage/builder.ts",
+    "camera_and_scene": "app/src/PagodaThreeScene.tsx",
+    "annotations": "app/src/App.tsx",
+    "explode_spacing_scene_units": 4.8,
+    "bands_bottom_to_top": [
+      { "id": 0, "label": "台基与登楼路径" },
+      { "id": 1, "label": "底层阁与环廊" },
+      { "id": 2, "label": "中层阁与重檐" },
+      { "id": 3, "label": "顶层阁与屋脊" }
+    ],
+    "band_assignment": "Per-piece aExplodeBand; by construction schedule unless explicitly overridden for concealed connectors. It is a visualization grouping, not a surveyed structural decomposition."
+  },
+  "local_artifact": {
+    "path": "artifacts/guanque-exploded-test-r1/guanque-exploded.png",
+    "sha256": "58e6e2e1dcec46152c2cbe486af78aa033e0975b868c1c106854d6f0d5172f2f",
+    "viewport": "1600x1000",
+    "capture": "Local Chrome WebGL rendering of app/?diagram=1"
+  },
+  "source_scope": [
+    "https://www.yuncheng.gov.cn/doc/2020/07/21/71073.shtml",
+    "https://cpc.people.com.cn/n1/2025/0409/c64387-40456030.html",
+    "jobs/guanque-pilot/references/provenance.md",
+    "jobs/guanque-pilot/discovery/RESEARCH-R2.md"
+  ],
+  "checks": {
+    "npm_run_check": "PASS_TECHNICAL_ONLY",
+    "npm_run_build": "PASS_TECHNICAL_ONLY",
+    "browser_visual_inspection": "CAPTURED_WITH_OPEN_MODEL_ISSUES",
+    "architectural_visual_acceptance": "NOT_RUN_FOR_THIS_DIAGRAM",
+    "titmas_receipt": "NOT_CONNECTED",
+    "publication": "NOT_RUN"
+  },
+  "limitations": [
+    "The source Guanque model remains NEEDS_REVISION with a historical visual FAIL.",
+    "Roof, bracket and facade details are approximate; missing side and rear reference coverage remains open.",
+    "Exploded separation is for observation, not actual structural or construction sequencing.",
+    "No measured architectural accuracy or structural simulation is claimed."
+  ],
+  "skill_attribution": "Hailey, threejs-architecture-effects, MIT; see vendor/architecture-skill/LICENSE and jobs/guanque-pilot/delivery/LICENSE-Hailey.txt"
+}

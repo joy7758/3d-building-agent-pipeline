@@ -67,6 +67,7 @@ const frames = config.durationSeconds * fps;
 if (!Number.isInteger(frames) || frames < 1 || frames > 36000) throw new Error('Invalid or excessive frame count.');
 function validatePose(pose) {
   if (!pose || !Number.isFinite(pose.progress) || pose.progress < 0 || pose.progress > 1) throw new Error('Invalid progress.');
+  if (pose.explode !== undefined && (!Number.isFinite(pose.explode) || pose.explode < 0 || pose.explode > 1)) throw new Error('Invalid exploded-band separation.');
   if (![pose.position, pose.target].every((v) => Array.isArray(v) && v.length === 3 && v.every(Number.isFinite))) throw new Error('Invalid camera vectors.');
   if (pose.position.every((v, i) => v === pose.target[i])) throw new Error('Camera cannot equal target.');
 }
@@ -77,6 +78,9 @@ for (const shot of config.shots) {
   validatePose(shot.from); validatePose(shot.to); nextStart = shot.end;
 }
 if (nextStart !== config.durationSeconds) throw new Error('Shot durations must match durationSeconds.');
+const coverSeconds = config.coverAtSeconds === undefined ? 0 : Number(config.coverAtSeconds);
+if (!Number.isFinite(coverSeconds) || coverSeconds < 0 || coverSeconds >= config.durationSeconds) throw new Error('coverAtSeconds must select a frame within the video.');
+const coverFrameIndex = Math.min(frames - 1, Math.round(coverSeconds * fps));
 
 function frameAt(index) {
   const seconds = index / fps;
@@ -88,6 +92,7 @@ function frameAt(index) {
     index, seconds, shotId: shot.id, label: shot.label,
     pose: {
       progress: lerp(shot.from.progress, shot.to.progress, t),
+      explode: lerp(shot.from.explode ?? 0, shot.to.explode ?? 0, t),
       position: shot.from.position.map((v, i) => lerp(v, shot.to.position[i], cameraT)),
       target: shot.from.target.map((v, i) => lerp(v, shot.to.target[i], cameraT)),
     },
@@ -238,9 +243,14 @@ try {
   }
   async function capture(frame, filename) {
     const stats = await seek(frame);
-    if (stats.width !== width || stats.height !== Math.round(height * .73)) {
-      // Canvas spans 73% of the film height; actual CSS rounding may differ by one.
-      if (stats.width !== width || Math.abs(stats.height - height * .73) > 1) throw new Error('Unexpected render canvas dimensions.');
+    // The portrait film canvas spans the full width and 73% height. The
+    // landscape presentation reserves a left caption column and uses 77% width
+    // by 94% height. Check the actual WebGL dimensions before saving a frame.
+    const landscape = width >= height;
+    const canvasWidth = width * (landscape ? .77 : 1);
+    const canvasHeight = height * (landscape ? .94 : .73);
+    if (Math.abs(stats.width - canvasWidth) > 1 || Math.abs(stats.height - canvasHeight) > 1) {
+      throw new Error('Unexpected render canvas dimensions.');
     }
     const png = await page.screenshot({ type: 'png', path: filename, animations: 'disabled', caret: 'hide' });
     return { sha256: hash(png), stats };
@@ -265,7 +275,7 @@ try {
   }
   await json('frame-index.json', frameRecords);
   for (const [label, index] of [['first', 0], ['middle', Math.floor(frames / 2)], ['last', frames - 1]]) await copyFile(path.join(out, frameRecords[index].file), path.join(out, 'previews', `${label}.png`));
-  await copyFile(path.join(out, frameRecords[0].file), path.join(out, 'cover.png'));
+  await copyFile(path.join(out, frameRecords[coverFrameIndex].file), path.join(out, 'cover.png'));
   await verifyLoadedBundle();
   await browser.close(); browser = undefined;
   const video = path.join(out, 'guanque-pilot.mp4');
@@ -276,7 +286,7 @@ try {
   const [rateNumerator, rateDenominator] = stream.r_frame_rate.split('/').map(Number);
   if (metadata.streams.length !== 1 || stream.codec_name !== 'h264' || stream.pix_fmt !== 'yuv420p' || stream.width !== width || stream.height !== height || Number(stream.nb_read_frames) !== frames || rateNumerator / rateDenominator !== fps || Math.abs(Number(metadata.format.duration) - config.durationSeconds) > 1 / fps) throw new Error('Encoded MP4 metadata mismatch.');
   const videoBytes = await readFile(video);
-  manifest.output = { video: 'guanque-pilot.mp4', cover: 'cover.png', sha256: hash(videoBytes), coverSha256: hash(await readFile(path.join(out, 'cover.png'))), bytes: videoBytes.length, faststart: videoBytes.indexOf(Buffer.from('moov')) >= 0 && videoBytes.indexOf(Buffer.from('moov')) < videoBytes.indexOf(Buffer.from('mdat')) };
+  manifest.output = { video: 'guanque-pilot.mp4', cover: 'cover.png', coverFrameIndex, sha256: hash(videoBytes), coverSha256: hash(await readFile(path.join(out, 'cover.png'))), bytes: videoBytes.length, faststart: videoBytes.indexOf(Buffer.from('moov')) >= 0 && videoBytes.indexOf(Buffer.from('moov')) < videoBytes.indexOf(Buffer.from('mdat')) };
   if (!manifest.output.faststart) throw new Error('MP4 faststart atom ordering failed.');
   manifest.sourceAfter = await snapshotSources(); await json('source-after.json', manifest.sourceAfter);
   manifest.sourceUnchanged = manifest.sourceBefore.sha256 === manifest.sourceAfter.sha256;

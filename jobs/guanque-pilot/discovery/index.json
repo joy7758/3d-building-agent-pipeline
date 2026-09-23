@@ -1,0 +1,21 @@
+{
+  "schema_version": "discovery-index.v1",
+  "job_id": "guanque-pilot",
+  "attempts": [
+    {
+      "attempt_id": "guanque-discovery-r1",
+      "reference": {
+        "path": "jobs/guanque-pilot/discovery/attempts/guanque-discovery-r1.json",
+        "sha256": "587a73cb58984dbd96a828cb04a4f6c45de7493b8e6e237639ee940e9c98e4cc"
+      }
+    },
+    {
+      "attempt_id": "guanque-discovery-r2",
+      "reference": {
+        "path": "jobs/guanque-pilot/discovery/attempts/guanque-discovery-r2.json",
+        "sha256": "5da4dd9728f6d4f2574e84fe44089ed8398a86937a5de8162984eda2b34c6285"
+      }
+    }
+  ],
+  "current_attempt_id": "guanque-discovery-r2"
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "architecture-film.v1",
+  "adapterId": "guanque",
+  "title": "鹳雀楼 · 营造与分层拆解竖屏候选 r2",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "durationSeconds": 24,
+  "coverAtSeconds": 23.9,
+  "audio": "silent",
+  "assemblySemantics": "Forward artistic construction followed by spatial separation of four existing construction bands and reassembly. This is not a measured structural or construction-method simulation.",
+  "shots": [
+    {
+      "id": "podium",
+      "label": "筑台 · 登阶",
+      "start": 0,
+      "end": 4,
+      "from": { "progress": 0, "explode": 0, "position": [36, 26, 74], "target": [0, 6, 9] },
+      "to": { "progress": 0.22, "explode": 0, "position": [34, 27, 73], "target": [0, 8, 7] }
+    },
+    {
+      "id": "frame",
+      "label": "立柱 · 起廊",
+      "start": 4,
+      "end": 9,
+      "from": { "progress": 0.22, "explode": 0, "position": [34, 27, 73], "target": [0, 8, 7] },
+      "to": { "progress": 0.56, "explode": 0, "position": [29, 30, 67], "target": [0, 14, 4] }
+    },
+    {
+      "id": "roof",
+      "label": "重檐 · 合顶",
+      "start": 9,
+      "end": 13,
+      "from": { "progress": 0.56, "explode": 0, "position": [29, 30, 67], "target": [0, 14, 4] },
+      "to": { "progress": 1, "explode": 0, "position": [31, 35, 71], "target": [0, 20, 2] }
+    },
+    {
+      "id": "separate",
+      "label": "四层构件 · 分层拆解",
+      "start": 13,
+      "end": 16,
+      "from": { "progress": 1, "explode": 0, "position": [31, 35, 71], "target": [0, 20, 2] },
+      "to": { "progress": 1, "explode": 1, "position": [39, 43, 98], "target": [0, 23, 2] }
+    },
+    {
+      "id": "inspect",
+      "label": "看见层檐与承接关系",
+      "start": 16,
+      "end": 18,
+      "from": { "progress": 1, "explode": 1, "position": [39, 43, 98], "target": [0, 23, 2] },
+      "to": { "progress": 1, "explode": 1, "position": [-36, 43, 98], "target": [0, 23, 2] }
+    },
+    {
+      "id": "rejoin",
+      "label": "构件归位 · 重现全楼",
+      "start": 18,
+      "end": 21,
+      "from": { "progress": 1, "explode": 1, "position": [-36, 43, 98], "target": [0, 23, 2] },
+      "to": { "progress": 1, "explode": 0, "position": [36, 36, 82], "target": [0, 16, 4] }
+    },
+    {
+      "id": "finished",
+      "label": "更上一层楼",
+      "start": 21,
+      "end": 24,
+      "from": { "progress": 1, "explode": 0, "position": [36, 36, 82], "target": [0, 16, 4] },
+      "to": { "progress": 1, "explode": 0, "position": [42, 37, 93], "target": [0, 14, 5] }
+    }
+  ],
+  "review_scope": "PREVIEW_ONLY pending reference-grounded visual review, independent checks and authenticated commercial TITMAS outcome receipt."
+}

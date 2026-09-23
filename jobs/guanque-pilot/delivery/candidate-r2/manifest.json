@@ -1,0 +1,86 @@
+{
+  "schema_version": "guanque-candidate-delivery.v2",
+  "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+  "job_id": "guanque-pilot",
+  "render_run_id": "2026-09-23T10-01-07-117Z-film-2691599b",
+  "render_run_path": "artifacts/pipeline/guanque-pilot/2026-09-23T10-01-07-117Z-film-2691599b/run.json",
+  "render_run_sha256": "371426a7a18ae696ee7c4821c28fb45d601b3e678c509e18784fb3ef18f47efc",
+  "shot_config": {
+    "path": "pipeline/video/guanque-breakdown-portrait-r2.json",
+    "sha256": "800d3b1bbf21b99270e6ee756402f67686fc27edf8af8587404d541fef216321"
+  },
+  "video": {
+    "path": "guanque-breakdown-portrait-preview.mp4",
+    "sha256": "90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "frames": 720,
+    "duration_seconds": 24,
+    "audio": "silent",
+    "full_decode": "PASS",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY"
+  },
+  "cover": {
+    "path": "cover.png",
+    "sha256": "3e38ee01e031a69e4bed48181fb54a5358c54039c542dda1539ae52e87b6d4f6",
+    "source_frame_index": 717
+  },
+  "remote_titmas_sandbox": {
+    "service": "titmas-sandbox-gateway",
+    "version": "0.1",
+    "maturity": "internal-operator-preview",
+    "call": "POST /sandbox/v0.1/preflight",
+    "http_status": 200,
+    "result": "SCHEMA_PREFLIGHT_PASS",
+    "video_digest_bound": "90e55e828a438ed3294fe369dc9c7739da610b7e85438844c68ff65227963e27",
+    "record_path": "titmas-sandbox-preflight.json",
+    "record_sha256": "f89870120a2f16af86fdaffb9155ba8d864a8a76a0450c9ea05c1338a109111d",
+    "scope": "SCHEMA_ONLY_NO_MEDIA_REVIEW_NO_SIGNED_OUTCOME_RECEIPT"
+  },
+  "local_titmas_outcome": {
+    "status": "EXECUTED_FAIL",
+    "packet_path": "artifacts/titmas-outcome-r2/review-packet.json",
+    "packet_sha256": "fa8d0702968b3943806e45f2ecb0fc6f95b0d0a86eca0c42e4e0f50d35cb2f4e",
+    "result_path": "local-outcome-result.json",
+    "result_sha256": "fa5602e750c6abf7e84867183db31dbd46d099c242f4221a0a2b1ac6fe9bb185",
+    "coverage": {
+      "failed": [
+        "architecture",
+        "motion",
+        "integration",
+        "customer-goal"
+      ],
+      "missing": [],
+      "passed": 0,
+      "required": 5,
+      "reviewed": 5,
+      "unknown": [
+        "technical"
+      ]
+    },
+    "scope": "OFFLINE_FILE_BINDING_AND_DECLARED_SELF_OBSERVATIONS_NOT_REMOTE_RECEIPT"
+  },
+  "commercial_d29_outcome_review": {
+    "status": "NOT_DEPLOYED_NOT_RUN",
+    "signed_receipt": "NOT_AVAILABLE",
+    "independent_verification": "NOT_RUN"
+  },
+  "visual_review": "FAIL_SAME_TASK_SELF_REVIEW",
+  "motion_review": "FAIL_DEMO_EQUIVALENCE_NOT_ESTABLISHED",
+  "discovery": "NEEDS_REVISION",
+  "customer_acceptance": "NOT_OBTAINED",
+  "publication": "USER_ONLY_NOT_RUN",
+  "blocking_issues": [
+    "visual-fidelity-p1",
+    "motion-semantics-p1",
+    "remote-titmas-p1"
+  ],
+  "qa_summary": "qa-summary.md",
+  "caption_draft": "caption-draft.md",
+  "contact_sheet": {
+    "path": "whole-video-contact.png",
+    "sha256": "4726154186eb4cec2fe6e2fdb2c88177d4b5d3badac100d06da1270b4092293b",
+    "sampling": "ONE_FRAME_PER_SECOND_NOT_FULL_SEMANTIC_REVIEW"
+  }
+}

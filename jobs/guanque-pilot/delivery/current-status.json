@@ -1,7 +1,7 @@
 {
   "schema_version": "delivery-current-status.v1",
   "job_id": "guanque-pilot",
-  "updated_at": "2026-09-22T16:33:04.595711+00:00",
+  "updated_at": "2026-09-23T10:12:01.262449Z",
   "stage": "NEEDS_REVISION",
   "video_classification": "PREVIEW_ONLY_REQUIRES_VISUAL_REWORK",
   "assessment": {
@@ -18,9 +18,9 @@
   },
   "historical_manifest_is_current_acceptance": false,
   "video_bytes_unchanged": true,
-  "technical_status": "PASS_FOR_ORIGINAL_VIDEO_ONLY",
+  "technical_status": "PASS_FOR_CANDIDATE_R2_ONLY",
   "visual_status": "FAIL",
-  "titmas_status": "NOT_CONNECTED",
+  "titmas_status": "SANDBOX_PREFLIGHT_PASS_D29_NOT_DEPLOYED",
   "publication": "USER_ONLY_NOT_RUN",
   "review_gate": {
     "implementation": "LOCAL_RECORD_GATE_VERIFIED",
@@ -32,5 +32,117 @@
     "semantic_review": "NOT_RUN",
     "required_local_criteria": 18,
     "completed_local_criteria": 0
-  }
+  },
+  "pipeline_gate_revision": "DISCOVERY_GATE_V1",
+  "pipeline_gates": {
+    "discovery": "NEEDS_REVISION",
+    "model_plan": "BLOCKED_BY_DISCOVERY",
+    "video": "CANDIDATE_TECHNICAL_PASS_CONTENT_FAIL",
+    "visual": "FAIL",
+    "titmas": "SANDBOX_PREFLIGHT_PASS_D29_NOT_RUN"
+  },
+  "pipeline_gate_note": "Candidate r2 matches the requested portrait format, fully decodes and shows actual four-band separation/rejoin. Photo fidelity and demo-equivalent motion still FAIL in same-task outcome review; independent technical and visual review remain unperformed. Active TITMAS Sandbox v0.1 accepted metadata-only preflight for r2, while commercial D29 outcome review is not deployed and no signed receipt exists. Discovery gaps remain open.",
+  "discovery": {
+    "status": "NEEDS_REVISION",
+    "current_attempt_id": "guanque-discovery-r2",
+    "attempt_sha256": "5da4dd9728f6d4f2574e84fe44089ed8398a86937a5de8162984eda2b34c6285",
+    "plan_sha256": "d5ef8a5d03d8174517c9ae549a893cbe6838f1d6fcedb894d1b4591decd2a708",
+    "sources_sha256": "380fb937846a081dcf7022ae2a955d4b0c9853b85d9c285066994220f10ab10f",
+    "gaps": [
+      {
+        "gap_id": "reported-dimensions-source",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "exterior-coverage-and-version",
+        "priority": "P1",
+        "blocked_station": "visual_review",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "roof-bracket-and-facade-evidence",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "reference-demo-motion-contract",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "structural-system-source",
+        "priority": "P2",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "unseen-facades-and-interior",
+        "priority": "P3",
+        "blocked_station": "visual_review",
+        "status": "UNKNOWN"
+      }
+    ],
+    "blockers": [
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "reported-dimensions-source is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "exterior-coverage-and-version is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "roof-bracket-and-facade-evidence is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "reference-demo-motion-contract is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "structural-system-source is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "OPTIONAL_DISCOVERY_GAP_OPEN",
+        "detail": "unseen-facades-and-interior remains UNKNOWN and must be carried into the model limitations."
+      }
+    ]
+  },
+  "latest_candidate": {
+    "path": "jobs/guanque-pilot/delivery/candidate-r2/manifest.json",
+    "sha256": "562da662479d7908d87200d5a662a25a1c360688ce63cc5fa2088392f10e7f2e",
+    "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+    "format": "1080x1920_30FPS_24S_SILENT",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY",
+    "visual": "FAIL_SAME_TASK_SELF_REVIEW",
+    "motion": "FAIL_DEMO_EQUIVALENCE_NOT_ESTABLISHED",
+    "local_titmas_outcome": "FAIL",
+    "local_titmas_result_sha256": "fa5602e750c6abf7e84867183db31dbd46d099c242f4221a0a2b1ac6fe9bb185",
+    "independent_visual_review": "NOT_RUN",
+    "remote_titmas": "SANDBOX_SCHEMA_PREFLIGHT_PASS_ONLY",
+    "remote_call_record": "jobs/guanque-pilot/delivery/candidate-r2/titmas-sandbox-preflight.json",
+    "remote_receipt": "NOT_AVAILABLE_D29_NOT_DEPLOYED",
+    "customer_acceptance": "NOT_OBTAINED"
+  },
+  "historical_candidate_r1": {
+    "path": "jobs/guanque-pilot/delivery/candidate-r1/manifest.json",
+    "sha256": "6faa9203380bec0f859b180f89599b26e7f20b2ecc51d1625e98c9f52b3af26f",
+    "classification": "PREVIEW_ONLY_NEEDS_REVISION",
+    "format": "1280x720_30FPS_24S_SILENT",
+    "technical": "PASS_FOR_THIS_VIDEO_ONLY",
+    "visual": "FAIL",
+    "motion": "FAIL",
+    "local_titmas_outcome": "FAIL",
+    "local_titmas_result_sha256": "784aa18091c34c4898fe46f8469d652628f91599ff04c5a46e22f7259ea79ba7",
+    "independent_visual_review": "NOT_RUN",
+    "remote_titmas": "NOT_CONNECTED",
+    "remote_receipt": "NOT_AVAILABLE",
+    "customer_acceptance": "NOT_OBTAINED"
+  },
+  "titmas_live_call": "docs/governance/titmas-live-call-20260923-r2.json"
 }
