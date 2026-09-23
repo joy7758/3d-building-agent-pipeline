@@ -51,6 +51,7 @@ export function evaluateDiscovery(root, id) {
   }
   const planHash = digest(planPath);
   if (plan.schema_version !== 'discovery-plan.v1' || plan.job_id !== id || plan.kind !== 'PROJECT_EVIDENCE_GAP_COMPLETION' || !['DRAFT', 'READY'].includes(plan.status) || !Array.isArray(plan.gaps)) add('DISCOVERY_PLAN_INVALID', 'Plan version, job identity, discovery kind, status or gaps list is invalid.', 'ERROR');
+  if (plan.status === 'READY' && Array.isArray(plan.gaps) && plan.gaps.length === 0) add('DISCOVERY_PLAN_VACUOUS', 'A READY plan must name at least one evidence gap or explicit unknown; an empty list cannot certify discovery complete.');
   const requestCandidate = path.join(directory, 'request.json');
   const sourcesCandidate = path.join(directory, 'sources.json');
   const requestPath = existsSync(requestCandidate) ? jobFile(root, id, 'request.json') : requestCandidate;

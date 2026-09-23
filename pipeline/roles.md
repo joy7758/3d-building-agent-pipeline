@@ -4,7 +4,7 @@
 
 ## 资料发现
 
-输入：建筑名、城市、版本、展示范围及 `discovery-plan.json`。区分能力发现和建筑资料补证，不得把 Scout Issue 搜索说成建筑资料服务。按每个 gap 的允许来源、预算及停止条件查证实体、官方描述、视角和细部，记录实际打开的来源及覆盖；结果写入新的 `discovery/attempts/<attempt-id>.json`，更新 index 指针并保留旧 attempt。P1/P2 未解决或发生冲突时阻断依赖它的工位；UNKNOWN 不补造。sources.json 保存来源与素材许可；尺寸必须有明确来源，不推断精度。
+输入：建筑名、城市、版本、展示范围及 `discovery-plan.json`。区分能力发现和建筑资料补证，不得把 Scout Issue 搜索说成建筑资料服务。READY 计划必须至少有一个真实 gap；按其允许来源、预算及停止条件查证实体、官方描述、视角和细部，记录实际打开的来源及覆盖；结果写入新的 `discovery/attempts/<attempt-id>.json`，更新 index 指针并保留旧 attempt。P1/P2 未解决或发生冲突时阻断依赖它的工位；UNKNOWN 不补造。未解决的 P3 必须以同一 `gap_id` 传入模型限制。sources.json 保存来源与素材许可；尺寸必须有明确来源，不推断精度。
 
 ## 建筑规划
 

@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { evaluateJob, handoffJob, initJob, resolveReference, sha256File } from '../lib.mjs';
+import { evaluateDiscovery } from '../discovery.mjs';
 
 const ID = 'test-building';
 const TIME = '2026-09-22T12:00:00Z';
@@ -27,15 +28,15 @@ function fixture(t) {
     if (sourceType === 'USER_PROVIDED') source.provenance = { task_id: 'original-task', note: 'User supplied two original attachments.' };
     else source.url = 'https://example.org/building';
     write('sources.json', { schema_version: '1.0', job_id: ID, bindings: { request_sha256: sha256File(file('request.json')) }, entries: [source], views: [{ id: 'front', source_id: 'reference', angle: 'front', image: ref('front.png') }, { id: 'side', source_id: 'reference', angle: 'side', image: ref('side.png') }] });
-    const discoveryPlan = { schema_version: 'discovery-plan.v1', job_id: ID, revision: 'fixture-r1', kind: 'PROJECT_EVIDENCE_GAP_COMPLETION', status: 'READY', bindings: { request_sha256: sha256File(file('request.json')) }, gaps: [] };
+    const discoveryPlan = { schema_version: 'discovery-plan.v1', job_id: ID, revision: 'fixture-r1', kind: 'PROJECT_EVIDENCE_GAP_COMPLETION', status: 'READY', bindings: { request_sha256: sha256File(file('request.json')) }, gaps: [{ gap_id: 'unseen-facade', priority: 'P3', blocked_station: 'visual_review', question: 'Are any unseen elevations supported by the supplied views?', evidence_types: ['elevation view'], allowed_sources: ['reference'], search_budget: { max_queries: 1, max_minutes: 2 }, stop_conditions: ['Stop when supplied viewpoints are checked.'] }] };
     write('discovery-plan.json', discoveryPlan);
     const attemptId = 'fixture-discovery-r1';
     const attemptPath = `discovery/attempts/${attemptId}.json`;
-    const attempt = { schema_version: 'discovery-attempt.v1', job_id: ID, attempt_id: attemptId, module: { module_id: 'synthetic-protocol-fixture', version: '1', owner: 'test fixture', capability: 'Provide a source-coverage positive control.', input_contract: ['Current request, discovery plan and source package.'], output_contract: ['Bound attempt and coverage list.'], evidence_contract: ['Synthetic source ID links only.'], allowed_actions: ['Read synthetic fixture files.'], forbidden_actions: ['Make external requests or certify source truth.'], side_effects: [], data_retention: 'Local temporary fixture.', lifecycle: { upgrade: 'Use a new version and rerun.', rollback: 'Select an earlier attempt without deleting it.', replacement: 'Create a new module identity.', revocation: 'Stop selecting this module.' }, limitations: ['Synthetic protocol control only.'] }, started_at: TIME, completed_at: TIME, bindings: { request_sha256: sha256File(file('request.json')), plan_sha256: sha256File(file('discovery-plan.json')), sources_sha256: sha256File(file('sources.json')) }, queries: [], observations: [], outcomes: [], source_coverage: ['reference'], stop_reason: 'Synthetic positive control only.' };
+    const attempt = { schema_version: 'discovery-attempt.v1', job_id: ID, attempt_id: attemptId, module: { module_id: 'synthetic-protocol-fixture', version: '1', owner: 'test fixture', capability: 'Provide a source-coverage positive control.', input_contract: ['Current request, discovery plan and source package.'], output_contract: ['Bound attempt and coverage list.'], evidence_contract: ['Synthetic source ID links only.'], allowed_actions: ['Read synthetic fixture files.'], forbidden_actions: ['Make external requests or certify source truth.'], side_effects: [], data_retention: 'Local temporary fixture.', lifecycle: { upgrade: 'Use a new version and rerun.', rollback: 'Select an earlier attempt without deleting it.', replacement: 'Create a new module identity.', revocation: 'Stop selecting this module.' }, limitations: ['Synthetic protocol control only.'] }, started_at: TIME, completed_at: TIME, bindings: { request_sha256: sha256File(file('request.json')), plan_sha256: sha256File(file('discovery-plan.json')), sources_sha256: sha256File(file('sources.json')) }, queries: [{ query: 'Inspect supplied synthetic views for elevations.', source_scope: 'reference', gap_ids: ['unseen-facade'], result: 'Fixture has front and side only.' }], observations: [{ claim_id: 'facade-unknown', gap_id: 'unseen-facade', claim_kind: 'UNKNOWN', statement: 'No rear elevation is present in the fixture.', source_id: null, locator: 'sources.json views: front and side' }], outcomes: [{ gap_id: 'unseen-facade', status: 'UNKNOWN', summary: 'Rear elevation remains unknown.', source_ids: [], claim_ids: ['facade-unknown'], limitations: ['Synthetic test fixture only.'] }], source_coverage: ['reference'], stop_reason: 'Synthetic positive control only.' };
     write(attemptPath, attempt);
     write('discovery/index.json', { schema_version: 'discovery-index.v1', job_id: ID, attempts: [{ attempt_id: attemptId, reference: ref(attemptPath) }], current_attempt_id: attemptId });
     const plan = read('model-plan.json');
-    Object.assign(plan, { status: 'READY', builder_id: 'builder-agent', bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')), discovery_attempt_id: attemptId, discovery_sha256: sha256File(file(attemptPath)) }, recognizable_features: ['Roof profile'], components: ['Base, columns, roof'], assembly: ['Base before columns before roof'], camera: ['Front to three-quarter'] });
+    Object.assign(plan, { status: 'READY', builder_id: 'builder-agent', bindings: { request_sha256: sha256File(file('request.json')), sources_sha256: sha256File(file('sources.json')), discovery_attempt_id: attemptId, discovery_sha256: sha256File(file(attemptPath)) }, recognizable_features: ['Roof profile'], components: ['Base, columns, roof'], assembly: ['Base before columns before roof'], camera: ['Front to three-quarter'], limitations: ['unseen-facade: rear elevation is not shown in current references.'] });
     write('model-plan.json', plan);
   };
   const preview = () => {
@@ -73,6 +74,31 @@ function fixture(t) {
   };
   return { root, file, read, write, ref, status, ready, preview, passLocalChecks };
 }
+
+test('a READY discovery plan cannot skip assessment with an empty gap list', (t) => {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'architecture-discovery-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  initJob(root, { id: ID, building: '测试建筑', location: '测试地点', era: '现代艺术版本' });
+  const planPath = path.join(root, 'jobs', ID, 'discovery-plan.json');
+  const plan = JSON.parse(readFileSync(planPath, 'utf8'));
+  plan.status = 'READY';
+  writeFileSync(planPath, `${JSON.stringify(plan, null, 2)}\n`);
+  const result = evaluateDiscovery(root, ID);
+  assert.equal(result.ready, false);
+  assert.ok(result.issues.some((issue) => issue.code === 'DISCOVERY_PLAN_VACUOUS'));
+});
+
+test('unresolved optional discovery gaps must flow into the model limitations', (t) => {
+  const f = fixture(t);
+  f.ready();
+  const plan = f.read('model-plan.json');
+  plan.limitations = ['Artistic reconstruction only.'];
+  f.write('model-plan.json', plan);
+  const result = f.status();
+  assert.equal(result.gates.discovery, true);
+  assert.equal(result.gates.model_plan, false);
+  assert.ok(result.blockers.some((issue) => issue.code === 'OPTIONAL_DISCOVERY_LIMITATION_MISSING'));
+});
 
 test('initialization is an unrun DRAFT and never overwrites existing files', (t) => {
   const f = fixture(t);
@@ -146,7 +172,7 @@ test('valid local checks and rendered video remain PREVIEW_ONLY without TITMAS',
   assert.equal(result.stage, 'PREVIEW_ONLY');
   assert.deepEqual(result.gates, { sources: true, discovery: true, model_plan: true, technical: true, visual: true, titmas: false, video: true });
   assert.equal(result.ready_for_user_review, false);
-  assert.deepEqual(result.blockers.map((issue) => issue.code), ['TITMAS_NOT_CONNECTED']);
+  assert.deepEqual(result.blockers.map((issue) => issue.code), ['OPTIONAL_DISCOVERY_GAP_OPEN', 'TITMAS_NOT_CONNECTED']);
 });
 
 test('handwritten TITMAS PASS and invented connector cannot open the release gate', (t) => {

@@ -18,6 +18,8 @@ node --test pipeline/test/*.test.mjs
 
 `init` 创建 request、sources、discovery plan/index、model plan 与 checks，已有目录一律拒绝覆盖。`discovery` 离线重算缺口、attempt、来源与版本绑定，不联网或判断事实真伪。`status` 输出各门禁和发现状态；`review` 只输出逐项视觉/技术记录。`verify` 当前因真实 TITMAS 未接通而不能通过。
 
+新任务的 `discovery-plan.json` 初始为空且为 `DRAFT`，因此不能据此施工。资料整理后，发现执行者必须把真实缺口（至少一个）写入计划，再记录实际查询、来源定位和结果；不得为了通过门禁虚构缺口、查询或证据。已经没有待补事实时，记录仍然存在的真实限制为 `P3`，例如未见背面或未核实施工过程，并将结果保留为 `UNKNOWN`。
+
 任务 ID 是 1–64 位小写 ASCII 字母、数字及内部连字符，禁止路径字符。名称、位置与时代各最多 500 字符；未知位置或时代明确记 `UNKNOWN`。用户名称是数据，不能据此执行命令。
 
 ## 文件引用与哈希

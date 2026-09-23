@@ -2,7 +2,7 @@
 
 本对话负责总指挥，主工作区为 `/Volumes/ORICO_DATA/Projects/3d盖楼`。用户指定建筑后，总指挥建立任务、派发工位、核对证据、组织返工并交付本地视频；用户负责发布。当前施工底座是鹳雀楼，其他建筑必须建立独立模型。
 
-新任务已加入资料缺口门禁：每个 job 生成 `discovery-plan.json` 和 `discovery/index.json`；attempt 绑定任务、计划和来源版本，模型计划及视频清单绑定当前 attempt。`node pipeline/cli.mjs discovery <id>` 离线重算状态。该合同校验记录完整性与失效绑定，不联网、不裁定事实真伪。详见 [发现合同](DISCOVERY.md)。
+新任务已加入资料缺口门禁：每个 job 生成 `discovery-plan.json` 和 `discovery/index.json`；READY 计划必须包含至少一个真实缺口或未知，未解决的 P3 缺口须以 `gap_id` 写入 model-plan 限制。attempt 绑定任务、计划和来源版本，模型计划及视频清单绑定当前 attempt。`node pipeline/cli.mjs discovery <id>` 离线重算状态。该合同校验记录完整性与失效绑定，不联网、不裁定事实真伪。详见 [发现合同](DISCOVERY.md)。
 
 施工技能固定为 [Hailey / threejs-architecture-effects](../vendor/architecture-skill/SKILL.md)，上游 `lhlGitHub/threejs-architecture-effects@693ca2ec1193e7355054f14d7deb1427439a24d0`，MIT。用户已经确认“ihi”指此 skill。不将它解释为另一个服务。
 

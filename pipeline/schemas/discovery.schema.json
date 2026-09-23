@@ -45,7 +45,13 @@
         "status": { "enum": ["DRAFT", "READY"] },
         "bindings": { "type": "object", "additionalProperties": false, "required": ["request_sha256"], "properties": { "request_sha256": { "$ref": "#/$defs/sha256" } } },
         "gaps": { "type": "array", "items": { "$ref": "#/$defs/gap" } }
-      }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "READY" } }, "required": ["status"] },
+          "then": { "properties": { "gaps": { "minItems": 1 } } }
+        }
+      ]
     },
     "outcome": {
       "type": "object", "additionalProperties": false,

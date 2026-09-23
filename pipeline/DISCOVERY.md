@@ -11,13 +11,13 @@
 
 `observations` 是带出处的主张记录：每项包含唯一 `claim_id`、所属 `gap_id`、`claim_kind`（`OBSERVED`、`SOURCE_REPORTED`、`CONTRADICTS` 或 `UNKNOWN`）、准确陈述、`source_id` 和可定位到页面、图号、视频时间或视角的 `locator`。`UNKNOWN` 可以没有来源，但必须写清未知内容与已尝试范围。`RESOLVED` 结果只能引用当前 sources 包中的来源及同缺口观察项；`CONFLICTED` 必须保留至少两个不同来源的观察，不得把冲突压成单一结论。
 
-机器字段及状态见 `schemas/discovery.schema.json`。每个计划缺口必须且只能有一个当前结果：`RESOLVED`、`PARTIAL`、`CONFLICTED`、`UNKNOWN` 或 `BUDGET_EXHAUSTED`。冲突双方各自保留来源。重要缺口未解决时只阻断依赖它的工位；无关工作可继续。
+机器字段及状态见 `schemas/discovery.schema.json`。`READY` 计划必须至少列出一个实际证据缺口或未知项，禁止用空 `gaps` 列表跳过发现层；即使主要资料齐全，也应把未观察的立面、未核实的尺寸来源、施工过程或版权边界等真实限制记为适当优先级的缺口。每个计划缺口必须且只能有一个当前结果：`RESOLVED`、`PARTIAL`、`CONFLICTED`、`UNKNOWN` 或 `BUDGET_EXHAUSTED`。冲突双方各自保留来源。重要缺口未解决时只阻断依赖它的工位；无关工作可继续。
 
 ## 版本与失效
 
 请求身份或计划修改会使旧尝试失效；来源包变化后，旧 attempt 对应旧 `sources_sha256`，状态显示 `STALE`，需要基于新来源版本追加一份尝试。追加新尝试不能删除旧失败或 `UNKNOWN`。下游 model-plan 必须绑定已完成的 discovery attempt ID 与哈希；视觉审查、视频清单应通过既有输入绑定追溯这个 model-plan。选了一个发现模块不代表它执行过，也不构成 PASS。
 
-搜索预算耗尽是可记录结果，不自动扩大预算、来源范围或外部服务权限。`UNKNOWN` 必须保留；关键缺口未解决时不能交给施工层伪装为已知事实。非关键简化须在 model-plan 明确写为艺术选择和限制。
+搜索预算耗尽是可记录结果，不自动扩大预算、来源范围或外部服务权限。`UNKNOWN` 必须保留；关键缺口未解决时不能交给施工层伪装为已知事实。非关键未解决缺口须在 model-plan 的 `limitations` 中带上相同 `gap_id` 和限制说明，避免发现结果未传递到施工层。
 
 ## 能力边界
 
