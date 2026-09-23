@@ -49,6 +49,21 @@ export function resolveReference(root, id, referencePath) {
   return resolved;
 }
 
+/** Resolve a read-only project artifact from explicitly allowed evidence roots. */
+function resolveProjectArtifact(root, id, referencePath) {
+  if (typeof referencePath !== 'string' || !referencePath || path.isAbsolute(referencePath) || referencePath.includes('\\') || referencePath.includes('\0')) throw new Error('Project artifact path must be a repository-relative POSIX path.');
+  const parts = referencePath.split('/');
+  if (parts.some((part) => !part || part === '.' || part === '..' || part.includes(':'))) throw new Error('Project artifact path contains a forbidden path segment.');
+  const prefixes = [`jobs/${id}`, 'artifacts', 'docs', 'vendor/architecture-skill', 'vendor/threejs-architecture-effects', 'pipeline/video'];
+  const prefix = prefixes.find((candidate) => referencePath.startsWith(`${candidate}/`));
+  if (!prefix) throw new Error('Project artifact must be inside the job, artifacts, docs, pinned skill/demo vendor directories or pipeline/video.');
+  const realRoot = realpathSync(root);
+  const base = path.join(realRoot, prefix);
+  const resolved = realpathSync(path.join(realRoot, ...parts));
+  if (realpathSync(base) !== base || !beneath(base, resolved)) throw new Error('Project artifact escaped its allow-listed evidence root.');
+  return resolved;
+}
+
 function jobDirectory(root, id) {
   assertId(id);
   const realRoot = realpathSync(root);
@@ -164,6 +179,14 @@ export function evaluateJob(root, id) {
     if (actual !== expected) { add('STALE_HASH_BINDING', station, `${label} SHA-256 does not match current bytes.`, 'ERROR'); return false; }
     return true;
   };
+  const projectArtifact = (ref, label) => {
+    if (!isObject(ref) || !SHA256.test(ref.sha256 ?? '') || !text(ref.path)) { add('MISSING_PROJECT_ARTIFACT', 'discovery', `${label} requires {path, sha256}.`); return null; }
+    try {
+      const filename = resolveProjectArtifact(root, id, ref.path);
+      if (sha256File(filename) !== ref.sha256) throw new Error('SHA-256 mismatch; artifact record is stale.');
+      return filename;
+    } catch (error) { add('INVALID_PROJECT_ARTIFACT', 'discovery', `${label}: ${error.message}`, 'ERROR'); return null; }
+  };
 
   let discovery;
   try { discovery = evaluateDiscovery(root, id); }
@@ -183,10 +206,11 @@ export function evaluateJob(root, id) {
     if (!text(entry.id) || sourceIds.has(entry.id)) add('INVALID_SOURCE_ID', 'discovery', 'Source IDs must be present and unique.', 'ERROR');
     sourceIds.add(entry.id);
     const sourceType = entry.source_type ?? 'WEB';
-    if (!['WEB', 'USER_PROVIDED'].includes(sourceType)) add('INVALID_SOURCE_TYPE', 'discovery', `${entry.id}: source_type must be WEB or USER_PROVIDED.`, 'ERROR');
+    if (!['WEB', 'USER_PROVIDED', 'PROJECT_ARTIFACT'].includes(sourceType)) add('INVALID_SOURCE_TYPE', 'discovery', `${entry.id}: unsupported source_type.`, 'ERROR');
     if (!text(entry.title) || !date(entry.accessed_at)) add('SOURCE_PROVENANCE_INCOMPLETE', 'discovery', `${entry.id}: title and ISO access timestamp are required.`);
     if (sourceType === 'WEB' && !httpURL(entry.url)) add('SOURCE_PROVENANCE_INCOMPLETE', 'discovery', `${entry.id}: WEB source requires an HTTP(S) URL.`);
     if (sourceType === 'USER_PROVIDED' && (!assigned(entry.provenance?.task_id) || !text(entry.provenance?.note))) add('SOURCE_PROVENANCE_INCOMPLETE', 'discovery', `${entry.id}: USER_PROVIDED source requires provenance.task_id and provenance.note.`);
+    if (sourceType === 'PROJECT_ARTIFACT') projectArtifact(entry.artifact, `${entry.id} project artifact`);
     if (entry.provenance?.evidence != null) reference(entry.provenance.evidence, 'discovery', `${entry.id} provenance evidence`);
     if (entry.license?.usage !== 'RESEARCH_ONLY' || !['UNKNOWN', 'ALLOWED', 'DENIED'].includes(entry.license?.publish_permission)) add('SOURCE_LICENSE_INCOMPLETE', 'discovery', `${entry.id}: record RESEARCH_ONLY usage and publication permission.`);
   }

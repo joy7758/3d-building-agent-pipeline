@@ -89,7 +89,7 @@ export function evaluateDiscovery(root, id) {
   let current = null;
   const sourceDoc = existsSync(sourcesPath) ? loadJSON(sourcesPath) : {};
   const sourceIds = new Set((Array.isArray(sourceDoc.entries) ? sourceDoc.entries : []).map((entry) => entry?.id).filter((value) => typeof value === 'string'));
-  const evaluatedGaps = [];
+  const evaluatedGaps = (plan.gaps ?? []).filter((gap) => object(gap) && typeof gap.gap_id === 'string').map((gap) => ({ gap_id: gap.gap_id, priority: gap.priority, blocked_station: gap.blocked_station, status: 'NOT_RUN' }));
   let currentAttemptHash = null;
   if (!currentId || !attempts.has(currentId)) add('DISCOVERY_ATTEMPT_NOT_SELECTED', 'Index must select a recorded current attempt.');
   else {
@@ -138,7 +138,8 @@ export function evaluateDiscovery(root, id) {
       for (const [gapId, gap] of gapById) {
         const outcome = outcomes.get(gapId);
         const status = outcome?.status ?? 'NOT_RUN';
-        evaluatedGaps.push({ gap_id: gapId, priority: gap.priority, blocked_station: gap.blocked_station, status });
+        const evaluated = evaluatedGaps.find((entry) => entry.gap_id === gapId);
+        if (evaluated) evaluated.status = status;
         if (!outcome) add('DISCOVERY_GAP_NOT_RUN', `${gapId} has no result in the selected attempt.`);
         else if (gap.priority !== 'P3' && status !== 'RESOLVED') add('REQUIRED_DISCOVERY_GAP_OPEN', `${gapId} is ${status}; its dependent station must remain blocked.`);
         else if (status !== 'RESOLVED') add('OPTIONAL_DISCOVERY_GAP_OPEN', `${gapId} remains ${status} and must be carried into the model limitations.`);

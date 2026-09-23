@@ -24,10 +24,12 @@ function fixture(t) {
   const ready = (sourceType = 'WEB') => {
     writeFileSync(file('front.png'), PNG);
     writeFileSync(file('side.png'), Buffer.concat([PNG, Buffer.from('fixture-two')]));
+    writeFileSync(file('demo-reference.txt'), 'Synthetic frozen project artifact for protocol testing only.');
     const source = { id: 'reference', source_type: sourceType, title: 'Synthetic reference fixture', accessed_at: TIME, license: { usage: 'RESEARCH_ONLY', publish_permission: 'UNKNOWN' } };
     if (sourceType === 'USER_PROVIDED') source.provenance = { task_id: 'original-task', note: 'User supplied two original attachments.' };
     else source.url = 'https://example.org/building';
-    write('sources.json', { schema_version: '1.0', job_id: ID, bindings: { request_sha256: sha256File(file('request.json')) }, entries: [source], views: [{ id: 'front', source_id: 'reference', angle: 'front', image: ref('front.png') }, { id: 'side', source_id: 'reference', angle: 'side', image: ref('side.png') }] });
+    const localArtifact = { id: 'demo-reference', source_type: 'PROJECT_ARTIFACT', title: 'Synthetic local demo artifact', accessed_at: TIME, artifact: ref('demo-reference.txt'), license: { usage: 'RESEARCH_ONLY', publish_permission: 'UNKNOWN' } };
+    write('sources.json', { schema_version: '1.0', job_id: ID, bindings: { request_sha256: sha256File(file('request.json')) }, entries: [source, localArtifact], views: [{ id: 'front', source_id: 'reference', angle: 'front', image: ref('front.png') }, { id: 'side', source_id: 'reference', angle: 'side', image: ref('side.png') }] });
     const discoveryPlan = { schema_version: 'discovery-plan.v1', job_id: ID, revision: 'fixture-r1', kind: 'PROJECT_EVIDENCE_GAP_COMPLETION', status: 'READY', bindings: { request_sha256: sha256File(file('request.json')) }, gaps: [{ gap_id: 'unseen-facade', priority: 'P3', blocked_station: 'visual_review', question: 'Are any unseen elevations supported by the supplied views?', evidence_types: ['elevation view'], allowed_sources: ['reference'], search_budget: { max_queries: 1, max_minutes: 2 }, stop_conditions: ['Stop when supplied viewpoints are checked.'] }] };
     write('discovery-plan.json', discoveryPlan);
     const attemptId = 'fixture-discovery-r1';
@@ -88,6 +90,16 @@ test('a READY discovery plan cannot skip assessment with an empty gap list', (t)
   assert.ok(result.issues.some((issue) => issue.code === 'DISCOVERY_PLAN_VACUOUS'));
 });
 
+test('the discovery command exposes planned gaps before an attempt has run', (t) => {
+  const f = fixture(t);
+  const plan = f.read('discovery-plan.json');
+  plan.gaps = [{ gap_id: 'missing-view', priority: 'P1', blocked_station: 'visual_review', question: 'Is another view available?', evidence_types: ['photo'], allowed_sources: ['official site'], search_budget: { max_queries: 3, max_minutes: 10 }, stop_conditions: ['Keep UNKNOWN if no source is found.'] }];
+  f.write('discovery-plan.json', plan);
+  const result = evaluateDiscovery(f.root, ID);
+  assert.equal(result.status, 'NOT_RUN');
+  assert.deepEqual(result.gaps.map(({ gap_id, status }) => ({ gap_id, status })), [{ gap_id: 'missing-view', status: 'NOT_RUN' }]);
+});
+
 test('unresolved optional discovery gaps must flow into the model limitations', (t) => {
   const f = fixture(t);
   f.ready();
@@ -98,6 +110,15 @@ test('unresolved optional discovery gaps must flow into the model limitations', 
   assert.equal(result.gates.discovery, true);
   assert.equal(result.gates.model_plan, false);
   assert.ok(result.blockers.some((issue) => issue.code === 'OPTIONAL_DISCOVERY_LIMITATION_MISSING'));
+});
+
+test('local project artifacts are hash checked and path restricted', (t) => {
+  const f = fixture(t);
+  f.ready();
+  writeFileSync(f.file('demo-reference.txt'), 'changed after source registration');
+  const result = f.status();
+  assert.equal(result.gates.sources, false);
+  assert.ok(result.blockers.some((issue) => issue.code === 'INVALID_PROJECT_ARTIFACT'));
 });
 
 test('initialization is an unrun DRAFT and never overwrites existing files', (t) => {

@@ -131,7 +131,8 @@
         "source_type": {
           "enum": [
             "WEB",
-            "USER_PROVIDED"
+            "USER_PROVIDED",
+            "PROJECT_ARTIFACT"
           ],
           "default": "WEB"
         },
@@ -163,6 +164,14 @@
               "type": "string",
               "minLength": 1
             }
+          }
+        },
+        "artifact": {
+          "type": "object",
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "sha256": { "$ref": "#/$defs/sha256" }
           }
         },
         "license": {
@@ -203,9 +212,14 @@
             ]
           },
           "else": {
-            "required": [
-              "url"
-            ]
+            "if": {
+              "properties": {
+                "source_type": { "const": "PROJECT_ARTIFACT" }
+              },
+              "required": ["source_type"]
+            },
+            "then": { "required": ["artifact"] },
+            "else": { "required": ["url"] }
           }
         }
       ]

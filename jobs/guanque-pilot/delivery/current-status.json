@@ -1,7 +1,7 @@
 {
   "schema_version": "delivery-current-status.v1",
   "job_id": "guanque-pilot",
-  "updated_at": "2026-09-22T16:33:04.595711+00:00",
+  "updated_at": "2026-09-23T00:55:25.110Z",
   "stage": "NEEDS_REVISION",
   "video_classification": "PREVIEW_ONLY_REQUIRES_VISUAL_REWORK",
   "assessment": {
@@ -35,11 +35,82 @@
   },
   "pipeline_gate_revision": "DISCOVERY_GATE_V1",
   "pipeline_gates": {
-    "discovery": "NOT_CONFIGURED",
-    "model_plan": "STALE_DISCOVERY_BINDING",
-    "video": "STALE_DISCOVERY_BINDING",
+    "discovery": "NEEDS_REVISION",
+    "model_plan": "BLOCKED_BY_DISCOVERY",
+    "video": "STALE_OR_NOT_READY",
     "visual": "FAIL",
     "titmas": "NOT_CONNECTED"
   },
-  "pipeline_gate_note": "New general-pipeline requirements invalidate the old model/video bindings for current acceptance. Original files and historical technical PASS remain preserved as historical evidence."
+  "pipeline_gate_note": "Discovery attempt guanque-discovery-r1 is hash-bound but leaves five required gaps PARTIAL and one P3 gap UNKNOWN. Construction and dependent review/render gates remain blocked. Historical video and prior technical evidence are preserved; no new acceptance or publication is claimed.",
+  "discovery": {
+    "status": "NEEDS_REVISION",
+    "current_attempt_id": "guanque-discovery-r1",
+    "attempt_sha256": "587a73cb58984dbd96a828cb04a4f6c45de7493b8e6e237639ee940e9c98e4cc",
+    "plan_sha256": "2686249001d4c2585cc0a4c59086c4ce0bda607f6a8c714f428beca817b5ec22",
+    "sources_sha256": "6c67b1dd55634dd81fbc9d64bc43300049c7f3e84894d78a087739489105e54a",
+    "gaps": [
+      {
+        "gap_id": "reported-dimensions-source",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "exterior-coverage-and-version",
+        "priority": "P1",
+        "blocked_station": "visual_review",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "roof-bracket-and-facade-evidence",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "reference-demo-motion-contract",
+        "priority": "P1",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "structural-system-source",
+        "priority": "P2",
+        "blocked_station": "construction",
+        "status": "PARTIAL"
+      },
+      {
+        "gap_id": "unseen-facades-and-interior",
+        "priority": "P3",
+        "blocked_station": "visual_review",
+        "status": "UNKNOWN"
+      }
+    ],
+    "blockers": [
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "reported-dimensions-source is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "exterior-coverage-and-version is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "roof-bracket-and-facade-evidence is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "reference-demo-motion-contract is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "REQUIRED_DISCOVERY_GAP_OPEN",
+        "detail": "structural-system-source is PARTIAL; its dependent station must remain blocked."
+      },
+      {
+        "code": "OPTIONAL_DISCOVERY_GAP_OPEN",
+        "detail": "unseen-facades-and-interior remains UNKNOWN and must be carried into the model limitations."
+      }
+    ]
+  }
 }

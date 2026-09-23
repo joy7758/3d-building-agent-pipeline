@@ -1,10 +1,7 @@
 # 当前交付状态：需要返工
 
-2026-09-22 倒查后，视觉结果为 **FAIL**，任务为 **NEEDS_REVISION**。原 MP4 保留作技术预览，尚未修正外观或重新出片。
+2026-09-23 通用流水线发现工位已实际运行，当前发现尝试为 `guanque-discovery-r1`。它记录了来源覆盖和剩余缺口，但没有把未找到或未验证的资料补成事实。发现状态为 **NEEDS_REVISION**：5 项必需资料缺口为 **PARTIAL**，另有 1 项 P3 未展示立面/室内信息为 **UNKNOWN**。
 
-旧 delivery-manifest.json、qa-summary.md 和 visual-review.json 是历史艺术预览记录，不能再解释为当前仅剩 TITMAS 阻塞。技术 PASS 继续只属于原视频字节。
+因此旧模型计划和旧视频不满足新流水线的来源及发现绑定；建设、当前技术复核、视觉复核、出片与 TITMAS 接收门均未通过。旧 MP4 保留为历史技术预览，原视觉结论 **FAIL** 仍有效；TITMAS 服务未连接。用户保留发布决定。
 
 当前机读入口：[current-status.json](current-status.json)。倒查报告：[report.md](../../../artifacts/reverse-audit-20260922-r1/report.md)。原图、原演示与交付对照：[index.html](../../../artifacts/reverse-audit-20260922-r1/index.html)。
-
-
-2026-09-23 通用发现门禁接入后，鹳雀楼仍需返工：发现记录未配置，旧模型计划和视频清单没有当前 attempt 绑定，不能用于新的当前验收。历史文件及其原视频技术检查继续作为旧版本记录保留。

@@ -66,6 +66,8 @@ SHA-256 绑定是完整性检查，并不证明来源真实性、检查者身份
 
 照片默认 `RESEARCH_ONLY`（仅研究），`publish_permission` 为 `UNKNOWN`、`ALLOWED` 或 `DENIED`；研究门禁不授予图片再发布许可。模型可使用程序化材质，参考照片不要进入公开视频或网页素材，除非另行核清许可。`request.building.location` 或 `era` 为 `UNKNOWN` 时，发现层也未完成，不能进入 `READY_TO_BUILD`。
 
+来源 `source_type` 支持 `WEB`、`USER_PROVIDED` 和 `PROJECT_ARTIFACT`。项目工件使用 `artifact: {"path":"vendor/threejs-architecture-effects/assets/preview.mp4","sha256":"实际文件SHA256"}`；允许根目录限于当前 job、`artifacts/`、`docs/`、冻结的两个 vendor 目录及 `pipeline/video/`，运行时会拒绝越界路径、符号链接逃逸和哈希变化。可用它绑定锁定版 Skill、上游演示、相机计划和实际旧视频，避免只靠文字结论比较。
+
 ## model-plan.json
 
 ```json
