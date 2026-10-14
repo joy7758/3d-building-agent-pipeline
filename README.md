@@ -1,3 +1,5 @@
+> **Moved:** this repository has been merged into [joy7758/architecture-video-pipeline](https://github.com/joy7758/architecture-video-pipeline/tree/main/3d-building-agent-pipeline) with full history. This repo is archived and read-only.
+
 # 3D 盖楼 · 建筑视频流水线
 
 本对话为总指挥：指定建筑 → 资料发现 → 建筑规划 → Hailey Skill 施工 → 独立检查 / TITMAS → 视频交付 → 用户发布。
